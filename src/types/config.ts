@@ -26,10 +26,16 @@ export interface ILeagueInfo {
   /** draft type */
   draftType: "snake" | "auction";
   /** roster settings */
-
+  roster?: IRosterSettings;
+  /** time limit for each pick (in seconds) */
+  timeLimit?: number;
+  /** the league members */
+  members: ILeagueMember[];
 }
 
 export interface IAppConfig {
   /** the url to the fantasy football calculator adp api */
   apiUrl: string;
+  /** the league information */
+  league: ILeagueInfo;
 }
