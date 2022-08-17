@@ -19,6 +19,8 @@ export interface ILeagueMember {
 }
 
 export interface ILeagueInfo {
+  /** the league ID */
+  id: number | string;
   /** the league name */
   name: string;
   /** the scoring format */
@@ -37,5 +39,5 @@ export interface IAppConfig {
   /** the url to the fantasy football calculator adp api */
   apiUrl: string;
   /** the league information */
-  league: ILeagueInfo;
+  leagues: ILeagueInfo[];
 }

@@ -1,13 +1,14 @@
 {
   "apiUrl": "https://fantasyfootballcalculator.com/api/v1/adp/",
-  "league": {
+  "leagues": [{
+    "id": 890793,
     "name": "BMI Premier League",
     "roster": { 
       "size": 14,
       "positions": [
         "QB",
         "PK",
-        "DST",
+        "DEF",
         "FLEX",
         "FLEX",
         "FLEX",
@@ -69,5 +70,5 @@
         "draftOrder": 12
       }
     ]
-  }
+  }]
 }
