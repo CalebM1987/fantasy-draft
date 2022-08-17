@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { IDraftedPlayer } from '../../types/players'
+import { useAppStore } from '../../store'
+
+const appState = useAppStore()
 
 interface Props {
   pickNumber: number;
@@ -23,27 +26,33 @@ const props = defineProps<Props>()
 </script>
 
 <template>
- <div class="draft-square" :id="`draft-square-${pickNumber}`">
+ <div :class="`draft-square ${appState.compactView ? '': '--fixed-width'}`" :id="`draft-square-${pickNumber}`">
     <div class="pick-number">{{ pickNumber }}</div>
     <slot v-if="player">
-      <div :class="`drafted-player-name q-pa-md pos-${player.position.toLowerCase()}`">{{ playerDisplayName(player) }}</div>
+      <div 
+        :class="`drafted-player-name q-pa-md pos-${player.position.toLowerCase()}`"
+      >{{ playerDisplayName(player) }}</div>
     </slot>
   </div>
 </template>
 
-<style>
+<style lang="scss">
 .pick-number {
   /* position: absolute; */
-  top: 3px;
-  left: 3px;
+  // top: 3px;
+  // left: 3px;
+  margin: 3px 3px;
   color: black;
   font-size: 0.5rem;
 }
 
 .draft-square {
-  min-height: 108px;
+  height: 108px;
   border: solid 1px;
   background-color: #D3D3D3;
+  &.--fixed-width {
+    width: 200px;
+  }
 }
 
 .drafted-player-name {
