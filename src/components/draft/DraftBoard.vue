@@ -16,7 +16,7 @@ console.log('teams: ', teams)
   <div class="col-md-9 q-pa-sm" style="overflow: auto;">
    
     <div class="row franchise-header">
-      <div v-for="team in appState.config.league.members" :key="team.name" :class="`grid-cell xcol-md-${colSize}`">
+      <div v-for="team in appState.config.league.members" :key="team.name" :class="`grid-cell col-md-${colSize}`">
         <div class="team-header grid-cell">
           <div class="q-pa-sm">
             <div class="player-name">{{ team.name }}</div>
@@ -28,7 +28,7 @@ console.log('teams: ', teams)
 
     <div v-for="(round, ri) in rounds" :key="round" class="row picks-container">
 
-      <div v-for="(team, ti) in teams" :key="team.name" :class="`grid-cell xcol-md-${colSize}`">
+      <div v-for="(team, ti) in teams" :key="team.name" :class="`grid-cell col-md-${colSize}`">
         <draft-square 
           :pickNumber="(ri*teams.length) + Math.abs(draftType === 'snake' && (ri > 0  && (ri % 2)) ? teams.length-ti: ti+1)">
         </draft-square>
@@ -70,7 +70,7 @@ console.log('teams: ', teams)
   .grid-cell {
     padding: 1px !important;
     height: 100%;
-    width: 200px;
+    /* width: 200px; */
     /* width: 170px;
     height: 100px; */
     /* padding-right: 1px !important; */
