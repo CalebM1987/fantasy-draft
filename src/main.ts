@@ -38,6 +38,16 @@ fetchJson<IAppConfig>('./config.json').then(async (config)=> {
   const appState = useAppStore()
   appState.config = config
 
+  // find league
+  const url = new URL(window.location.href)
+  const leagueId = url.searchParams.get('leagueId') ?? config.leagues[0].id
+  if (leagueId){
+    const league = config.leagues.find(l => l.id == leagueId) ?? config.leagues[0]
+    if (league){
+      appState.league = league
+    }
+  }
+
   // @ts-ignore
   hook.appState = appState
 })

@@ -8,7 +8,7 @@ export type PlayerPosition =
   | "WR"
   | "TE"
   | "PK"
-  | "DST"
+  | "DEF"
 
 export type FlexPositions =
   | "RB"
@@ -27,7 +27,7 @@ export interface ADPPlayersResponseMeta {
 export interface IPlayer {
   player_id: number;
   name: string;
-  position: string;
+  position: PlayerPosition;
   team: string;
   adp: number;
   adp_formatted: string;
@@ -36,6 +36,8 @@ export interface IPlayer {
   low: number;
   stdev: number;
   bye: number;
+  rank?: number;
+  position_rank?: number;
 }
 
 export interface IDraftedPlayer {
@@ -47,4 +49,46 @@ export interface ADPPlayersResponse {
   status: string;
   meta: ADPPlayersResponseMeta;
   players: IPlayer[];
+}
+
+export interface PlayerDetails {
+  player_id: number;
+  first_name: string;
+  last_name: string;
+  full_name: string;
+  team: string;
+  position: string;
+  bye: number;
+  rookie: boolean;
+  image_url: string;
+  age: number;
+  height: string;
+  weight: string;
+  college: string;
+  jersey_number: string;
+  news: PlayerNews[];
+  adp: Adp;
+}
+
+export interface PlayerNews {
+  id: number
+  title: string
+  content: string
+  updated_at: string
+  first_name: string
+  last_name: string
+  position: string
+  team: string
+  player_image: string
+  priority: number
+  analysis: string
+}
+
+export interface Adp {
+  standard: string
+  ppr: string
+  "half-ppr": string
+  "2qb": string
+  dynasty: string
+  rookie: any
 }

@@ -7,7 +7,7 @@
 
         <q-toolbar-title>
           <q-avatar icon="sports_football" />
-          Draft Party - {{ config?.league?.name ?? 'Fantasy Football' }}
+          Draft Party - {{ league?.name ?? 'Fantasy Football' }}
         </q-toolbar-title>
 
         <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
@@ -24,22 +24,49 @@
       <!-- drawer content -->
     </q-drawer>
 
-    <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
+    <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered :width="400">
       <!-- drawer content -->
+      <Suspense>
+        <available-players />
+        <template #fallback>
+          <div class="q-pa-xl mx-auto">
+            <q-spinner-facebook
+              color="primary"
+              size="2em"
+            />
+            <p>loading...</p>
+          </div>
+        </template>
+      </Suspense>
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      
+    <router-view v-slot="{ Component }">
+      <transition 
+        appear
+        enter-active-class="animated fade-in"
+        leave-active-class="animated fade-out"
+      >
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </transition>
+    </router-view>
+      
     </q-page-container>
 
   </q-layout>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineAsyncComponent } from 'vue'
 import { useQuasar } from 'quasar'
 import { useAppStore } from './store'
-const { config } = useAppStore()
+// import AvailablePlayers from './components/players/AvailablePlayers.vue';
+const AvailablePlayers = defineAsyncComponent(()=> import('./components/players/AvailablePlayers.vue'))
+
+const { config, league } = useAppStore()
 
 const $q = useQuasar()
 
@@ -47,6 +74,9 @@ $q.dark.set(true)
 
 const leftDrawerOpen = ref(false)
 const rightDrawerOpen = ref(false)
+
+// @ts-ignore
+hook.appState = useAppStore()
 
     
 const toggleLeftDrawer = () => {

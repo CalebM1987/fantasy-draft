@@ -13,7 +13,7 @@ interface IAppState {
   league?: ILeagueInfo;
 }
 
-export const useAppStore = defineStore('players', {
+export const useAppStore = defineStore('app', {
   state: ()=> ({
     config: undefined,
     compactView: true,
