@@ -7,7 +7,7 @@
 
         <q-toolbar-title>
           <q-avatar icon="sports_football" />
-          Draft Party - {{ config.league.name }}
+          Draft Party - {{ config?.league?.name ?? 'Fantasy Football' }}
         </q-toolbar-title>
 
         <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
