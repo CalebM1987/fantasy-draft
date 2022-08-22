@@ -22,9 +22,26 @@ export const useAppStore = defineStore('app', {
   } as IAppState),
   
   getters: {
-    sortedMembers: (state) => state.league 
-      ? state.league.members.every(t => !!t.draftOrder) ? state.league.members.sort((a,b) => (a.draftOrder > b.draftOrder) ? 1: -1): [...state.league.members]
-      : []
+    rosterSize: (state)=> state.league?.roster?.size ?? 14,
+    sortedMembers: (state) => {
+      const members = state.league 
+        ? state.league.members.every(t => !!t.draftOrder) ? state.league.members.sort((a,b) => (a.draftOrder > b.draftOrder) ? 1: -1): [...state.league.members]
+        : []
+
+      members.forEach(m => m.picks = [])
+
+      const roster = state.league?.roster?.size ?? 14
+      const draftType = state.league?.draftType ?? 'snake'
+      // (ri*appState.sortedMembers.length) + Math.abs(draftType === 'snake' && (ri > 0  && (ri % 2)) ? appState.sortedMembers.length-ti: ti+1)
+      for (let ri = 0; ri < roster; ri++){
+        // add pick for each round
+        members.forEach((m, ti)=> {
+          m.picks!.push((ri*members.length) + Math.abs(draftType === 'snake' && (ri > 0  && (ri % 2)) ? members.length-ti: ti+1))
+        })
+      }  
+      return members
+    }
+
   }
 })
 

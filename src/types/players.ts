@@ -40,7 +40,7 @@ export interface IPlayer {
   position_rank?: number;
 }
 
-export interface IDraftedPlayer {
+export interface IDraftedPlayer extends IPlayer {
   pickNumber?: number;
   owner?: ILeagueMember;
 }

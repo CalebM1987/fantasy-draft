@@ -52,6 +52,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
         <q-tab-panel name="top-200">
           <q-list bordered separator>
             <player-info 
+              class="q-mb-sm"
               v-for="player in players.availablePlayers"
               :key="player.player_id"
               :player="player"
@@ -81,6 +82,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
               <p>positions? {{ selectedPos }}</p>
               <q-list bordered separator>
                 <player-info 
+                  class="q-mb-sm"
                   v-for="player in players.playersByPosition[selectedPos]"
                   :key="player.player_id"
                   :player="player"

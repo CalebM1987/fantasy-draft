@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia'
-import { IPlayer, PlayerPosition } from '../types/players'
+import { IDraftedPlayer, IPlayer, PlayerPosition } from '../types/players'
 import { fetchADP } from '../services/fantasycalculator'
+import { useAppStore } from './app'
 import { log } from '../utils/logger'
 
 interface IPlayersState {
   players: IPlayer[];
+  draftPicks: IDraftedPlayer[];
   availablePlayers: IPlayer[];
   positions: PlayerPosition[];
   showAvailableOnly: boolean;
@@ -15,6 +17,7 @@ interface IPlayersState {
 export const usePlayerStore = defineStore('players', {
   state: ()=> ({
     players: [],
+    draftPicks: localStorage ? JSON.parse(localStorage.getItem('__fantasyDraftBoard') ?? '[]'): [],
     availablePlayers: [],
     showAvailableOnly: true,
     positions: ["RB", "WR", "TE", "QB", "DEF", "PK"]
@@ -33,16 +36,39 @@ export const usePlayerStore = defineStore('players', {
       })
       
       return playersByPos
-    }
+    },
+
+    draftedPlayerIds: (state)=> state.draftPicks.map(p => p.player_id)
+
   },
 
   actions: {
+
+    async draftPlayer(player: IPlayer){
+      if (this.draftedPlayerIds.includes(player.player_id)){
+        throw Error(`Player has already been drafted: "${player.name}" (${player.player_id})`)
+      }
+      const appState = useAppStore()
+      const drafted = { ...player } as IDraftedPlayer;
+      drafted.pickNumber = this.draftPicks.length + 1
+      drafted.owner = appState.sortedMembers.find(m => m.picks?.includes(drafted.pickNumber!))
+      this.draftPicks.push(drafted)
+      this.availablePlayers.splice(this.availablePlayers.indexOf(player), 1)
+      if (localStorage){
+        localStorage.setItem('__fantasyDraftBoard', JSON.stringify(this.draftPicks))
+      }
+    },
+
     async fetchPlayers(){
       const adp = await fetchADP()
       log('fetched ADP response: ', adp)
-      adp.players.forEach((p,i) => p.rank = i+1)
-      this.players = adp.players
-      this.availablePlayers = [...adp.players]
+      const players = adp.players
+        .filter(p => !this.draftedPlayerIds.includes(p.player_id))
+
+      players.forEach((p,i) => p.rank = i+1)
+
+      this.players = players
+      this.availablePlayers = [...players]
     }
   }
 })

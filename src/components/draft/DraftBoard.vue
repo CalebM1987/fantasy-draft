@@ -5,9 +5,9 @@ import DraftSquare from './DraftSquare.vue';
 
 const appState = useAppStore()
 const colSize = computed(()=> Math.min(Math.max(Math.ceil(12 / appState.sortedMembers.length), 1), 12))
-const rounds = computed(()=> appState.league.roster.size)
+const rounds = computed(()=> appState.league?.roster?.size ?? 14)
 const gridClass = computed(()=> `grid-cell${appState.compactView ? ' col-md-' + colSize.value: '--fixed-width'}`)
-const draftType = appState.league.draftType
+const draftType = appState.league?.draftType ?? 'snake'
 console.log('teams: ', appState.sortedMembers)
 
 </script>

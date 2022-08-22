@@ -7,7 +7,7 @@
 
         <q-toolbar-title>
           <q-avatar icon="sports_football" />
-          Draft Party - {{ league?.name ?? 'Fantasy Football' }}
+          Draft Party - {{ appState.league?.name ?? 'Fantasy Football' }}
         </q-toolbar-title>
 
         <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
@@ -66,7 +66,8 @@ import { useAppStore } from './store'
 // import AvailablePlayers from './components/players/AvailablePlayers.vue';
 const AvailablePlayers = defineAsyncComponent(()=> import('./components/players/AvailablePlayers.vue'))
 
-const { config, league } = useAppStore()
+const appState = useAppStore()
+const config = appState.config
 
 const $q = useQuasar()
 

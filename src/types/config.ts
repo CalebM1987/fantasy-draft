@@ -16,6 +16,8 @@ export interface ILeagueMember {
   draftOrder: number;
   /** email address */
   email: string;
+  /** the picks for the member */
+  picks?: number[];
 }
 
 export interface ILeagueInfo {

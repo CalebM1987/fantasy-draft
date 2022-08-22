@@ -1,25 +1,18 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { IDraftedPlayer } from '../../types/players'
 import { useAppStore } from '../../store'
+import { usePlayerStore } from '../../store';
+import { playerDisplayName } from '../../utils/utils';
 
 const appState = useAppStore()
+const players = usePlayerStore()
 
 interface Props {
   pickNumber: number;
-  player?: IDraftedPlayer;
 }
 
-const playerDisplayName = (player: IDraftedPlayer) => {
-  const name = player.name
-  const parts = name.split(' ')
-  const first = parts[0]
-  console.log('parts: ', parts, first)
-  return name
-  // return [
-  //   first.includes('.') ? first: (first[0] + '.'),
-  //   ..parts.slice(1)
-  // ].join(' ')
-}
+const player = computed(()=> players.draftPicks.find(p => p.pickNumber === props.pickNumber))
 
 const props = defineProps<Props>()
 
@@ -31,7 +24,13 @@ const props = defineProps<Props>()
     <slot v-if="player">
       <div 
         :class="`drafted-player-name q-pa-md pos-${player.position.toLowerCase()}`"
-      >{{ playerDisplayName(player) }}</div>
+      >
+        <div class="text-center q-my-sm">{{ playerDisplayName(player) }}</div>
+        <div style="display: flex; justify-content: space-around; font-size: 0.6rem;">
+          <span>{{ player.team }}</span>
+          <span>{{ player.position }}</span>
+        </div>
+      </div>
     </slot>
   </div>
 </template>
@@ -56,6 +55,7 @@ const props = defineProps<Props>()
 }
 
 .drafted-player-name {
+  font-size: 0.7rem;
   min-height: 50px;
 }
 </style>
