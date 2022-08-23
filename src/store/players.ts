@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { IDraftedPlayer, IPlayer, PlayerPosition } from '../types/players'
 import { fetchADP } from '../services/fantasycalculator'
+import { saveDraftPick } from '../services/firebase'
+import { sortByPropertyInPlace } from '../utils/utils'
 import { useAppStore } from './app'
 import { log } from '../utils/logger'
 
@@ -17,7 +19,7 @@ interface IPlayersState {
 export const usePlayerStore = defineStore('players', {
   state: ()=> ({
     players: [],
-    draftPicks: localStorage ? JSON.parse(localStorage.getItem('__fantasyDraftBoard') ?? '[]'): [],
+    draftPicks: [], //localStorage ? JSON.parse(localStorage.getItem('__fantasyDraftBoard') ?? '[]'): [],
     availablePlayers: [],
     showAvailableOnly: true,
     positions: ["RB", "WR", "TE", "QB", "DEF", "PK"]
@@ -52,10 +54,31 @@ export const usePlayerStore = defineStore('players', {
       const drafted = { ...player } as IDraftedPlayer;
       drafted.pickNumber = this.draftPicks.length + 1
       drafted.owner = appState.sortedMembers.find(m => m.picks?.includes(drafted.pickNumber!))
-      this.draftPicks.push(drafted)
+      saveDraftPick(drafted).then((data)=> {
+        log('Saved draft pick: ', data)
+        
+        // if (localStorage){
+        //   localStorage.setItem('__fantasyDraftBoard', JSON.stringify(this.draftPicks))
+        // }
+      })
+    },
+
+    addPickToBoard(pick: IDraftedPlayer){
+      const player = this.players.find(p => p.player_id === pick.player_id)
+      if (!player || this.draftedPlayerIds.includes(pick.player_id)) return;
+      this.draftPicks.push(pick)
       this.availablePlayers.splice(this.availablePlayers.indexOf(player), 1)
-      if (localStorage){
-        localStorage.setItem('__fantasyDraftBoard', JSON.stringify(this.draftPicks))
+    },
+
+    removePickFromBoard(pick: IDraftedPlayer){
+      const existing = this.draftPicks.find(p => p.player_id === pick.player_id)
+      if (existing){
+        const index = this.draftPicks.indexOf(existing)
+        existing.pickNumber = undefined
+        existing.owner = undefined
+        this.draftPicks.splice(index, 1)
+        this.availablePlayers.push(existing)
+        sortByPropertyInPlace(this.availablePlayers, 'rank')
       }
     },
 

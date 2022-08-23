@@ -29,6 +29,7 @@ const props = defineProps<Props>()
         <div style="display: flex; justify-content: space-around; font-size: 0.6rem;">
           <span>{{ player.team }}</span>
           <span>{{ player.position }}</span>
+          <span><strong>{{ player.bye }}</strong></span>
         </div>
       </div>
     </slot>

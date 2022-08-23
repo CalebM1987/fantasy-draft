@@ -19,7 +19,7 @@ const props = defineProps<Props>()
     <q-item-section>
       <q-item-section>
 
-        <q-item-label class="q-py-md player-content player-label">
+        <q-item-label class="q-py-sm player-content player-label">
           <span class="rank">{{ rankType === 'adp' ? player.rank: player.position_rank }}.</span>
           <strong>{{ player.name }}</strong>
           <span><q-btn rounded flat :icon="'person_add'" @click="players.draftPlayer(player)"/></span>

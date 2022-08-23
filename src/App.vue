@@ -60,9 +60,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, defineAsyncComponent } from 'vue'
+import { ref, onMounted, defineAsyncComponent, watchEffect } from 'vue'
 import { useQuasar } from 'quasar'
 import { useAppStore } from './store'
+import { setRealtimeHandlers, clearDraftBoard } from './services/firebase';
+import { log } from './utils/logger';
 // import AvailablePlayers from './components/players/AvailablePlayers.vue';
 const AvailablePlayers = defineAsyncComponent(()=> import('./components/players/AvailablePlayers.vue'))
 
@@ -90,6 +92,13 @@ const toggleRightDrawer = () => {
 }
 
 onMounted(()=> {
+  watchEffect(()=> {
+    if (appState.league){
+      log('league is ready: ', appState.league)
+      // clearDraftBoard()?.then(()=> log('cleared draft board'))
+      setRealtimeHandlers()
+    }
+  })
   setTimeout(()=> {
     toggleLeftDrawer()
     toggleRightDrawer()
