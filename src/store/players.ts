@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
-import { IDraftedPlayer, IPlayer, PlayerPosition } from '../types/players'
+import { IDraftedPlayer, IPlayer, PlayerDetails, PlayerPosition } from '../types/players'
 import { fetchADP } from '../services/fantasycalculator'
-import { saveDraftPick } from '../services/firebase'
+import { saveDraftPick, clearDraftBoard } from '../services/firebase'
 import { sortByPropertyInPlace } from '../utils/utils'
+import { proxiedFetch } from '../utils/fetch'
 import { useAppStore } from './app'
 import { log } from '../utils/logger'
 
@@ -12,6 +13,7 @@ interface IPlayersState {
   availablePlayers: IPlayer[];
   positions: PlayerPosition[];
   showAvailableOnly: boolean;
+  playerDetailsCache: Record<number, PlayerDetails>;
 }
 
 // You can name the return value of `defineStore()` anything you want, but it's best to use the name of the store and surround it with `use` and `Store` (e.g. `useUserStore`, `useCartStore`, `useProductStore`)
@@ -22,7 +24,8 @@ export const usePlayerStore = defineStore('players', {
     draftPicks: [], //localStorage ? JSON.parse(localStorage.getItem('__fantasyDraftBoard') ?? '[]'): [],
     availablePlayers: [],
     showAvailableOnly: true,
-    positions: ["RB", "WR", "TE", "QB", "DEF", "PK"]
+    positions: ["RB", "WR", "TE", "QB", "DEF", "PK"],
+    playerDetailsCache: {}
   } as IPlayersState),
 
   getters: {
@@ -92,6 +95,8 @@ export const usePlayerStore = defineStore('players', {
 
       this.players = players
       this.availablePlayers = [...players]
-    }
+    },
+
+    clearDraftBoard
   }
 })

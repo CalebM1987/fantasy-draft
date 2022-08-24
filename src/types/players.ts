@@ -51,7 +51,7 @@ export interface ADPPlayersResponse {
   players: IPlayer[];
 }
 
-export interface PlayerDetails {
+export interface IPlayerDetails {
   player_id: number;
   first_name: string;
   last_name: string;

@@ -101,7 +101,7 @@ onMounted(()=> {
   })
   setTimeout(()=> {
     toggleLeftDrawer()
-    toggleRightDrawer()
+    // toggleRightDrawer()
   }, 20)
 })
     
