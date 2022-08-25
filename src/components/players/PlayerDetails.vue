@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { IPlayerDetails } from '../../types/players'
 
 interface Props {
@@ -7,21 +8,32 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const generalAttrs = computed(()=> 
+  ['height', 'weight', 'age', 'college']
+  .filter(a => !!props.details[a as keyof IPlayerDetails])
+)
+
 </script>
 
 <template>
-  <q-card>
+  <q-card class="q-pa-md">
     <q-card-section>
-      <div class="text-h5">{{ details.full_name }}<span class="q-ml-lg">#{{ details.jersey_number }}</span></div>
-      <div class="text-subtitle2">{{ details.position}} for {{ details.team }}</div>
+      <div class="text-h6" style="display: flex; justify-content: space-between;">
+        <div>{{ details.full_name }}</div>
+        <div v-if="details.jersey_number">#{{ details.jersey_number }}</div>
+        <div>{{ details.position}}</div>
+        <div>{{ details.team }}</div>
+      </div>
     </q-card-section>
+    <q-separator />
 
     <q-card-section>
-      <div class="row">
-        <div class="col-md-6">height: {{ details.height }}</div>
-        <div class="col-md-6">weight: {{ details.weight }}</div>
-        <div class="col-md-6">age: {{ details.age }}</div>
-        <div class="col-md-6">college: {{ details.college }}</div>
+      <div class="row" v-if="generalAttrs.length">
+        <div 
+          class="col-md-6" 
+          v-for="attr in generalAttrs"
+          :key="attr"
+        >{{ attr}}: {{ details[attr as keyof IPlayerDetails] }}</div>
       </div>
     </q-card-section>
 

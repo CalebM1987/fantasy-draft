@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { IDraftedPlayer } from '../../types/players'
 import { useAppStore } from '../../store'
 import { usePlayerStore } from '../../store';
 import { playerDisplayName } from '../../utils/utils';
+import { removeDraftPick } from '../../services/firebase'
 
 const appState = useAppStore()
 const players = usePlayerStore()
@@ -13,18 +14,33 @@ interface Props {
 }
 
 const player = computed(()=> players.draftPicks.find(p => p.pickNumber === props.pickNumber))
-
+const isLastPick = computed(()=> players.draftPicks.length  === props.pickNumber)
 const props = defineProps<Props>()
+const showRemoveBtn = ref(false)
 
 </script>
 
 <template>
- <div :class="`draft-square ${appState.compactView ? '': '--fixed-width'}`" :id="`draft-square-${pickNumber}`">
+ <div 
+    :class="`draft-square ${appState.compactView ? '': '--fixed-width'}`" 
+    :id="`draft-square-${pickNumber}`"
+  >
     <div class="pick-number">{{ pickNumber }}</div>
     <slot v-if="player">
       <div 
+        @mouseenter="showRemoveBtn = true"
+        @mouseleave="showRemoveBtn = false"
         :class="`drafted-player-name q-pa-md pos-${player.position.toLowerCase()}`"
       >
+        <q-btn 
+          round
+          flat
+          v-if="isLastPick && showRemoveBtn"
+          title="remove pick from board"
+          style="font-size: 0.6rem; margin: -1.5rem -.5rem;"
+          icon="person_remove" 
+          @click="removeDraftPick(players.pickLookup[player!.player_id])" 
+        />
         <div class="text-center q-my-sm">{{ playerDisplayName(player) }}</div>
         <div style="display: flex; justify-content: space-around; font-size: 0.6rem;">
           <span>{{ player.team }}</span>
@@ -47,6 +63,7 @@ const props = defineProps<Props>()
 }
 
 .draft-square {
+  cursor: pointer;
   height: 108px;
   border: solid 1px;
   background-color: #D3D3D3;

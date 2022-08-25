@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { IDraftedPlayer, IPlayer, PlayerDetails, PlayerPosition } from '../types/players'
+import { IDraftedPlayer, IPlayer, IPlayerDetails, PlayerPosition } from '../types/players'
 import { fetchADP } from '../services/fantasycalculator'
 import { saveDraftPick, clearDraftBoard } from '../services/firebase'
 import { sortByPropertyInPlace } from '../utils/utils'
@@ -13,7 +13,8 @@ interface IPlayersState {
   availablePlayers: IPlayer[];
   positions: PlayerPosition[];
   showAvailableOnly: boolean;
-  playerDetailsCache: Record<number, PlayerDetails>;
+  playerDetailsCache: Record<number, IPlayerDetails>;
+  pickLookup: Record<number, string>;
 }
 
 // You can name the return value of `defineStore()` anything you want, but it's best to use the name of the store and surround it with `use` and `Store` (e.g. `useUserStore`, `useCartStore`, `useProductStore`)
@@ -25,7 +26,8 @@ export const usePlayerStore = defineStore('players', {
     availablePlayers: [],
     showAvailableOnly: true,
     positions: ["RB", "WR", "TE", "QB", "DEF", "PK"],
-    playerDetailsCache: {}
+    playerDetailsCache: {},
+    pickLookup: {}
   } as IPlayersState),
 
   getters: {
@@ -59,17 +61,17 @@ export const usePlayerStore = defineStore('players', {
       drafted.owner = appState.sortedMembers.find(m => m.picks?.includes(drafted.pickNumber!))
       saveDraftPick(drafted).then((data)=> {
         log('Saved draft pick: ', data)
-        
         // if (localStorage){
         //   localStorage.setItem('__fantasyDraftBoard', JSON.stringify(this.draftPicks))
         // }
       })
     },
 
-    addPickToBoard(pick: IDraftedPlayer){
+    addPickToBoard(pick: IDraftedPlayer, key: string){
       const player = this.players.find(p => p.player_id === pick.player_id)
       if (!player || this.draftedPlayerIds.includes(pick.player_id)) return;
       this.draftPicks.push(pick)
+      this.pickLookup[pick.player_id] = key
       this.availablePlayers.splice(this.availablePlayers.indexOf(player), 1)
     },
 
@@ -80,6 +82,7 @@ export const usePlayerStore = defineStore('players', {
         existing.pickNumber = undefined
         existing.owner = undefined
         this.draftPicks.splice(index, 1)
+        delete this.pickLookup[existing.player_id]
         this.availablePlayers.push(existing)
         sortByPropertyInPlace(this.availablePlayers, 'rank')
       }

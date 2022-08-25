@@ -37,7 +37,7 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getDatabase()
 
-const key = 'draft-picks'
+const picksKey = 'draft-picks'
 
 export function getLeagueId(): string | number | undefined {
   const { league } = useAppStore()
@@ -55,8 +55,17 @@ export function getReference(name?: string): DatabaseReference {
   if (!leagueId){
     throw new Error("No League ID has been provided")
   }
-  const path = `${name ?? key}/${leagueId}`
+  const path = `${name ?? picksKey}/${leagueId}`
   return fbRef(db, path)
+}
+export function removeDraftPick(key: string){
+  const leagueId = getLeagueId()
+  if (!leagueId){
+    throw new Error("No League ID has been provided")
+  }
+  const pickRef = fbRef(db, `${picksKey}/${leagueId}/${key}`)
+  log('pickRef is: ', pickRef)
+  remove(pickRef)
 }
 
 export function saveDraftPick(pick: IDraftedPlayer){
@@ -74,7 +83,7 @@ export function setRealtimeHandlers(){
   const addSub = onChildAdded(leagueRef, (snapshot)=> {
     const pick = snapshot.val() as IDraftedPlayer
     log('new pick detected', pick)
-    players.addPickToBoard(pick)
+    players.addPickToBoard(pick, snapshot.key!)
     
   })
 

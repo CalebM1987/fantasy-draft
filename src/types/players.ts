@@ -60,12 +60,12 @@ export interface IPlayerDetails {
   position: string;
   bye: number;
   rookie: boolean;
-  image_url: string;
-  age: number;
-  height: string;
-  weight: string;
-  college: string;
-  jersey_number: string;
+  image_url?: string;
+  age?: number;
+  height?: string;
+  weight?: string;
+  college?: string;
+  jersey_number?: string;
   news: PlayerNews[];
   adp: Adp;
 }
