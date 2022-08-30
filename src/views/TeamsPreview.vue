@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useAppStore } from '../store';
-const appState = useAppStore()
 import TeamRoster from '../components/teams/TeamRoster.vue';
+const appState = useAppStore()
 
 </script>
 
