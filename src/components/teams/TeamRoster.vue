@@ -90,7 +90,13 @@ const rosterSpots = computed<IRosterSlot[]>(()=> {
           </q-item-section>
           <q-item-section>
             <q-item-label :class="spot.player ? '': 'empty-slot'">{{ spot.player?.name ?? 'EMPTY' }}</q-item-label>
-            <q-item-label caption lines="1">{{ spot.player?.team }} {{ spot.player?.position}}</q-item-label>
+            <q-item-label caption lines="1">
+              <div style="display: flex; justify-content: space-between;">
+                <span>{{ spot.player?.team }} {{ spot.player?.position}}</span>
+                <span v-if="spot.player">Bye: {{ spot.player?.bye }}</span>
+              </div>
+            </q-item-label>
+              
           </q-item-section>
         </q-item>
       </q-list>
