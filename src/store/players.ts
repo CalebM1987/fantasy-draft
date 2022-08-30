@@ -3,7 +3,6 @@ import { IDraftedPlayer, IPlayer, IPlayerDetails, PlayerPosition } from '../type
 import { fetchADP } from '../services/fantasycalculator'
 import { saveDraftPick, clearDraftBoard } from '../services/firebase'
 import { sortByPropertyInPlace } from '../utils/utils'
-import { proxiedFetch } from '../utils/fetch'
 import { useAppStore } from './app'
 import { log } from '../utils/logger'
 
@@ -45,7 +44,15 @@ export const usePlayerStore = defineStore('players', {
       return playersByPos
     },
 
-    draftedPlayerIds: (state)=> state.draftPicks.map(p => p.player_id)
+    draftedPlayerIds: (state)=> state.draftPicks.map(p => p.player_id),
+
+    totalPickCount: (_)=> {
+      const appState = useAppStore()
+      if (appState.league){
+        return appState.league.members.length * appState.rosterSize
+      }
+      return 0
+    }
 
   },
 
