@@ -8,14 +8,11 @@ import TeamRoster from '../components/teams/TeamRoster.vue';
 <template>
 <div class="container">
   <div class="row items-start q-pa-md">
-    <!-- <div class="col col-md-10"> -->
-      <team-roster 
-        v-for="member of appState.sortedMembers"
-        :key="member.name"
-        :league-member="member"
-      />
-       
-    <!-- </div> -->
+    <team-roster 
+      v-for="member of appState.sortedMembers"
+      :key="member.name"
+      :league-member="member"
+    />
   </div>
 </div>
 </template>
