@@ -15,6 +15,17 @@ interface Props {
 
 const player = computed(()=> players.draftPicks.find(p => p.pickNumber === props.pickNumber))
 const isLastPick = computed(()=> players.draftPicks.length  === props.pickNumber)
+const roundPickNumber = computed<string | undefined>(()=> {
+  if (players.totalPickCount && appState.rosterSize){
+    const remainder = props.pickNumber % appState.sortedMembers.length 
+    const rd = remainder 
+      ? Math.floor(props.pickNumber / appState.sortedMembers.length) + 1
+      : props.pickNumber / appState.sortedMembers.length
+    const rdPick = remainder ? remainder : appState.sortedMembers.length
+    return `${rd}.${rdPick}`
+  }
+  return undefined
+})
 const props = defineProps<Props>()
 const showRemoveBtn = ref(false)
 
@@ -25,7 +36,10 @@ const showRemoveBtn = ref(false)
     :class="`draft-square ${appState.compactView ? '': '--fixed-width'}`" 
     :id="`draft-square-${pickNumber}`"
   >
-    <div class="pick-number">{{ pickNumber }}</div>
+    <div class="picks-header q-px-xs">
+      <span><strong>{{ pickNumber }}</strong></span>
+      <span :title="`round ${roundPickNumber?.split('.')[0]}, pick ${roundPickNumber?.split('.')[1]}`">{{ roundPickNumber }}</span>
+    </div>
     <slot v-if="player">
       <div 
         @mouseenter="showRemoveBtn = true"
@@ -53,13 +67,12 @@ const showRemoveBtn = ref(false)
 </template>
 
 <style lang="scss">
-.pick-number {
-  /* position: absolute; */
-  // top: 3px;
-  // left: 3px;
-  margin: 3px 3px;
+.picks-header {
+  margin-top: 3px;
   color: black;
   font-size: 0.5rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .draft-square {
