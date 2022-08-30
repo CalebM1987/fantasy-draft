@@ -4,16 +4,16 @@
     "id": 890793,
     "name": "BMI Premier League",
     "roster": { 
-      "size": 14,
+      "size": 15,
       "positions": [
         "QB",
-        "PK",
+        "FLEX",
+        "FLEX",
+        "FLEX",
+        "FLEX",
+        "FLEX",
         "DEF",
-        "FLEX",
-        "FLEX",
-        "FLEX",
-        "FLEX",
-        "FLEX"
+        "PK"
       ]
     },
     "format": "half-ppr",
@@ -22,52 +22,52 @@
     "members": [
       {
         "name": "Kyle Mullen",
-        "teamName": "Jackmerathus Tackthemetrix",
-        "draftOrder": 2
+        "teamName": "Bismo Funyuns",
+        "draftOrder": 8
       }, {
         "name": "Scott Janni",
         "teamName": "Michaels n MacElroy",
-        "draftOrder": 1
+        "draftOrder": 9
       }, {
         "name": "Dave Malm",
-        "teamName": "AT College Fund",
+        "teamName": "Emporer Malm",
         "draftOrder": 3
       }, {
         "name": "Grant Gall",
-        "teamName": "GO TO BED",
-        "draftOrder": 4
+        "teamName": "Team Gall",
+        "draftOrder": 7
       }, {
         "name": "Kendell Hillis",
-        "teamName": "Team Braunger",
-        "draftOrder": 5
+        "teamName": "The Cutler Did It",
+        "draftOrder": 10
       }, {
         "name": "Kasey Burns",
-        "teamName": "Team Burns",
-        "draftOrder": 6
+        "teamName": "Discount Belichick",
+        "draftOrder": 11
       }, {
         "name": "Nate Christ",
         "teamName": "Kissin Cousins",
-        "draftOrder": 7
+        "draftOrder": 12
       }, {
         "name": "Caleb Mackey",
-        "teamName": "The Goulden Shower",
-        "draftOrder": 8
+        "teamName": "Antonio Robinson II",
+        "draftOrder": 6
       }, {
         "name": "David Sandberg",
         "teamName": "Team Sandberg",
-        "draftOrder": 9
+        "draftOrder": 2
       }, {
         "name": "John Shain",
-        "teamName": "No Shain No Gain",
-        "draftOrder": 10
+        "teamName": "Team Shain",
+        "draftOrder": 4
       }, {
         "name": "Chad Fowlds",
         "teamName": "Team Fowlds",
-        "draftOrder": 11
+        "draftOrder": 1
       }, {
         "name": "Brandon Bohks",
-        "teamName": "Clean Cole",
-        "draftOrder": 12
+        "teamName": "Brady's Bitches",
+        "draftOrder": 5
       }
     ]
   }]

@@ -62,7 +62,6 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
           
         </q-tab-panel>
 
-
         <q-tab-panel name="positions">
           <q-tabs
               dense
