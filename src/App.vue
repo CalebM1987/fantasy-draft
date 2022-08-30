@@ -15,7 +15,7 @@
 
       <q-tabs align="center">
         <q-route-tab to="/" label="Draft Room" />
-        <q-route-tab to="/page2" label="Teams" />
+        <q-route-tab to="/teams" label="Teams" />
         <q-route-tab to="/page3" label="League Settings" />
       </q-tabs>
     </q-header>
