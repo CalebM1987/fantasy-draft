@@ -5,6 +5,7 @@ import { saveDraftPick, clearDraftBoard } from '../services/firebase'
 import { sortByPropertyInPlace } from '../utils/utils'
 import { useAppStore } from './app'
 import { log } from '../utils/logger'
+import { loadFromStorage, saveToStorage } from '../utils/storage'
 
 interface IPlayersState {
   players: IPlayer[];
@@ -14,6 +15,7 @@ interface IPlayersState {
   showAvailableOnly: boolean;
   playerDetailsCache: Record<number, IPlayerDetails>;
   pickLookup: Record<number, string>;
+  favorites: number[];
 }
 
 // You can name the return value of `defineStore()` anything you want, but it's best to use the name of the store and surround it with `use` and `Store` (e.g. `useUserStore`, `useCartStore`, `useProductStore`)
@@ -26,7 +28,8 @@ export const usePlayerStore = defineStore('players', {
     showAvailableOnly: true,
     positions: ["RB", "WR", "TE", "QB", "DEF", "PK"],
     playerDetailsCache: {},
-    pickLookup: {}
+    pickLookup: {},
+    favorites: loadFromStorage<number[]>('_draft_favorites', [])
   } as IPlayersState),
 
   getters: {
@@ -74,12 +77,27 @@ export const usePlayerStore = defineStore('players', {
       })
     },
 
+    addToFavorites(player: IPlayer){
+      if (!this.favorites.includes(player.player_id)){
+        this.favorites.push(player.player_id)
+        saveToStorage('_draft_favorites', this.favorites)
+        log(`added player to favorites "${player.name}"`)
+      }
+    },
+
+    removeFromFavorites(player: IPlayer | IDraftedPlayer){
+      this.favorites = this.favorites.filter(pid => pid != player.player_id)
+      saveToStorage('_draft_favorites', this.favorites)
+      log(`removed player from favorites "${player.name}"`)
+    },
+
     addPickToBoard(pick: IDraftedPlayer, key: string){
       const player = this.players.find(p => p.player_id === pick.player_id)
       if (!player || this.draftedPlayerIds.includes(pick.player_id)) return;
       this.draftPicks.push(pick)
       this.pickLookup[pick.player_id] = key
       this.availablePlayers.splice(this.availablePlayers.indexOf(player), 1)
+      this.removeFromFavorites(pick)
     },
 
     removePickFromBoard(pick: IDraftedPlayer){

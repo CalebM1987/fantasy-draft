@@ -9,7 +9,7 @@ await players.fetchPlayers()
 // @ts-ignore
 hook.players = players
 
-type FilterType = "top-200" | "positions";
+type FilterType = "top-200" | "positions" | "favorites";
 interface FilterTypeOptions { 
   name: FilterType;
   label: string ;
@@ -18,11 +18,15 @@ const filterType = ref<"all" | "available">('available')
 const search = ref('')
 const selectedPos = ref(players.positions[0])
 const tab = ref<FilterType>('top-200')
+
 const typeOptions: FilterTypeOptions[] = [
   { name: 'top-200', label: 'Top 200' },
   { name: 'positions', label: 'By Position' },
+  { name: 'favorites', label: 'Favorites' },
 ]
+
 const positionOptions = players.positions.map(p => { return { name: p, label: p.toUpperCase() }})
+
 </script>
 
 <template>
@@ -30,8 +34,8 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
     <div class="players-header">
       <q-input v-model="search" label="Search for players..." />
       <div class="filter-type q-py-md">
-        <q-radio v-model="filterType" val="all" label="All Players" />
-        <q-radio v-model="filterType" val="available" label="Available Players" />
+        <q-radio v-model="filterType" val="all" label="All Players" color="accent" />
+        <q-radio v-model="filterType" val="available" label="Available Players" color="accent" />
       </div>
     </div>
 
@@ -91,6 +95,18 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
             </q-tab-panel>
           
 
+        </q-tab-panel>
+
+        <q-tab-panel name="favorites">
+          <q-list bordered separator>
+            <player-info 
+              class="q-mb-sm"
+              v-for="pid in players.favorites"
+              :key="pid"
+              :player="players.availablePlayers.find(p => p.player_id === pid)!"
+              :rank-type="'adp'"
+            />
+          </q-list>
         </q-tab-panel>
       </q-tab-panels>
 

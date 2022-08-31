@@ -1,25 +1,37 @@
 <script lang="ts" setup>
-import { ref, defineAsyncComponent, computed } from 'vue'
+import { ref, defineAsyncComponent, computed, watchEffect } from 'vue'
 import { useQuasar } from 'quasar'
 import { IPlayer, IPlayerDetails } from '../../types/players'
-import { usePlayerStore } from '../../store'
+import { usePlayerStore, useAppStore } from '../../store'
 import { fetchPlayerDetails } from '../../services/fantasycalculator'
+import { saveToStorage } from '../../utils/storage'
 import { log } from '../../utils/logger'
 import PlayerDetails from './PlayerDetails.vue'
 // const PlayerDetailsComp = defineAsyncComponent(()=> import('./PlayerDetails.vue'))
 
 const players = usePlayerStore()
+const appState = useAppStore()
 interface Props {
   player: IPlayer;
   rankType: "adp" | "position_rank"
 }
+const props = defineProps<Props>()
 
 const $q = useQuasar()
+const isFavorite = ref(players.favorites.includes(props.player.player_id))
 
 const isLoadingDetails = ref(false)
 const showPlayerDetails = ref(false)
 
-const props = defineProps<Props>()
+const updateFavorites = ()=> {
+  isFavorite.value = !isFavorite.value
+
+  if (isFavorite.value){
+    players.addToFavorites(props.player)
+  } else {
+    players.removeFromFavorites(props.player)
+  }
+}
 
 const loadDetails = async ()=> {
   try {
@@ -62,8 +74,28 @@ const loadDetails = async ()=> {
       <q-item-section>
         <q-item-label class="q-py-sm player-content player-label">
           <span class="rank">{{ rankType === 'adp' ? player.rank: player.position_rank }}.</span>
-          <strong>{{ player.name }}</strong>
-          <span><q-btn rounded flat :icon="'person_add'" @click.stop.prevent="players.draftPlayer(player)"/></span>
+          <span><strong>{{ player.name }}</strong></span>
+          <span>
+            <span>
+              <q-btn
+                flat
+                rounded
+                :title="`${isFavorite ? 'remove from': 'add to'} favorites`"
+                :icon="isFavorite ? 'star': 'star_outline'" 
+                @click.stop.prevent="updateFavorites"
+              />
+            </span>
+            <span>
+              <q-btn 
+                v-if="appState.isLM"
+                flat 
+                rounded 
+                style="margin-left: -1.35rem;"
+                :icon="'person_add'" 
+                @click.stop.prevent="players.draftPlayer(player)"
+              />
+            </span>
+          </span>
         </q-item-label>
       </q-item-section>
       
