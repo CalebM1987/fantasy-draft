@@ -1,7 +1,7 @@
 <script lang="ts" async setup>
 import { ref, defineAsyncComponent } from 'vue';
 import { usePlayerStore } from '../../store';
-import { FilterType, PlayerListType } from '../../types/players'
+import { FilterType } from '../../types/players'
 import PlayerInfo from './PlayerInfo.vue';
 const CustomPlayer = defineAsyncComponent(()=> import('./CustomPlayer.vue'))
 const players = usePlayerStore()
@@ -43,8 +43,18 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
       </div>
 
       <div class="filter-type q-py-md">
-        <q-radio v-model="players.listType" val="all" label="All Players" color="accent" />
-        <q-radio v-model="players.listType" val="available" label="Available Players" color="accent" />
+        <q-radio 
+          v-model="players.listType" 
+          val="all" 
+          label="All Players" 
+          color="accent" 
+        />
+        <q-radio 
+          v-model="players.listType" 
+          val="available" 
+          label="Available Players" 
+          color="accent" 
+        />
         <span>
           <q-btn
             flat
@@ -70,7 +80,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
         <q-tab v-for="{ name, label } in typeOptions" :name="name" :label="label"></q-tab>
       </q-tabs>
 
-      <q-tab-panels v-model="tab">
+      <q-tab-panels v-model="tab" :keep-alive="true">
 
         <q-tab-panel name="top-200">
           <q-list bordered separator>
