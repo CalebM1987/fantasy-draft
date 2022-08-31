@@ -77,7 +77,7 @@ const rosterSpots = computed<IRosterSlot[]>(()=> {
   <q-card bordered class="bg-grey-9 roster-card q-ma-md">
     <q-card-section>
       <div class="text-h6">{{ leagueMember.teamName }}</div>
-      <div class="text-subtitle2">leagueMember.name</div>
+      <div class="text-subtitle2">{{ leagueMember.name }}</div>
     </q-card-section>
 
     <q-separator dark inset />
