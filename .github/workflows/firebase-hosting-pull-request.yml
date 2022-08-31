@@ -21,7 +21,7 @@ jobs:
           fail_on_empty: false
 
       - name: echo env file
-        run: cat /github/workspace.env
+        run: cat /github/workspace/.env
   # build_and_preview:
   #   if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
   #   runs-on: ubuntu-latest
