@@ -1,13 +1,11 @@
 import { defineStore } from 'pinia'
-import { PlayerListType, IDraftedPlayer, IPlayer, IPlayerDetails, PlayerPosition } from '../types/players'
+import { PlayerListType, FreeAgent, NFLTeams, IDraftedPlayer, IPlayer, IPlayerDetails, PlayerPosition } from '../types/players'
 import { fetchADP } from '../services/fantasycalculator'
 import { saveDraftPick, clearDraftBoard } from '../services/firebase'
 import { sortByPropertyInPlace } from '../utils/utils'
 import { useAppStore } from './app'
 import { loadFromStorage, saveToStorage } from '../utils/storage'
 import { log } from '../utils/logger'
-
-
 
 interface IPlayersState {
   players: IPlayer[];
@@ -20,8 +18,11 @@ interface IPlayersState {
   favorites: number[];
   listType: PlayerListType;
   /** the current global search string filter */
-  search: string
+  search: string;
+  nflTeams: (NFLTeams | FreeAgent)[];
 }
+
+const nflTeams = ['ARI', 'ATL', 'BAL', 'BUF', 'CAR', 'CHI', 'CIN', 'CLE', 'DAL', 'DEN', 'DET', 'FA', 'GB', 'HOU', 'IND', 'JAX', 'KC', 'LAC', 'LAR', 'LV', 'MIA', 'MIN', 'NE', 'NO', 'NYG', 'NYJ', 'PHI', 'PIT', 'SEA', 'SF', 'TB', 'TEN', 'WAS']
 
 // You can name the return value of `defineStore()` anything you want, but it's best to use the name of the store and surround it with `use` and `Store` (e.g. `useUserStore`, `useCartStore`, `useProductStore`)
 // the first argument is a unique id of the store across your application
@@ -36,7 +37,8 @@ export const usePlayerStore = defineStore('players', {
     pickLookup: {},
     favorites: loadFromStorage<number[]>('_draft_favorites', []),
     listType: 'available',
-    search: ''
+    search: '',
+    nflTeams
   } as IPlayersState),
 
   getters: {

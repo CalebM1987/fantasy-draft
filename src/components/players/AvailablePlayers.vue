@@ -1,8 +1,9 @@
 <script lang="ts" async setup>
-import { ref, computed } from 'vue';
+import { ref, defineAsyncComponent } from 'vue';
 import { usePlayerStore } from '../../store';
 import { FilterType, PlayerListType } from '../../types/players'
 import PlayerInfo from './PlayerInfo.vue';
+const CustomPlayer = defineAsyncComponent(()=> import('./CustomPlayer.vue'))
 const players = usePlayerStore()
 
 await players.fetchPlayers()
@@ -24,6 +25,8 @@ const typeOptions: FilterTypeOptions[] = [
   { name: 'favorites', label: 'Favorites' },
 ]
 
+const showCustomPlayerModal = ref(false)
+
 const positionOptions = players.positions.map(p => { return { name: p, label: p.toUpperCase() }})
 
 </script>
@@ -31,14 +34,27 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
 <template>
   <div class="available-players-container q-pa-md">
     <div class="player-search-header">
-      <q-input 
-        v-model="players.search" 
-        label="search for players..." 
-        debounce="200" 
-      />
+      <div class="search-bar" >
+        <q-input 
+          v-model="players.search" 
+          label="search for players..." 
+          debounce="200" 
+        />
+      </div>
+
       <div class="filter-type q-py-md">
         <q-radio v-model="players.listType" val="all" label="All Players" color="accent" />
         <q-radio v-model="players.listType" val="available" label="Available Players" color="accent" />
+        <span>
+          <q-btn
+            flat
+            rounded
+            class="float-right"
+            icon="person_add_disabled"
+            title="Draft Custom Player"
+            @click="showCustomPlayerModal = !showCustomPlayerModal"
+          />
+        </span>
       </div>
     </div>
 
@@ -84,8 +100,12 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
               /> 
               </q-tabs>
           
-            <q-tab-panel v-for="{ name, label } in positionOptions" :name="name" :label="label" :key="name">
-              <p>positions? {{ selectedPos }}</p>
+            <q-tab-panel 
+              v-for="{ name, label } in positionOptions" 
+              :key="name"
+              :name="name" 
+              :label="label" 
+            >
               <q-list bordered separator>
                 <player-info 
                   class="q-mb-sm"
@@ -114,6 +134,10 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
       </q-tab-panels>
 
     </div>
+
+    <q-dialog v-model="showCustomPlayerModal" >
+      <custom-player />
+    </q-dialog>
   </div>
 
 </template>

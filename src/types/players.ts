@@ -21,6 +21,9 @@ export type FilterType = "top-200" | "positions" | "favorites";
 
 export type PlayerListType = "all" | "available";
 
+export type FreeAgent = "FA";
+export type NFLTeams = "ARI" | "ATL" | "BAL" | "BUF" | "CAR" | "CHI" | "CIN" | "CLE" | "DAL" | "DEN" | "DET" | "GB" | "HOU" | "IND" | "JAX" | "KC" | "LAC" | "LAR" | "LV" | "MIA" | "MIN" | "NE" | "NO" | "NYG" | "NYJ" | "PHI" | "PIT" | "SEA" | "SF" | "TB" | "TEN" | "WAS"
+
 export interface ADPPlayersResponseMeta {
   type: string;
   teams: number;
@@ -36,11 +39,11 @@ export interface IPlayer {
   position: PlayerPosition;
   team: string;
   adp: number;
-  adp_formatted: string;
-  times_drafted: number;
-  high: number;
-  low: number;
-  stdev: number;
+  adp_formatted?: string;
+  times_drafted?: number;
+  high?: number;
+  low?: number;
+  stdev?: number;
   bye: number;
   rank?: number;
   position_rank?: number;
