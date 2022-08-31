@@ -11,6 +11,8 @@ interface IAppState {
   timer: number;
   /** league info */
   league?: ILeagueInfo;
+  /** is league manager */
+  isLM: boolean;
 }
 
 export const useAppStore = defineStore('app', {
@@ -19,6 +21,7 @@ export const useAppStore = defineStore('app', {
     compactView: true,
     league: undefined,
     timer: 0,
+    isLM: false
   } as IAppState),
   
   getters: {

@@ -4,6 +4,7 @@ import { fetchJson } from './utils/fetch'
 import { IAppConfig } from './types/config'
 import { useAppStore } from './store'
 import { createPinia } from 'pinia'
+import { log } from './utils/logger'
 
 // Import icon libraries
 import '@quasar/extras/roboto-font/roboto-font.css'
@@ -40,8 +41,15 @@ fetchJson<IAppConfig>('./config.json').then(async (config)=> {
   const appState = useAppStore()
   appState.config = config
 
+  
+
+  // check url for league ID and if is league manager (?lm=true)
+  const url = new URL(window.location.href.replace(/#\//g,''))
+  log('url is: ', url)
+  appState.isLM = ['1', 'true'].includes(url.searchParams.get('lm') ?? '')
+  console.log("url check: ", ['1', 'true'].includes(url.searchParams.get('lm') ?? ''))
+  log('set league manager status: ', appState.isLM)
   // find league
-  const url = new URL(window.location.href)
   const leagueId = url.searchParams.get('leagueId') ?? config.leagues[0].id
   if (leagueId){
     const league = config.leagues.find(l => l.id == leagueId) ?? config.leagues[0]
