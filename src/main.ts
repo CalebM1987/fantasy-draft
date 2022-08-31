@@ -17,8 +17,7 @@ import 'quasar/src/css/index.sass'
 fetchJson<IAppConfig>('./config.json').then(async (config)=> {
   console.log('config', config)
 
-  // Assumes your root component is App.vue
-  // and placed in same folder as main.js
+  // load app
   const { default: App } = await import('./App.vue')
   const { router } = await import('./router/index')
   
@@ -40,8 +39,6 @@ fetchJson<IAppConfig>('./config.json').then(async (config)=> {
   // add config to app state
   const appState = useAppStore()
   appState.config = config
-
-  
 
   // check url for league ID and if is league manager (?lm=true)
   const url = new URL(window.location.href.replace(/#\//g,''))

@@ -25,7 +25,7 @@ export const useAppStore = defineStore('app', {
   } as IAppState),
   
   getters: {
-    rosterSize: (state)=> state.league?.roster?.size ?? 14,
+    rosterSize: (state)=> state.league?.roster?.size ?? 15,
     sortedMembers: (state) => {
       const members = state.league 
         ? state.league.members.every(t => !!t.draftOrder) ? state.league.members.sort((a,b) => (a.draftOrder > b.draftOrder) ? 1: -1): [...state.league.members]

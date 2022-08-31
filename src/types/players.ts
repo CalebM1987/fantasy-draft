@@ -15,7 +15,11 @@ export type FlexPositions =
   | "WR"
   | "TE"
 
-export type RosterSpot = PlayerPosition | "FLEX" | "BENCH"
+export type RosterSpot = PlayerPosition | "FLEX" | "BENCH";
+
+export type FilterType = "top-200" | "positions" | "favorites";
+
+export type PlayerListType = "all" | "available";
 
 export interface ADPPlayersResponseMeta {
   type: string;

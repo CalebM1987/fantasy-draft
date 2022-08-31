@@ -1,6 +1,7 @@
 <script lang="ts" async setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { usePlayerStore } from '../../store';
+import { FilterType, PlayerListType } from '../../types/players'
 import PlayerInfo from './PlayerInfo.vue';
 const players = usePlayerStore()
 
@@ -9,13 +10,11 @@ await players.fetchPlayers()
 // @ts-ignore
 hook.players = players
 
-type FilterType = "top-200" | "positions" | "favorites";
 interface FilterTypeOptions { 
   name: FilterType;
   label: string ;
 }
-const filterType = ref<"all" | "available">('available')
-const search = ref('')
+
 const selectedPos = ref(players.positions[0])
 const tab = ref<FilterType>('top-200')
 
@@ -31,11 +30,15 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
 
 <template>
   <div class="available-players-container q-pa-md">
-    <div class="players-header">
-      <q-input v-model="search" label="Search for players..." />
+    <div class="player-search-header">
+      <q-input 
+        v-model="players.search" 
+        label="search for players..." 
+        debounce="200" 
+      />
       <div class="filter-type q-py-md">
-        <q-radio v-model="filterType" val="all" label="All Players" color="accent" />
-        <q-radio v-model="filterType" val="available" label="Available Players" color="accent" />
+        <q-radio v-model="players.listType" val="all" label="All Players" color="accent" />
+        <q-radio v-model="players.listType" val="available" label="Available Players" color="accent" />
       </div>
     </div>
 
@@ -57,7 +60,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
           <q-list bordered separator>
             <player-info 
               class="q-mb-sm"
-              v-for="player in players.availablePlayers"
+              v-for="player in players.playerList"
               :key="player.player_id"
               :player="player"
               :rank-type="'adp'"
@@ -103,7 +106,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
               class="q-mb-sm"
               v-for="pid in players.favorites"
               :key="pid"
-              :player="players.availablePlayers.find(p => p.player_id === pid)!"
+              :player="players.playerList.find(p => p.player_id === pid)!"
               :rank-type="'adp'"
             />
           </q-list>

@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
-import { IDraftedPlayer, IPlayer, IPlayerDetails, PlayerPosition } from '../types/players'
+import { PlayerListType, IDraftedPlayer, IPlayer, IPlayerDetails, PlayerPosition } from '../types/players'
 import { fetchADP } from '../services/fantasycalculator'
 import { saveDraftPick, clearDraftBoard } from '../services/firebase'
 import { sortByPropertyInPlace } from '../utils/utils'
 import { useAppStore } from './app'
-import { log } from '../utils/logger'
 import { loadFromStorage, saveToStorage } from '../utils/storage'
+import { log } from '../utils/logger'
+
+
 
 interface IPlayersState {
   players: IPlayer[];
@@ -16,6 +18,9 @@ interface IPlayersState {
   playerDetailsCache: Record<number, IPlayerDetails>;
   pickLookup: Record<number, string>;
   favorites: number[];
+  listType: PlayerListType;
+  /** the current global search string filter */
+  search: string
 }
 
 // You can name the return value of `defineStore()` anything you want, but it's best to use the name of the store and surround it with `use` and `Store` (e.g. `useUserStore`, `useCartStore`, `useProductStore`)
@@ -29,14 +34,15 @@ export const usePlayerStore = defineStore('players', {
     positions: ["RB", "WR", "TE", "QB", "DEF", "PK"],
     playerDetailsCache: {},
     pickLookup: {},
-    favorites: loadFromStorage<number[]>('_draft_favorites', [])
+    favorites: loadFromStorage<number[]>('_draft_favorites', []),
+    listType: 'available',
+    search: ''
   } as IPlayersState),
 
   getters: {
     playersByPosition: (state)=> {
       const playersByPos = state.positions.reduce((o, i) => ({ ...o, [i]: [] }), {}) as Record<PlayerPosition, IPlayer[]>
-  
-      (state.showAvailableOnly 
+      (state.listType === 'available' 
         ? state.availablePlayers
         : state.players
       ).forEach(p => {
@@ -55,6 +61,17 @@ export const usePlayerStore = defineStore('players', {
         return appState.league.members.length * appState.rosterSize
       }
       return 0
+    },
+
+    playerList: (state)=> {
+      const viewList = state.listType === 'all' 
+        ? state.players
+        : state.availablePlayers
+      
+      const regEx = RegExp(state.search, 'i')
+      return state.search.length >= 2
+        ? viewList.filter(p => regEx.test(p.name)) 
+        : viewList
     }
 
   },
