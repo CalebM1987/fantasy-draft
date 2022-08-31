@@ -1,4 +1,4 @@
-<script lang="ts" async setup>
+<script lang="ts" setup>
 import { ref, defineAsyncComponent } from 'vue';
 import { usePlayerStore } from '../../store';
 import { FilterType } from '../../types/players'
