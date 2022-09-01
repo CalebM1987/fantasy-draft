@@ -1,14 +1,46 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, defineAsyncComponent, onMounted } from 'vue'
 import { useAppStore } from '../../store'
+import { useQuasar } from 'quasar';
+import { log } from '../../utils/logger';
+import { EventBus } from '../../events/event-bus';
+import { useAutoDraft } from '../../composables/auto-draft';
+import { updateLeagueClock } from '../../services/firebase';
 import DraftSquare from './DraftSquare.vue';
+const AutoDraftPlayer = defineAsyncComponent(()=> import('../draft/AutoDraftPlayer.vue'))
 
 const appState = useAppStore()
 const colSize = computed(()=> Math.min(Math.max(Math.ceil(12 / appState.sortedMembers.length), 1), 12))
 const rounds = computed(()=> appState.league?.roster?.size ?? 14)
 const gridClass = computed(()=> `grid-cell${appState.compactView ? ' col-md-' + colSize.value: '--fixed-width'}`)
 const draftType = appState.league?.draftType ?? 'snake'
-console.log('teams: ', appState.sortedMembers)
+log('teams: ', appState.sortedMembers)
+
+const $q = useQuasar()
+const { autoDraftPlayer } = useAutoDraft()
+
+EventBus.on('draft-clock-expired', ()=> {
+  $q.dialog({
+    component: AutoDraftPlayer,
+  }).onOk(async ()=> {
+    try {
+      await autoDraftPlayer()
+    } catch(err) {
+      log('Failed to auto draft player', err)
+      throw err
+    }
+  }).onDismiss(()=> log('dismissed auto draft prompt'))
+})
+
+onMounted(()=> {
+  EventBus.on('draft-clock-expired', async ()=> {
+    if (appState.isLM){
+      // reset the timer
+      await updateLeagueClock('reset', appState.timeLimit)
+      log('reset the clock in db after expiration')
+    }
+  })
+})
 
 </script>
 

@@ -38,8 +38,11 @@ const showRemoveBtn = ref(false)
   >
     <div class="picks-header q-px-xs">
       <span><strong>{{ pickNumber }}</strong></span>
-      <span :title="`round ${roundPickNumber?.split('.')[0]}, pick ${roundPickNumber?.split('.')[1]}`">{{ roundPickNumber }}</span>
+      <span 
+        :title="`round ${roundPickNumber?.split('.')[0]}, pick ${roundPickNumber?.split('.')[1]}`"
+      >{{ roundPickNumber }}</span>
     </div>
+
     <slot v-if="player">
       <div 
         @mouseenter="showRemoveBtn = true"

@@ -1,4 +1,5 @@
 // Import the functions you need from the SDKs you need
+import { ref } from 'vue'
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import {
@@ -10,12 +11,19 @@ import {
   getDatabase, 
   onChildAdded, 
   onChildRemoved, 
+  onChildChanged,
   ref as fbRef, 
-  DatabaseReference 
+  DatabaseReference, 
+  Unsubscribe
 } from 'firebase/database'
-import { IDraftedPlayer } from "../types/players";
+
 import { useAppStore, usePlayerStore } from "../store";
+import { DraftClockOperation, IDraftClockStatus, IDraftedPlayer } from '../types';
+import { useDraftClock } from '../composables/draft-clock';
 import { log } from "../utils/logger";
+
+
+const handlers = ref<Unsubscribe[]>([])
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -40,7 +48,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig)
 const analytics = getAnalytics(app);
 const db = getDatabase()
 
@@ -57,14 +65,31 @@ export function clearDraftBoard(){
   return remove(leagueRef)
 }
 
-export function getReference(name?: string): DatabaseReference {
+export function getReference(name?: string, key?: string | number): DatabaseReference {
   const leagueId = getLeagueId()
   if (!leagueId){
     throw new Error("No League ID has been provided")
   }
-  const path = `${name ?? picksKey}/${leagueId}`
+  const path = `${name ?? picksKey}/${leagueId}${key ? '/' + key: ''}`
   return fbRef(db, path)
 }
+
+export async function updateLeagueClock(operation: DraftClockOperation, time?: number){
+  const appState = useAppStore()
+  const timeRef = getReference('draft-clock')
+  const message = operation === 'pause' 
+    ? 'the League Manager has paused the clock'
+    : operation === 'start'
+      ? 'the League Manager has started the clock'
+      : ''
+
+  await set(timeRef, {
+    time: time ?? appState.timer,
+    operation,
+    message
+  })
+}
+
 export function removeDraftPick(key: string){
   const leagueId = getLeagueId()
   if (!leagueId){
@@ -84,23 +109,55 @@ export function saveDraftPick(pick: IDraftedPlayer){
 
 export function setRealtimeHandlers(){
   const leagueRef = getReference()
+  const timeRef = getReference('draft-clock')
   if (!leagueRef) return [];
   const players = usePlayerStore()
 
-  const addSub = onChildAdded(leagueRef, (snapshot)=> {
+  const addPickSub = onChildAdded(leagueRef, (snapshot)=> {
     const pick = snapshot.val() as IDraftedPlayer
     log('new pick detected', pick)
     players.addPickToBoard(pick, snapshot.key!)
     
   })
 
-  const remSub = onChildRemoved(leagueRef, (snapshot)=> {
+  const remPickSub = onChildRemoved(leagueRef, (snapshot)=> {
     const pick = snapshot.val() as IDraftedPlayer
     log('pick removed from board', pick)
     players.removePickFromBoard(pick)
   })
 
-  return [ addSub, remSub ]
+  const timeChangedSub = onValue(timeRef, (snapshot)=> {
+    const { startTimer, pauseTimer, resetTimer, publicMessage, isTicking } = useDraftClock()
+    const appState = useAppStore()
+    const status = snapshot.val() as IDraftClockStatus
+    appState.timer = status.time
+    publicMessage.value = status.message ?? undefined
+
+    // auto hide messages
+    if (status.operation === 'start'){
+      setTimeout(()=> isTicking.value ? publicMessage.value = undefined: null, 5000)
+    }
+
+    log('rt-db: draft timer updated: ', status)
+    if (status.operation === 'start'){
+      startTimer()
+      // display clock for other users
+      if (!appState.hasStartedDraft){
+        appState.hasStartedDraft = true
+      }
+    } else if (status.operation === 'pause'){
+      pauseTimer()
+    } else {
+      resetTimer({ start: true })
+    }
+
+  })
+
+  handlers.value.push(...[ addPickSub, remPickSub, timeChangedSub ])
+}
+
+export function removeRealtimeHandlers(){
+  handlers.value.forEach(h => h())
 }
 
 // export async function loadDraftPicks(): Promise<IDraftedPlayer[]> {

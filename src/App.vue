@@ -10,6 +10,8 @@
           Draft Party - {{ appState.league?.name ?? 'Fantasy Football' }}
         </q-toolbar-title>
 
+        <draft-clock class="q-mx-auto" />
+
         <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
       </q-toolbar>
 
@@ -63,9 +65,10 @@
 import { ref, onMounted, defineAsyncComponent, watchEffect } from 'vue'
 import { useQuasar } from 'quasar'
 import { useAppStore } from './store'
-import { setRealtimeHandlers, clearDraftBoard } from './services/firebase';
+import { setRealtimeHandlers, clearDraftBoard, removeRealtimeHandlers } from './services/firebase';
 import { log } from './utils/logger';
 // import AvailablePlayers from './components/players/AvailablePlayers.vue';
+const DraftClock = defineAsyncComponent(()=> import('./components/draft/DraftClock.vue'))
 const AvailablePlayers = defineAsyncComponent(()=> import('./components/players/AvailablePlayers.vue'))
 
 const appState = useAppStore()
@@ -97,8 +100,11 @@ onMounted(()=> {
       log('league is ready: ', appState.league)
       // clearDraftBoard()?.then(()=> log('cleared draft board'))
       setRealtimeHandlers()
+    } else {
+      removeRealtimeHandlers()
     }
   })
+  
   setTimeout(()=> {
     toggleLeftDrawer()
     // toggleRightDrawer()

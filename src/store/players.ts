@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { PlayerListType, FreeAgent, NFLTeams, IDraftedPlayer, IPlayer, IPlayerDetails, PlayerPosition } from '../types/players'
 import { fetchADP } from '../services/fantasycalculator'
-import { saveDraftPick, clearDraftBoard } from '../services/firebase'
+import { saveDraftPick, clearDraftBoard, updateLeagueClock } from '../services/firebase'
 import { sortByPropertyInPlace } from '../utils/utils'
 import { useAppStore } from './app'
 import { loadFromStorage, saveToStorage } from '../utils/storage'
+import { useDraftClock } from '../composables/draft-clock';
 import { log } from '../utils/logger'
 
 interface IPlayersState {
@@ -74,6 +75,12 @@ export const usePlayerStore = defineStore('players', {
       return state.search.length >= 2
         ? viewList.filter(p => regEx.test(p.name)) 
         : viewList
+    },
+
+    onTheClock: (state)=> {
+      const appState = useAppStore()
+      const thisPick = state.draftPicks.length + 1
+      return appState.sortedMembers.find(p => p.picks?.includes(thisPick))
     }
 
   },
@@ -88,8 +95,11 @@ export const usePlayerStore = defineStore('players', {
       const drafted = { ...player } as IDraftedPlayer;
       drafted.pickNumber = this.draftPicks.length + 1
       drafted.owner = appState.sortedMembers.find(m => m.picks?.includes(drafted.pickNumber!))
+      const { pauseTimer } = useDraftClock()
+      pauseTimer()
       saveDraftPick(drafted).then((data)=> {
         log('Saved draft pick: ', data)
+        updateLeagueClock('reset', appState.timeLimit)
         // if (localStorage){
         //   localStorage.setItem('__fantasyDraftBoard', JSON.stringify(this.draftPicks))
         // }

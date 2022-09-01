@@ -38,7 +38,7 @@ fetchJson<IAppConfig>('./config.json').then(async (config)=> {
 
   // add config to app state
   const appState = useAppStore()
-  appState.config = config
+  appState.setConfig(config)
 
   // check url for league ID and if is league manager (?lm=true)
   const url = new URL(window.location.href.replace(/#\//g,''))

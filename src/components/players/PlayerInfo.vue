@@ -70,6 +70,7 @@ const loadDetails = async ()=> {
     v-ripple 
     @click.stop.prevent="loadDetails"
     :class="`player-container pos-${player.position.toLowerCase()}`"
+    title="click for player news"
   >
     <q-item-section>
       <q-item-section>
@@ -100,6 +101,7 @@ const loadDetails = async ()=> {
                   rounded 
                   style="margin-left: -1.35rem;"
                   :icon="'person_add'" 
+                  :disable="!appState.hasStartedDraft"
                   @click.stop.prevent="players.draftPlayer(player)"
                 />
               </span>

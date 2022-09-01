@@ -1,23 +1,11 @@
 import { PlayerPosition, ScoringFormat } from "./players";
+import { ILeagueMember } from "./app";
 
 export interface IRosterSettings {
-  /** size of roster (will corellate to number of rounds) */
+  /** size of roster (will corelate to number of rounds) */
   size: number;
   /** positions required for roster */
   positions: PlayerPosition[];
-}
-
-export interface ILeagueMember {
-  /** the member's name */
-  name: string;
-  /** team name */
-  teamName: string;
-  /** draft order */
-  draftOrder: number;
-  /** email address */
-  email: string;
-  /** the picks for the member */
-  picks?: number[];
 }
 
 export interface ILeagueInfo {

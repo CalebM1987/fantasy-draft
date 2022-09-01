@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import { ref, defineAsyncComponent } from 'vue';
-import { usePlayerStore } from '../../store';
+import { usePlayerStore, useAppStore } from '../../store';
 import { FilterType } from '../../types/players'
 import PlayerInfo from './PlayerInfo.vue';
 const CustomPlayer = defineAsyncComponent(()=> import('./CustomPlayer.vue'))
+
 const players = usePlayerStore()
+const appState = useAppStore()
 
 await players.fetchPlayers()
 
@@ -59,6 +61,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
           <q-btn
             flat
             rounded
+            v-if="appState.isLM"
             class="float-right"
             icon="person_add_disabled"
             title="Draft Custom Player"
