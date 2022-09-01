@@ -18,7 +18,7 @@
     },
     "format": "half-ppr",
     "draftType": "snake",
-    "timeLimit": 300,
+    "timeLimit": 180,
     "members": [
       {
         "name": "Kyle Mullen",
