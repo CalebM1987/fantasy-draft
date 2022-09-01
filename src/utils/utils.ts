@@ -31,3 +31,14 @@ export const playerDisplayName = (player: IDraftedPlayer) => {
   }
   arr.sort((a, b) => (a[prop] > b[prop] ? first : second));
 }
+
+export function localeDateTime(d?: Date | number): string {
+  if (!d){
+    d = new Date()
+  }
+  if (typeof d === 'number'){
+    // d is milliseconds
+    d = new Date(d)
+  }
+  return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`
+}

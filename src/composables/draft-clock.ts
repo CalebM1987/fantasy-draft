@@ -25,7 +25,10 @@ export function useDraftClock() {
     }
   }
 
-  const startTimer = ()=> {
+  const startTimer = (time?: number)=> {
+    if (time){
+      appState.timer = time
+    }
     if (!interval.value){
       interval.value = setInterval(()=> {
         appState.timer -= 1000

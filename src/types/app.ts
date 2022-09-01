@@ -10,6 +10,8 @@ export interface IDraftClockStatus {
   time: number;
   /** the public message for non league managers */
   message?: string;
+  /** time stamp */
+  timestamp: number;
 }
 
 export interface ILeagueMember {
