@@ -2,12 +2,17 @@ import { IDraftedPlayer } from "../types/players"
 
 export const playerDisplayName = (player: IDraftedPlayer) => {
   const name = player.name
-  const parts = name.split(' ')
-  const first = parts[0]
-  return [
-    first.includes('.') ? first: (first[0] + '.'),
-    ...parts.slice(1)
-  ].join(' ')
+  if (player.position === 'DEF'){
+    console.log('player name for defense: ', player.name)
+    return player.name.replace('Defense', 'D/ST')
+  } else {
+    const parts = name.split(' ')
+    const first = parts[0]
+    return [
+      first.includes('.') ? first: (first[0] + '.'),
+      ...parts.slice(1)
+    ].join(' ')
+  }
 }
 
 /**
