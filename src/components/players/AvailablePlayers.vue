@@ -133,7 +133,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
         </q-tab-panel>
 
         <q-tab-panel name="favorites">
-          <q-list bordered separator>
+          <q-list bordered separator v-if="players.favorites.length">
             <player-info 
               class="q-mb-sm"
               v-for="pid in players.favorites"
@@ -142,6 +142,9 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
               :rank-type="'adp'"
             />
           </q-list>
+          <div class="empty-favorites q-pa-xl" v-else>
+            <p class="text-h6" style="color: gray;"><i>No Favorites Saved</i></p>
+          </div>
         </q-tab-panel>
       </q-tab-panels>
 
@@ -153,3 +156,9 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
   </div>
 
 </template>
+
+<style>
+.empty-favorites {
+  min-height: 200px;
+}
+</style>
