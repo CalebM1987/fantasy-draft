@@ -114,10 +114,9 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
               </q-tabs>
           
             <q-tab-panel 
-              v-for="{ name, label } in positionOptions" 
-              :key="name"
-              :name="name" 
-              :label="label" 
+              
+              :name="selectedPos" 
+              :label="selectedPos" 
             >
               <q-list bordered separator>
                 <player-info 
