@@ -2,7 +2,7 @@ import { ref, computed, defineAsyncComponent } from 'vue'
 import { usePlayerStore } from '../store'
 import { IPlayer, IPlayerDetails } from '../types/players'
 import { fetchPlayerDetails } from '../services/fantasycalculator'
-import { Dialog } from 'quasar'
+import { Dialog, Notify } from 'quasar'
 import { log } from '../utils/logger'
 const PlayerDetails = defineAsyncComponent(()=> import('../components/players/PlayerDetails.vue'))
 
@@ -56,7 +56,10 @@ export function usePlayerInfo(player: IPlayer){
           }
         })
       } else {
-        log(`No details found for player: "${player.name}"`)
+        Notify.create({
+          type: 'warning',
+          message: `No details found for player: "${player.name}"`
+        })
       }
     } catch (err){
       console.warn(err)
