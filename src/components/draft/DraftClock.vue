@@ -25,7 +25,7 @@ const $q = useQuasar()
       <div class="row items-start">
         <span 
           v-if="players.onTheClock"
-          class="pulsate on-the-clock" 
+          class="on-the-clock glow" 
         >{{ players.onTheClock.name }} is on the clock!</span>
         <div class="timer">{{ displayClock(appState.timer) }}</div>
         <q-btn
@@ -73,6 +73,7 @@ const $q = useQuasar()
   font-size: 1.8rem;
   // color: #d9534f;
   color: #AB0003;
+  text-shadow: 2px 2px 4px white;
   margin: .2rem .8rem;
 }
 
@@ -80,8 +81,22 @@ const $q = useQuasar()
   font-size: .9rem;
 }
 
+.glow {
+  color: #fff;
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px red, 0 0 15px #fff, 0 0 20px #fff;
+  }
+  to {
+    text-shadow: 0 0 5px red, 0 0 15px red, 0 0 25px red;
+  }
+}
+
 .pulsate {
-  -webkit-animation: pulsate 3s ease-out;
+  -webkit-animation: pulsate 1.5s ease-out;
   -webkit-animation-iteration-count: infinite; 
   opacity: 0.5;
 }
