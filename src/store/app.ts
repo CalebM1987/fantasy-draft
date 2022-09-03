@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { nextTick } from 'process';
 import { IAppConfig, ILeagueInfo } from '../types'
+import { Screen } from 'quasar'
 
 interface IAppState {
   config?: IAppConfig;
@@ -19,7 +20,7 @@ interface IAppState {
 export const useAppStore = defineStore('app', {
   state: ()=> ({
     config: undefined,
-    compactView: true,
+    compactView: !Screen.lt.md,
     league: undefined,
     hasStartedDraft: false,
     timer: 120 * 1000,
@@ -27,6 +28,7 @@ export const useAppStore = defineStore('app', {
   } as IAppState),
   
   getters: {
+    screen: ()=> Screen,
     rosterSize: (state)=> state.league?.roster?.size ?? 15,
     // time limit for each pick
     timeLimit: (state)=> (state.league?.timeLimit ?? 120) * 1000,

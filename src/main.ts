@@ -1,5 +1,5 @@
 import { createApp, setDevtoolsHook } from 'vue'
-import { Quasar, Dialog, Notify } from 'quasar'
+import { Quasar, Dialog, Notify, Screen } from 'quasar'
 import { fetchJson } from './utils/fetch'
 import { IAppConfig } from './types/config'
 import { useAppStore } from './store'
@@ -26,7 +26,9 @@ fetchJson<IAppConfig>('./config.json').then(async (config)=> {
   myApp
   .use(Quasar, {
     plugins: {
-      Dialog
+      Dialog,
+      Screen,
+      Notify
     }, // import Quasar plugins and add here
   })
   .use(createPinia())
