@@ -18,12 +18,13 @@
       <q-tabs align="center">
         <q-route-tab to="/" label="Draft Room" />
         <q-route-tab to="/teams" label="Teams" />
-        <q-route-tab to="/page3" label="League Settings" />
+        <q-route-tab to="/league" label="League Settings" />
       </q-tabs>
     </q-header>
 
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
       <!-- drawer content -->
+      <app-settings />
     </q-drawer>
 
     <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered :width="400">
@@ -70,6 +71,7 @@ import { log } from './utils/logger';
 // import AvailablePlayers from './components/players/AvailablePlayers.vue';
 const DraftClock = defineAsyncComponent(()=> import('./components/draft/DraftClock.vue'))
 const AvailablePlayers = defineAsyncComponent(()=> import('./components/players/AvailablePlayers.vue'))
+const AppSettings = defineAsyncComponent(()=> import('./components/settings/AppSettings.vue'))
 
 const appState = useAppStore()
 const config = appState.config
