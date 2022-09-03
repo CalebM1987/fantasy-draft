@@ -128,7 +128,6 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
                 />
               </q-list>
             </q-tab-panel>
-          
 
         </q-tab-panel>
 
