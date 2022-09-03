@@ -1,12 +1,8 @@
 <script lang="ts" setup>
-import { ref, computed, } from 'vue'
-import { useQuasar } from 'quasar'
-import { IPlayer, IPlayerDetails } from '../../types/players'
+import { IPlayer } from '../../types/players'
 import { usePlayerStore, useAppStore } from '../../store'
-import { fetchPlayerDetails } from '../../services/fantasycalculator'
+import { usePlayerInfo } from '../../composables/player-info'
 import { log } from '../../utils/logger'
-import PlayerDetails from './PlayerDetails.vue'
-// const PlayerDetailsComp = defineAsyncComponent(()=> import('./PlayerDetails.vue'))
 
 const players = usePlayerStore()
 const appState = useAppStore()
@@ -16,51 +12,13 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const $q = useQuasar()
-const isFavorite = ref(players.favorites.includes(props.player.player_id))
-
-const isDrafted = computed(()=> players.pickLookup[props.player.player_id])
-
-const isLoadingDetails = ref(false)
-const showPlayerDetails = ref(false)
-
-const updateFavorites = ()=> {
-  isFavorite.value = !isFavorite.value
-
-  if (isFavorite.value){
-    players.addToFavorites(props.player)
-  } else {
-    players.removeFromFavorites(props.player)
-  }
-}
-
-const loadDetails = async ()=> {
-  try {
-    isLoadingDetails.value = true
-    let details: IPlayerDetails | undefined = players.playerDetailsCache[props.player.player_id]
-    if (!details){ 
-      details = await fetchPlayerDetails(props.player)
-      if (!details){
-        console.warn('no player details could be extracted for player: ', props.player)
-        return
-      }
-      players.playerDetailsCache[props.player.player_id] = details
-      log('set player details in cache: ', details)
-    } else {
-      log('pulled player details from cache:', details)
-    }
-    // $q.dialog({
-    //   component: PlayerDetailsComp,
-    //   componentProps: { details }
-    // })
-    showPlayerDetails.value = true
-  } catch (err){
-    console.warn(err)
-    throw err
-  } finally {
-    isLoadingDetails.value = false
-  }
-}
+const {
+  isDrafted,
+    isFavorite,
+    updateFavorites,
+    isLoadingDetails,
+    showPlayerDetails,
+ } = usePlayerInfo(props.player)
 
 </script>
 
@@ -68,7 +26,7 @@ const loadDetails = async ()=> {
   <q-item 
     clickable 
     v-ripple 
-    @click.stop.prevent="loadDetails"
+    @click.stop.prevent="showPlayerDetails"
     :class="`player-container pos-${player.position.toLowerCase()}`"
     title="click for player news"
   >
@@ -133,9 +91,6 @@ const loadDetails = async ()=> {
    
     </q-item-section>
 
-    <q-dialog v-model="showPlayerDetails">
-      <player-details :details="players.playerDetailsCache[player.player_id]" />
-    </q-dialog>
   </q-item>
 </template>
 

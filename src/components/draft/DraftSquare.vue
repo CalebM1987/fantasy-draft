@@ -5,6 +5,8 @@ import { useAppStore } from '../../store'
 import { usePlayerStore } from '../../store';
 import { playerDisplayName } from '../../utils/utils';
 import { removeDraftPick } from '../../services/firebase'
+import { usePlayerInfo } from '../../composables/player-info'
+import { log } from '../../utils/logger';
 
 const appState = useAppStore()
 const players = usePlayerStore()
@@ -28,6 +30,22 @@ const roundPickNumber = computed<string | undefined>(()=> {
 })
 const props = defineProps<Props>()
 const showRemoveBtn = ref(false)
+const isLoading = ref(false)
+
+const showDetails = async ()=> {
+  log('should show details from draft square')
+  if (player.value){
+    const { showPlayerDetails } = usePlayerInfo(player.value)
+    try {
+      isLoading.value = true
+      await showPlayerDetails()
+    } catch(err){
+      log('failed to load details: ', err)
+    } finally {
+      isLoading.value = false
+    }
+  }
+}
 
 </script>
 
@@ -47,6 +65,7 @@ const showRemoveBtn = ref(false)
       <div 
         @mouseenter="showRemoveBtn = true"
         @mouseleave="showRemoveBtn = false"
+        @click.stop.prevent="showDetails"
         :class="`drafted-player-name q-pa-md pos-${player.position.toLowerCase()}`"
       >
         <q-btn 
@@ -56,13 +75,20 @@ const showRemoveBtn = ref(false)
           title="remove pick from board"
           style="font-size: 0.6rem; margin: -1.5rem -.5rem;"
           icon="person_remove" 
-          @click="removeDraftPick(players.pickLookup[player!.player_id])" 
+          @click.stop.prevent="removeDraftPick(players.pickLookup[player!.player_id])" 
         />
         <div class="text-center q-my-sm">{{ playerDisplayName(player) }}</div>
         <div style="display: flex; justify-content: space-around; font-size: 0.6rem;">
           <span>{{ player.team }}</span>
           <span>{{ player.position }}</span>
           <span><strong>{{ player.bye }}</strong></span>
+        </div>
+
+        <div class="q-pa-sm mx-auto" style="font-size: 0.7rem;" v-if="isLoading">
+          <q-spinner-oval
+            size=".7rem"
+          />
+          <p>loading details...</p>
         </div>
       </div>
     </slot>
