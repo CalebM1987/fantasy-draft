@@ -100,6 +100,7 @@ const $q = useQuasar()
   -webkit-animation-iteration-count: infinite; 
   opacity: 0.5;
 }
+
 @-webkit-keyframes pulsate {
   0% { 
     opacity: 0.6;
