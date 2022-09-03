@@ -15,11 +15,15 @@ export type FlexPositions =
   | "WR"
   | "TE"
 
+export type DraftType = "snake" | "auction";
+
 export type RosterSpot = PlayerPosition | "FLEX" | "BENCH";
 
 export type FilterType = "top-200" | "positions" | "favorites";
 
 export type PlayerListType = "all" | "available";
+
+export type RosterFormat = "standard" | "two-qb" | "custom";
 
 export type FreeAgent = "FA";
 export type NFLTeams = "ARI" | "ATL" | "BAL" | "BUF" | "CAR" | "CHI" | "CIN" | "CLE" | "DAL" | "DEN" | "DET" | "GB" | "HOU" | "IND" | "JAX" | "KC" | "LAC" | "LAR" | "LV" | "MIA" | "MIN" | "NE" | "NO" | "NYG" | "NYJ" | "PHI" | "PIT" | "SEA" | "SF" | "TB" | "TEN" | "WAS"

@@ -5,6 +5,7 @@
     "name": "BMI Premier League",
     "roster": { 
       "size": 15,
+      "format": "custom",
       "positions": [
         "QB",
         "FLEX",
@@ -17,8 +18,10 @@
       ]
     },
     "format": "half-ppr",
-    "draftType": "snake",
-    "timeLimit": 180,
+    "draft": {
+      "type": "snake",
+      "timeLimit": 180
+    },
     "members": [
       {
         "name": "Kyle Mullen",

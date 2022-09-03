@@ -13,7 +13,7 @@ const appState = useAppStore()
 const colSize = computed(()=> Math.min(Math.max(Math.ceil(12 / appState.sortedMembers.length), 1), 12))
 const rounds = computed(()=> appState.league?.roster?.size ?? 14)
 const gridClass = computed(()=> `grid-cell${appState.compactView ? ' col-md-' + colSize.value: '--fixed-width'}`)
-const draftType = appState.league?.draftType ?? 'snake'
+const draftType = appState.league?.draft?.type ?? 'snake'
 log('teams: ', appState.sortedMembers)
 
 const $q = useQuasar()

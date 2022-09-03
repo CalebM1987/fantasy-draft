@@ -1,11 +1,20 @@
-import { PlayerPosition, ScoringFormat } from "./players";
+import { PlayerPosition, ScoringFormat, RosterFormat, DraftType } from "./players";
 import { ILeagueMember } from "./app";
 
 export interface IRosterSettings {
+  /** the roster format  */
+  format?: RosterFormat;
   /** size of roster (will corelate to number of rounds) */
   size: number;
   /** positions required for roster */
   positions: PlayerPosition[];
+}
+
+export interface IDraftSettings {
+  /** the draft type format */
+  type?: DraftType;
+  /** time limit for each pick (in seconds) */
+  timeLimit?: number;
 }
 
 export interface ILeagueInfo {
@@ -15,12 +24,11 @@ export interface ILeagueInfo {
   name: string;
   /** the scoring format */
   format: ScoringFormat;
+  /** the draft settings */
+  draft: IDraftSettings;
   /** draft type */
-  draftType: "snake" | "auction";
   /** roster settings */
   roster?: IRosterSettings;
-  /** time limit for each pick (in seconds) */
-  timeLimit?: number;
   /** the league members */
   members: ILeagueMember[];
 }
