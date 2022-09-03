@@ -47,6 +47,7 @@ export interface IPlayer {
   bye: number;
   rank?: number;
   position_rank?: number;
+  isCustom?: boolean;
 }
 
 export interface IDraftedPlayer extends IPlayer {

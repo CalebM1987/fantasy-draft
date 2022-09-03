@@ -23,10 +23,7 @@ const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginC
 </script>
 
 <template>
-  <!-- <div v-if="details.jersey_number">#{{ details.jersey_number }}</div>
-          <div>}</div>
-          <div></div> -->
-          <!-- style="display: flex; justify-content: space-between; -->
+  
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <q-card class="q-pa-md">
       <q-card-section class="row items-center q-pb-none">

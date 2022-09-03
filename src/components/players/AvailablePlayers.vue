@@ -2,7 +2,9 @@
 import { ref, defineAsyncComponent } from 'vue';
 import { usePlayerStore, useAppStore } from '../../store';
 import { FilterType } from '../../types/players'
+import { useQuasar } from 'quasar';
 import PlayerInfo from './PlayerInfo.vue';
+import { log } from '../../utils/logger';
 const CustomPlayer = defineAsyncComponent(()=> import('./CustomPlayer.vue'))
 
 const players = usePlayerStore()
@@ -27,7 +29,16 @@ const typeOptions: FilterTypeOptions[] = [
   { name: 'favorites', label: 'Favorites' },
 ]
 
-const showCustomPlayerModal = ref(false)
+const $q = useQuasar()
+const showCustomPlayerModal = ()=> {
+  log('should show custom player modal')
+  $q.dialog({
+    component: CustomPlayer
+  }).onOk((player)=> {
+    log('attempting to create a new player: ', player)
+    players.draftPlayer(player)
+  })
+}
 
 const positionOptions = players.positions.map(p => { return { name: p, label: p.toUpperCase() }})
 
@@ -65,7 +76,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
             class="float-right"
             icon="person_add_disabled"
             title="Draft Custom Player"
-            @click="showCustomPlayerModal = !showCustomPlayerModal"
+            @click="showCustomPlayerModal"
           />
         </span>
       </div>
@@ -149,9 +160,6 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
 
     </div>
 
-    <q-dialog v-model="showCustomPlayerModal" >
-      <custom-player />
-    </q-dialog>
   </div>
 
 </template>

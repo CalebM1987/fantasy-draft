@@ -1,9 +1,6 @@
 import { IPlayer } from "../types/players";
 
-export const allOtherPlayers: Partial<IPlayer>[] = // 20220831001114
-// https://fantasyfootballcalculator.com/api/v1/players
-
-[
+export const allOtherPlayers: Partial<IPlayer>[] = [
   {
     "player_id": 119,
     "name": "Tom Brady",

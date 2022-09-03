@@ -32,7 +32,7 @@ export function usePlayerInfo(player: IPlayer){
   }
   
   const showPlayerDetails = async ()=> {
-    if (player.position === 'DEF') return;
+    if (player.position === 'DEF' || player.isCustom) return;
     try {
       isLoadingDetails.value = true
       let details: IPlayerDetails | undefined = players.playerDetailsCache[player.player_id]
