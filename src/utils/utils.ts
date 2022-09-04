@@ -42,3 +42,21 @@ export function localeDateTime(d?: Date | number): string {
   }
   return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`
 }
+
+function isExtendable(val: any): boolean {
+  return (
+    (typeof val === "object" && [null, undefined].indexOf(val) < 0) ||
+    typeof val === "function" ||
+    Array.isArray(val)
+  );
+}
+
+/**
+ * Returns true if `val` is an object or function.
+ *
+ * @param  {any} val
+ * @return {Boolean}
+ */
+export function isObject(val: any): boolean {
+  return isExtendable(val) && !Array.isArray(val);
+}
