@@ -24,6 +24,7 @@ export const standardRosterPositions: RosterSpot[] = [
 
 export const twoQBRosterPositions: RosterSpot[] = [ ...standardRosterPositions, 'QB']
 
-export function useLeagueSettings() {
+export function useLeagueSettings(league: ILeagueInfo) {
+  
   
 }
