@@ -127,13 +127,13 @@ class Client {
 
   getFreeAgents({ seasonId=new Date().getFullYear(), scoringPeriodId=0}){
     const headers = {
-      ...this.headers,
+      // ...this.headers,
       'x-fantasy-filter': JSON.stringify({
         players: {
-          filterStatus: {
-            value: ['FREEAGENT', 'WAIVERS']
-          },
-          limit: 2000,
+          // filterStatus: {
+          //   value: ['FREEAGENT', 'WAIVERS']
+          // },
+          limit: 1000,
           sortPercOwned: {
             sortAsc: false,
             sortPriority: 3
@@ -143,7 +143,8 @@ class Client {
     }
 
     // const url = `${fantasyBase}/${seasonId}/segments/0/leagues/${this.leagueId}/players`
-    const url = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/2022/players?scoringPeriodId=0&view=players_wl'
+    // const url = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/2022/players?scoringPeriodId=0&view=players_wl'
+    const url = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/2022/players?scoringPeriodId=0&view=kona_playercard'
     console.log('url is: ', url)
     return axios.get(url, {
       // params: {
@@ -186,7 +187,6 @@ async function loadPlayers(client) {
       const position = positionIDs[p.defaultPositionId]
       const espnPlayerId = p.id
       const percentOwned = p.ownership ? p.ownership.percentOwned : 0
-      team: 
       return {
         position,
         percentOwned,
@@ -200,10 +200,13 @@ async function loadPlayers(client) {
 
   sortByPropertyInPlace(playersJson, 'percentOwned', 'desc')
 
-  playersJson.map((p, i) => p.espnOwnershipRank = i+1)
+  playersJson.forEach((p, i) => {
+    p.espnOwnershipRank = i+1
+  })
+
 
   // console.log(freeAgents.data)
-  const file = path.resolve('./backend/league/data/espn-players.json')
+  const file = path.resolve('./backend/league/data/espn-players2.json')
   fs.writeFile(file, JSON.stringify(playersJson, null, 2), err=> {
     if (err){
       console.warn('failed to save free agents')

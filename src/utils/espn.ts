@@ -1,5 +1,6 @@
 import { copyToClipboard } from "quasar"
 import { useAppStore, usePlayerStore } from "../store"
+import { EspnPositionID, IEspnPlayer } from '../types/espn'
 
 export type DraftAction = 'DRAFT' | 'UNDRAFT';
 
@@ -38,7 +39,7 @@ export function getRosters(): IESPNRoster[] {
         })
       }
     })
-    // copyToClipboard(`espnDraftPicks = ${JSON.stringify(rosters)};`)
+    
     Object.keys(members).forEach(k => {
       rosters.push({
         isLeagueManager: false,
@@ -69,7 +70,7 @@ const templateFunction = (rosters: IESPNRoster[])=> `async function updateRoster
     roster.type = type
     roster.items.forEach(i => {
       i.type = type
-      delete i['name']
+      delete i['name'] // for debugging only
     })
 
     const resp = await fetch(url, {
@@ -85,8 +86,8 @@ const templateFunction = (rosters: IESPNRoster[])=> `async function updateRoster
   }
 
   return promises
-
 }`
+
 export function copyESPNUpdateRostersFunction() {
   const rosters = getRosters()
   return copyToClipboard(templateFunction(rosters))

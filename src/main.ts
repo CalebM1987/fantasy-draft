@@ -5,6 +5,10 @@ import { IAppConfig } from './types/config'
 import { useAppStore } from './store'
 import { createPinia } from 'pinia'
 import { log } from './utils/logger'
+import { fetchPlayers } from './services/espn'
+
+// @ts-ignore
+window.fetchPlayers = fetchPlayers
 
 // Import icon libraries
 import '@quasar/extras/roboto-font/roboto-font.css'
