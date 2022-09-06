@@ -15,6 +15,7 @@ import {
 } from 'firebase/database'
 
 import { IDraftedPlayer } from "../../types";
+import { updateLeagueClock } from "./clock";
 import { log } from "../../utils";
 
 const picksKey = 'draft-picks'
@@ -22,6 +23,7 @@ const picksKey = 'draft-picks'
 export function clearDraftBoard(){
   const leagueRef = getReference()
   if (!leagueRef) return;
+  updateLeagueClock('reset')
   return remove(leagueRef)
 }
 
