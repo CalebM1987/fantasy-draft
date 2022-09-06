@@ -6,6 +6,7 @@ export function createLeagueTemplate(id: string | number, props?: Partial<ILeagu
   const league = {
     id,
     name: '',
+    numberOfTeams: 8,
     format: 'standard',
     draft: {
       type: 'snake',

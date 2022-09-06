@@ -52,6 +52,11 @@ export interface IPlayer {
   rank?: number;
   position_rank?: number;
   isCustom?: boolean;
+  headshot?: string;
+  /** espn only attributes */
+  espnPlayerId?: number;
+  percentOwned?: number;
+  espnOwnershipRank?: number;
 }
 
 export interface IDraftedPlayer extends IPlayer {

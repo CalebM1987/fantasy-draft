@@ -22,7 +22,9 @@ export interface ILeagueMember {
   /** draft order */
   draftOrder: number;
   /** email address */
-  email: string;
+  email?: string;
   /** the picks for the member */
   picks?: number[];
+  /** ESPN Team ID (in current league) */
+  espnTeamId?: number;
 }

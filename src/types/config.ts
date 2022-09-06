@@ -17,16 +17,21 @@ export interface IDraftSettings {
   timeLimit?: number;
 }
 
+export type LeaguePlatform = 'espn' | 'yahoo' | 'sleeper';
+
 export interface ILeagueInfo {
   /** the league ID */
   id: number | string;
   /** the league name */
   name: string;
+  /** league platform */
+  platform: LeaguePlatform;
+  /** the number of teams */
+  numberOfTeams: number;
   /** the scoring format */
   format: ScoringFormat;
   /** the draft settings */
   draft: IDraftSettings;
-  /** draft type */
   /** roster settings */
   roster?: IRosterSettings;
   /** the league members */

@@ -3,7 +3,7 @@ import { ref} from 'vue'
 import { PlayerPosition, NFLTeams, FreeAgent, IPlayer } from '../../types/players'
 import { usePlayerStore } from '../../store';
 import { useDialogPluginComponent, QForm, useQuasar } from 'quasar'
-import { log } from '../../utils/logger';
+import { log, validatePlayerName } from '../../utils';
 
 const playerState = usePlayerStore()
 
@@ -53,11 +53,6 @@ const createPlayer = (): IPlayer => {
   }
   playerState.players.push(player)
   return player
-}
-
-const validatePlayerName = (val: string)=> {
-  const parts = val.split(' ').filter(p => p.length >= 2)
-  return parts.length >= 2
 }
 
 const validateCustomPlayer = (player: IPlayer)=> {

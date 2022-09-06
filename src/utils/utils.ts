@@ -60,3 +60,8 @@ function isExtendable(val: any): boolean {
 export function isObject(val: any): boolean {
   return isExtendable(val) && !Array.isArray(val);
 }
+
+export const validatePlayerName = (val: string)=> {
+  const parts = val.split(' ').filter(p => p.length >= 2)
+  return parts.length >= 2
+}
