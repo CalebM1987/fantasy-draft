@@ -4,6 +4,8 @@ import { usePlayerStore, useAppStore } from '../../store'
 import { usePlayerInfo } from '../../composables/player-info'
 import { log } from '../../utils/logger'
 
+// https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4242335.png&w=96&h=70&cb=1
+
 const players = usePlayerStore()
 const appState = useAppStore()
 interface Props {
@@ -31,6 +33,12 @@ const {
     title="click for player news"
   >
     <q-item-section>
+      <q-item-section avatar>
+          <q-avatar color="grey-5">
+            <q-img :src="player.headshot" style="background: white;"/>
+          </q-avatar>
+        <q-avatar />
+      </q-item-section>
       <q-item-section>
         <q-item-label 
           class="q-py-sm player-content player-label"
@@ -66,6 +74,10 @@ const {
             </span>
           </span>
         </q-item-label>
+      </q-item-section>
+
+      <q-item-section v-if="player.percentOwned">
+        <i class="text-center text-caption">{{ player.percentOwned.toFixed(1) }}% owned</i>
       </q-item-section>
       
       <q-item-section>
