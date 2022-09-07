@@ -81,7 +81,7 @@ const {
       <q-item-section v-if="player.ownership.percentOwned">
         <q-item-label caption class="row justify-between">
           <span>{{ player.ownership.percentOwned.toFixed(1).replace(/(.[0]+)$/,"") }}% owned </span>
-          <span>{{ player.ownership.percentOwned.toFixed(1).replace(/(.[0]+)$/,"") }}% started</span>
+          <span>{{ player.ownership.percentStarted.toFixed(1).replace(/(.[0]+)$/,"") }}% started</span>
           <span></span>
           <q-badge 
             rounded
