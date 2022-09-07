@@ -29,7 +29,7 @@ export function getRosters(): IEspnRoster[] {
     const members = appState.sortedMembers.reduce((o, m)=> ({...o, [m.name]: []}), {}) as Record<string, IRosterItem[]>;
     const rosters: IEspnRoster[] = []
     playerState.draftPicks.forEach(p => {
-      if (p.owner){
+      if (p.owner && !p.isCustom){
         members[p.owner.name].push({
           type: 'DRAFT',
           overallPickNumber: p.pickNumber!,

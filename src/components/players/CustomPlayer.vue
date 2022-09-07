@@ -49,7 +49,7 @@ const createPlayer = (): IPlayer => {
     injured: false,
     injuryStatus: 'ACTIVE',
     invalid: false,
-    id: new Date().getTime(),
+    id: -1,
     defaultPositionId: positionId,
     eligibleSlots: [positionId],
     fullName: name.value,
