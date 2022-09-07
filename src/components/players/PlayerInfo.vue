@@ -133,8 +133,8 @@ const {
   border-radius: 3px;
   &.unavailable{
     background: gray;
-    & > div{
-      color: red;
+    & div, span{
+      color: $white;
     }
   }
 }
