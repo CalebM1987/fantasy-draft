@@ -20,7 +20,6 @@ const appState = useAppStore()
 <style lang="scss">
   .roster{
     width: 98%;
-    // height: 85vh;
     overflow: auto;
     & .row{
       flex-wrap: nowrap;

@@ -73,27 +73,17 @@ onMounted(()=> {
 
 <style lang="scss">
 
-#franchise-container{
-  // width: 75vw;
-  width: 100%;
-//  height: 100vh;
- overflow: scroll;   
- display: grid;
-}
+  #franchise-container{
+    width: 100%;
+  overflow: scroll;   
+  display: grid;
+  }
 
   .rowx {
     display: flex;
   }
-  .picks-container-wrapper {
-    // display: inline-block;
-    // overflow: auto;
-    // width: 100%;
-    // width: 7vw;
-  }
 
   .franchise-header {
-    // position:-webkit-sticky; 
-    // position:sticky; 
     top:0;
   }
 
