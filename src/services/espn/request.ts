@@ -45,7 +45,7 @@ export async function fetchEspnPlayers(): Promise<IPlayer[]>{
   
   const players = resp.map(p => {
     let pid = p.defaultPositionId as unknown as EspnPositionID
-    if (skipPosIds.includes(pid)){
+    if (skipPosIds.includes(pid) || p.eligibleSlots.some(v => [3, 5].includes(v))){
       pid = p.eligibleSlots.filter(s => !skipPosIds.includes(s))[0] as unknown as EspnPositionID
     }
     const team = nflTeamIdToNFLTeams[p.proTeamId as unknown as NFLTeamID]
