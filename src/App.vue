@@ -73,6 +73,7 @@ const DraftClock = defineAsyncComponent(()=> import('./components/draft/DraftClo
 const AvailablePlayers = defineAsyncComponent(()=> import('./components/players/AvailablePlayers.vue'))
 const AppSettings = defineAsyncComponent(()=> import('./components/settings/AppSettings.vue'))
 
+const playerState = usePlayerStore()
 const appState = useAppStore()
 const config = appState.config
 
@@ -98,8 +99,9 @@ onMounted(()=> {
   EventBus.on('has-loaded-league', (league)=> {
     if (league){
       log('league is ready: ', league)
-      // clearDraftBoard()?.then(()=> log('cleared draft board'))
-      setRealtimeHandlers()
+      if (playerState.players.length){
+        setRealtimeHandlers()
+      }
     } else {
       removeRealtimeHandlers()
     }

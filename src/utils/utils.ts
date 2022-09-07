@@ -65,3 +65,5 @@ export const validatePlayerName = (val: string)=> {
   const parts = val.split(' ').filter(p => p.length >= 2)
   return parts.length >= 2
 }
+
+export const delay = (ms=1000) => new Promise(res => setTimeout(res, ms));

@@ -1,9 +1,14 @@
-import { fetchJson, sortByPropertyInPlace } from "../../utils";
-import { EspnPositionID, IPlayer, IEspnPlayerCard, NFLTeamID, StatID, NFLTeams, INFLTeamInfo, INFLTeamsResponse } from "../../types/espn";
+import { delay, fetchJson, sortByPropertyInPlace } from "../../utils";
 import { 
-  statsLookup,
+  EspnPositionID, 
+  IPlayer, 
+  IEspnPlayerCard, 
+  NFLTeamID, 
+  INFLTeamInfo, 
+  INFLTeamsResponse 
+} from "../../types/espn";
+import { 
   defaultFilters, 
-  positionToSlotIDMap,
   slotCategoryIdToPositionMap,
   nflTeamIdToNFLTeams 
 } from "./constants";
@@ -24,7 +29,8 @@ export async function fetchEspnPlayers(): Promise<IPlayer[]>{
 
   let resp: IEspnPlayerCard[] = []
   if (isDev){
-    // pull from dev cache
+    // pull from dev cache (simulate long request)
+    await delay(750)
     resp = playersResponse
     log('grabbed players from local dev cache')
   } else {

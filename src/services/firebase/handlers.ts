@@ -13,10 +13,10 @@ import { localeDateTime } from '../../utils';
 import { IPlayer, IDraftClockStatus } from '../../types';
 import { log } from "../../utils/logger";
 
-
 export const handlers = ref<Unsubscribe[]>([])
 
 export function setRealtimeHandlers(){
+  removeRealtimeHandlers()
   const leagueRef = getReference()
   const timeRef = getReference('draft-clock')
   if (!leagueRef) return [];
@@ -89,8 +89,9 @@ export function setRealtimeHandlers(){
     }
 
   })
-
   handlers.value.push(...[ addPickSub, remPickSub, timeChangedSub ])
+  log('set Real Time Handlers')
+  return handlers
 }
 
 export function removeRealtimeHandlers(){

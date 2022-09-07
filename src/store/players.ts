@@ -4,6 +4,7 @@ import { fetchEspnPlayers } from '../services/espn'
 import { saveDraftPick, clearDraftBoard, updateLeagueClock } from '../services/firebase'
 import { loadFromStorage, saveToStorage, clonePlayer, sortByPropertyInPlace } from '../utils'
 import { useDraftClock } from '../composables/draft-clock';
+import { setRealtimeHandlers } from '../services/firebase'
 import { useAppStore } from './app'
 import { log } from '../utils/logger'
 
@@ -154,6 +155,7 @@ export const usePlayerStore = defineStore('players', {
 
       this.players = players
       this.availablePlayers = [...players]
+      setRealtimeHandlers()
     },
 
     clearDraftBoard
