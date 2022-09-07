@@ -195,7 +195,7 @@ export interface INewsFeed {
   byline: string;
 }
 
-export interface IEspnPlayerNews {
+export interface IPlayerDetails {
   timestamp: DateString;
   resultsOffset: number;
   status: "success" | "error";
@@ -387,6 +387,11 @@ export interface IEspnPlayerCard {
   jersey?: string;
 }
 
+export interface PlayerOutlooks {
+  id: number;
+  outlooksByWeek: Record<string | number, string>
+}
+
 export interface IPlayer extends IEspnPlayerCard {
   position: PlayerPosition;
   team: NFLTeams | FreeAgent;
@@ -397,6 +402,8 @@ export interface IPlayer extends IEspnPlayerCard {
   position_rank?: number;
   bye?: number;
   isCustom?: boolean;
+  seasonOutlook?: string;
+  outlooks?: PlayerOutlooks;
 }
 
 export interface DraftRanksByRankType {

@@ -142,6 +142,7 @@ onMounted(()=> {
 }
 
 .pos-TE {
-  background-color:gold;
+  /* background-color:gold; */
+  background-color: #DAA425;
 }
 </style>

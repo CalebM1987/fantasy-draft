@@ -32,12 +32,11 @@ export const playerDisplayName = (player: IPlayer) => {
   arr.sort((a, b) => (a[prop] > b[prop] ? first : second));
 }
 
-export function localeDateTime(d?: Date | number): string {
+export function localeDateTime(d?: Date | number | string): string {
   if (!d){
     d = new Date()
   }
-  if (typeof d === 'number'){
-    // d is milliseconds
+  if (typeof d === 'string' || typeof d === 'number'){
     d = new Date(d)
   }
   return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`

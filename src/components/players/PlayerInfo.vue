@@ -36,12 +36,6 @@ const {
     title="click for player news"
   >
     <q-item-section>
-      <!-- <q-item-section avatar>
-          <q-avatar color="grey-5">
-            <q-img :src="player.headshot" style="background: white;"/>
-          </q-avatar>
-        <q-avatar /> 
-      </q-item-section> -->
       <q-item-section>
         <q-item-label 
           class="q-py-sm player-content player-label"
