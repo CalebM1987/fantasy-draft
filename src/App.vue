@@ -18,7 +18,7 @@
       <q-tabs align="center" style="width: 100%; margin:0 auto;">
         <q-route-tab to="/" label="Draft Room" />
         <q-route-tab to="/teams" label="Teams" />
-        <q-route-tab to="/league" label="League Settings" />
+        <!-- <q-route-tab to="/league" label="League Settings" /> -->
       </q-tabs>
       
         <q-btn class="drawer right" dense flat round icon="menu" @click="toggleRightDrawer" />
