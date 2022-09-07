@@ -129,9 +129,9 @@ const {
   @import '../../base.scss';
 .player-info-container{
   background: #f7f7f7bd;
-    border: 1px solid #ffffffa3;
-    width: 50%;
-    border-radius: 3px;
+  border: 1px solid #ffffffa3;
+  width: 50%;
+  border-radius: 3px;
 }
 
 .player-container{
@@ -164,7 +164,7 @@ const {
   &.player-label{
     color: #4a4a4a;
     padding: 2px 1px;
-    margin: 0px 10px 5px;
+    margin: 0px 0 5px;
     align-items: center;
     justify-content: space-evenly;
     border-radius: 3px;

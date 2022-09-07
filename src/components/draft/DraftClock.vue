@@ -20,14 +20,17 @@ const $q = useQuasar()
 </script>
 
 <template>
-  <div class="draft-clock q-pa-md">
+  <div class="draft-clock q-pa-md"
+  :class="appState.screen.md ? '' : 'r'"
+  >
     <div class="timer-container" v-if="appState.hasStartedDraft">
       <div class="row items-start">
         <span 
           v-if="players.onTheClock"
-          class="on-the-clock glow" 
+          class="on-the-clock glow"
+          :class="appState.screen.md ? '' : 'r'"
         >{{ players.onTheClock.name }} is on the clock!</span>
-        <div class="timer">{{ displayClock(appState.timer) }}</div>
+        <div class="timer" :class="appState.screen.md ? '' : 'r'">{{ displayClock(appState.timer) }}</div>
         <q-btn
           flat
           rounded
@@ -65,8 +68,29 @@ const $q = useQuasar()
 </template>
 
 <style lang="scss">
+@import '../../base.scss';
+
+.timer-container{
+  justify-content: center;
+}
+
+.draft-clock{
+  background: $accent-orange;
+  padding: 2px;
+  margin: 0 -12px 5px auto;
+  border-radius: 0 0 0 3px;
+  color: #7e2929;
+  &.r{
+    width: 100vw;
+    margin-left: -12px;
+  }
+}
+
 .timer {
   font-size: 2rem;
+  &.r{
+    font-size: 20px;
+  }
 }
 
 .on-the-clock {
@@ -75,6 +99,9 @@ const $q = useQuasar()
   color: #AB0003;
   text-shadow: 2px 2px 4px white;
   margin: .2rem .8rem;
+  &.r{
+    font-size: 18px !important;
+  }
 }
 
 .clock-public-message {
@@ -112,5 +139,9 @@ const $q = useQuasar()
     opacity: 0.6;
   }
 }
+
+// .q-toolbar__title.ellipsis{
+//   display:none;
+// }
 
 </style>

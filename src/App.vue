@@ -2,9 +2,9 @@
   <q-layout view="hHh lpR fFf">
 
     <q-header elevated class="bg-primary text-white" height-hint="98">
-      <q-toolbar>
-        <q-toolbar-title>
-          <q-avatar icon="sports_football" />
+      <q-toolbar class="tb">
+        <q-toolbar-title :style="appState.screen.md ? '' : 'padding: 0px;'" >
+          <q-avatar id="leage-avatar" icon="sports_football" />
           Draft Party - {{ appState.league?.name ?? 'Fantasy Football' }}
         </q-toolbar-title>
 
@@ -159,11 +159,10 @@ onMounted(()=> {
       }
     }
 
-
-
 .drawer{
   margin: 0 5px 10px 0;
-  background: #0A3923;
+  background: $accent-orange;
+  color: $bmi-green;
   border-radius: 5px;
   height: 0;
   width: 0;
@@ -176,7 +175,17 @@ onMounted(()=> {
 }
 
 .bg-primary{
-  // background-color: #0A3923 !important;
-  background-color: #006938 !important;
+  background-color: $bmi-green!important;
 }
+
+.q-radio__bg path{
+  fill: $accent-orange;
+}
+
+.q-field__control, .q-tab__indicator{
+  color: $accent-orange;
+}
+
+
+
 </style>

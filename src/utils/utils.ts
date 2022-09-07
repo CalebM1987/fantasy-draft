@@ -3,8 +3,7 @@ import { IPlayer } from "../types"
 export const playerDisplayName = (player: IPlayer) => {
   const name = player.fullName
   if (player.position === 'D/ST'){
-    console.log('player name for defense: ', player.fullName)
-    return player.fullName.replace('Defense', 'D/ST')
+    return player.fullName.replace('D/ST', '')
   } else {
     const parts = name.split(' ')
     const first = parts[0]
