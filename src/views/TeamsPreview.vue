@@ -6,8 +6,8 @@ const appState = useAppStore()
 </script>
 
 <template>
-<div class="container">
-  <div class="row items-start q-pa-md">
+<div class="roster container">
+  <div class="row row items-start q-pa-md">
     <team-roster 
       v-for="member of appState.sortedMembers"
       :key="member.name"
@@ -16,3 +16,14 @@ const appState = useAppStore()
   </div>
 </div>
 </template>
+
+<style lang="scss">
+  .roster{
+    width: 98%;
+    overflow: auto;
+    & .row{
+      flex-wrap: nowrap;
+    }
+  }
+
+</style>

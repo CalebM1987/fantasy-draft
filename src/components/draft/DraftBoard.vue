@@ -45,7 +45,7 @@ onMounted(()=> {
 </script>
 
 <template>
-  <div class="col-md-9 q-pa-md q-mr-md" style="overflow: auto;">
+  <div id="franchise-container" class="col-md-9 q-pa-md q-mr-md">
    
     <div :class="`row${appState.compactView ? '': 'x'} franchise-header`">
       <div v-for="team in appState.sortedMembers" :key="team.name" :class="gridClass">
@@ -57,7 +57,8 @@ onMounted(()=> {
         </div>
       </div>
     </div>
-
+    
+    <div class="picks-container-wrapper" style="overflow: auto; height: 650px;">
     <div v-for="(round, ri) in rounds" :key="round" :class="`row${appState.compactView ? '': 'x'} picks-container`">
 
       <div v-for="(team, ti) in appState.sortedMembers" :key="team.name" :class="gridClass">
@@ -66,22 +67,23 @@ onMounted(()=> {
         </draft-square>
       </div>
     </div>
-
+  </div>
   </div>
 </template>
 
 <style lang="scss">
 
+  #franchise-container{
+    width: 100%;
+  overflow: scroll;   
+  display: grid;
+  }
+
   .rowx {
     display: flex;
   }
-  .picks-container {
-    /* overflow: auto; */
-  }
 
   .franchise-header {
-    position:-webkit-sticky; 
-    position:sticky; 
     top:0;
   }
 
