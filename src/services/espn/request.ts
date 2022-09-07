@@ -28,24 +28,30 @@ export async function fetchEspnPlayers(): Promise<IPlayer[]>{
   const headers = new Headers()
   headers.append('x-fantasy-filter', JSON.stringify(defaultFilters))
 
-  let resp: IEspnPlayerCard[] = []
-  if (isDev){
-    // pull from dev cache (simulate long request)
-    await delay(750)
-    resp = playersResponse
-    log('grabbed players from local dev cache')
-  } else {
-    try {
-      resp = await fetchJson<IEspnPlayerCard[]>(url, {
-        headers
-      })
-      log('pulled players from ESPN')
-    } catch(err){
-      log('could not fetch player data from ESPN: ', err)
-      // default to dev cache in case something went wrong
-      resp = playersResponse
-    }
-  }
+  // pull players from cache
+  const resp = playersResponse
+
+  // let resp: IEspnPlayerCard[] = []
+  // await delay(750)
+  // resp = playersResponse
+  // log('grabbed players from local dev cache')
+  // if (isDev){
+  //   // pull from dev cache (simulate long request)
+  //   await delay(750)
+  //   resp = playersResponse
+  //   log('grabbed players from local dev cache')
+  // } else {
+  //   try {
+  //     resp = await fetchJson<IEspnPlayerCard[]>(url, {
+  //       headers
+  //     })
+  //     log('pulled players from ESPN')
+  //   } catch(err){
+  //     log('could not fetch player data from ESPN: ', err)
+  //     // default to dev cache in case something went wrong
+  //     resp = playersResponse
+  //   }
+  // }
 
   const skip = ['rankings', 'variance', 'stats', 'draftRanksByRankType']
   const skipPosIds = [1, 3, 5, 25]

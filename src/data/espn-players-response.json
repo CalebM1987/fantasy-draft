@@ -451,7 +451,7 @@
     "jersey": "30",
     "lastName": "Ekeler",
     "lastNewsDate": 1657052951000,
-    "lastVideoDate": 1660741096000,
+    "lastVideoDate": 1662568298000,
     "laterality": "NONE",
     "outlooks": {
       "id": 3068267,
@@ -746,7 +746,7 @@
     "jersey": "22",
     "lastName": "Henry",
     "lastNewsDate": 1662055761000,
-    "lastVideoDate": 1660741531000,
+    "lastVideoDate": 1662565195000,
     "laterality": "NONE",
     "outlooks": {
       "id": 3043078,
@@ -805,7 +805,7 @@
     "jersey": "22",
     "lastName": "McCaffrey",
     "lastNewsDate": 1661550265000,
-    "lastVideoDate": 1662564083000,
+    "lastVideoDate": 1662564855000,
     "laterality": "NONE",
     "outlooks": {
       "id": 3117251,
@@ -1849,7 +1849,7 @@
     "jersey": "26",
     "lastName": "Barkley",
     "lastNewsDate": 1661122884000,
-    "lastVideoDate": 1662514280000,
+    "lastVideoDate": 1662567565000,
     "laterality": "NONE",
     "outlooks": {
       "id": 3929630,
@@ -2591,7 +2591,7 @@
     "jersey": "3",
     "lastName": "Akers",
     "lastNewsDate": 1661807452000,
-    "lastVideoDate": 1661058130000,
+    "lastVideoDate": 1662568008000,
     "laterality": "NONE",
     "outlooks": {
       "id": 4240021,
@@ -2709,7 +2709,7 @@
     "invalid": false,
     "jersey": "17",
     "lastName": "Waddle",
-    "lastNewsDate": 1662405203000,
+    "lastNewsDate": 1662570868000,
     "lastVideoDate": 1659933008000,
     "laterality": "NONE",
     "outlooks": {
@@ -2939,7 +2939,7 @@
     "jersey": "18",
     "lastName": "Johnson",
     "lastNewsDate": 1661883982000,
-    "lastVideoDate": 1662513162000,
+    "lastVideoDate": 1662567989000,
     "laterality": "NONE",
     "outlooks": {
       "id": 3932905,
@@ -3291,7 +3291,7 @@
     "jersey": "13",
     "lastName": "Cooks",
     "lastNewsDate": 1661459806000,
-    "lastVideoDate": 1660844143000,
+    "lastVideoDate": 1662568981000,
     "laterality": "NONE",
     "outlooks": {
       "id": 16731,
@@ -3529,7 +3529,7 @@
     "jersey": "27",
     "lastName": "Dobbins",
     "lastNewsDate": 1661989947000,
-    "lastVideoDate": 1662007125000,
+    "lastVideoDate": 1662568058000,
     "laterality": "NONE",
     "outlooks": {
       "id": 4241985,
@@ -3824,7 +3824,7 @@
     "jersey": "14",
     "lastName": "Godwin",
     "lastNewsDate": 1662391064000,
-    "lastVideoDate": 1662511804000,
+    "lastVideoDate": 1662566255000,
     "laterality": "NONE",
     "outlooks": {
       "id": 3116165,
@@ -4433,7 +4433,7 @@
     "invalid": false,
     "jersey": "9",
     "lastName": "Smith-Schuster",
-    "lastNewsDate": 1661798308000,
+    "lastNewsDate": 1662572094000,
     "lastVideoDate": 1661604321000,
     "laterality": "NONE",
     "outlooks": {
@@ -4611,7 +4611,7 @@
     "jersey": "13",
     "lastName": "Thomas",
     "lastNewsDate": 1662038519000,
-    "lastVideoDate": 1662512775000,
+    "lastVideoDate": 1662565345000,
     "laterality": "NONE",
     "outlooks": {
       "id": 2976316,
@@ -5253,7 +5253,7 @@
     "invalid": false,
     "jersey": "26",
     "lastName": "Sanders",
-    "lastNewsDate": 1662049050000,
+    "lastNewsDate": 1662573371000,
     "lastVideoDate": 1662511981000,
     "laterality": "NONE",
     "outlooks": {
@@ -5312,7 +5312,7 @@
     "invalid": false,
     "jersey": "86",
     "lastName": "Ertz",
-    "lastNewsDate": 1662404582000,
+    "lastNewsDate": 1662569960000,
     "lastVideoDate": 1662051626000,
     "laterality": "NONE",
     "outlooks": {
@@ -5895,7 +5895,7 @@
     "invalid": false,
     "jersey": "13",
     "lastName": "Lazard",
-    "lastNewsDate": 1662405513000,
+    "lastNewsDate": 1662571920000,
     "lastVideoDate": 1661918712000,
     "laterality": "NONE",
     "outlooks": {
@@ -6237,7 +6237,7 @@
     "invalid": false,
     "jersey": "5",
     "lastName": "London",
-    "lastNewsDate": 1662398058000,
+    "lastNewsDate": 1662568133000,
     "lastVideoDate": 1662511774000,
     "laterality": "NONE",
     "outlooks": {
@@ -6521,7 +6521,7 @@
     "invalid": false,
     "jersey": "88",
     "lastName": "Knox",
-    "lastNewsDate": 1661278920000,
+    "lastNewsDate": 1662572220000,
     "lastVideoDate": 1659961309000,
     "laterality": "NONE",
     "outlooks": {
@@ -6640,8 +6640,8 @@
     "invalid": false,
     "jersey": "31",
     "lastName": "Pierce",
-    "lastNewsDate": 1662491737000,
-    "lastVideoDate": 1662513819000,
+    "lastNewsDate": 1662564988000,
+    "lastVideoDate": 1662569409000,
     "laterality": "NONE",
     "outlooks": {
       "id": 4360238,
@@ -7281,7 +7281,7 @@
     "jersey": "25",
     "lastName": "Robinson",
     "lastNewsDate": 1662404053000,
-    "lastVideoDate": 1662480424000,
+    "lastVideoDate": 1662567978000,
     "laterality": "NONE",
     "outlooks": {
       "id": 4052042,
@@ -7734,6 +7734,7 @@
     "jersey": "9",
     "lastName": "Walker III",
     "lastNewsDate": 1662419334000,
+    "lastVideoDate": 1662567866000,
     "laterality": "NONE",
     "outlooks": {
       "id": 4567048,
@@ -8842,7 +8843,7 @@
     "jersey": "13",
     "lastName": "Gallup",
     "lastNewsDate": 1662391445000,
-    "lastVideoDate": 1662552872000,
+    "lastVideoDate": 1662568075000,
     "laterality": "NONE",
     "ownership": {
       "auctionValueAverage": 1.0951708036372574,
@@ -9006,11 +9007,11 @@
     "fullName": "J.D. McKissic",
     "id": 2572861,
     "injured": false,
-    "injuryStatus": "QUESTIONABLE",
+    "injuryStatus": "ACTIVE",
     "invalid": false,
     "jersey": "23",
     "lastName": "McKissic",
-    "lastNewsDate": 1661020553000,
+    "lastNewsDate": 1662572528000,
     "lastVideoDate": 1661257620000,
     "laterality": "NONE",
     "outlooks": {
@@ -9411,7 +9412,7 @@
     "injured": false,
     "injuryStatus": "ACTIVE",
     "invalid": false,
-    "jersey": "85",
+    "jersey": "6",
     "lastName": "Jones",
     "lastNewsDate": 1661656194000,
     "lastVideoDate": 1661689557000,
@@ -9721,11 +9722,11 @@
     "fullName": "Robbie Anderson",
     "id": 2574808,
     "injured": false,
-    "injuryStatus": "QUESTIONABLE",
+    "injuryStatus": "ACTIVE",
     "invalid": false,
     "jersey": "3",
     "lastName": "Anderson",
-    "lastNewsDate": 1661625239000,
+    "lastNewsDate": 1662575713000,
     "lastVideoDate": 1661316085000,
     "laterality": "NONE",
     "outlooks": {
@@ -10514,7 +10515,7 @@
     "invalid": false,
     "jersey": "25",
     "lastName": "Allgeier",
-    "lastNewsDate": 1661643906000,
+    "lastNewsDate": 1662571064000,
     "lastVideoDate": 1660407764000,
     "laterality": "NONE",
     "outlooks": {
@@ -12969,12 +12970,12 @@
     "firstName": "Zach",
     "fullName": "Zach Wilson",
     "id": 4361259,
-    "injured": false,
-    "injuryStatus": "QUESTIONABLE",
+    "injured": true,
+    "injuryStatus": "OUT",
     "invalid": false,
     "jersey": "2",
     "lastName": "Wilson",
-    "lastNewsDate": 1662394155000,
+    "lastNewsDate": 1662566728000,
     "lastVideoDate": 1660826450000,
     "laterality": "NONE",
     "ownership": {
@@ -13431,7 +13432,7 @@
     "invalid": false,
     "jersey": "6",
     "lastName": "Williams",
-    "lastNewsDate": 1662400402000,
+    "lastNewsDate": 1662570478000,
     "laterality": "NONE",
     "outlooks": {
       "id": 17359,
@@ -13698,7 +13699,7 @@
     "invalid": false,
     "jersey": "82",
     "lastName": "Thomas",
-    "lastNewsDate": 1662397730000,
+    "lastNewsDate": 1662572174000,
     "lastVideoDate": 1661863059000,
     "laterality": "NONE",
     "ownership": {
@@ -13919,7 +13920,7 @@
     "jersey": "35",
     "lastName": "Edwards",
     "lastNewsDate": 1661285175000,
-    "lastVideoDate": 1661604440000,
+    "lastVideoDate": 1662568032000,
     "laterality": "NONE",
     "ownership": {
       "auctionValueAverage": 0.0333026113671275,
@@ -15933,7 +15934,7 @@
     "invalid": false,
     "jersey": "14",
     "lastName": "Montgomery",
-    "lastNewsDate": 1662135790000,
+    "lastNewsDate": 1662570251000,
     "lastVideoDate": 1661058061000,
     "laterality": "NONE",
     "outlooks": {
