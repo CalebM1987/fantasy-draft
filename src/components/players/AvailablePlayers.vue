@@ -172,7 +172,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
 
 .scroll > .q-tab-panel{
   // max-height: 65vh;
-  max-height: calc(100vh - 325px);
+  max-height: calc(100vh - 315px);
   overflow: auto;
   &.no-pad{
     padding: 0;

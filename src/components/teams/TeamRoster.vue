@@ -122,7 +122,7 @@ const rosterSpots = computed<IRosterSlot[]>(()=> {
   width: 325px; // doesn't seem to take here
   height: 100%;
   & .section{
-    height: calc(100vh - 265px);
+    height: calc(100vh - 255px);
     background: #d0d0d0; 
     overflow: auto;
     & .slot.plate{
