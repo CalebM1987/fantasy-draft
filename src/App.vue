@@ -27,7 +27,7 @@
       <app-settings />
     </q-drawer>
 
-    <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered :width="400">
+    <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered :width="400" style='overflow: hidden !important'>
       <!-- drawer content -->
       <Suspense>
         <available-players />
@@ -116,6 +116,10 @@ onMounted(()=> {
 </script>
 
 <style>
+#app, body{
+  overflow: hidden !important; 
+}
+
 .pos-rb {
   background-color: rgb(255, 38, 0);
 }

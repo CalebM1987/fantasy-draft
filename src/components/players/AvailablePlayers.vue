@@ -94,7 +94,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
         <q-tab v-for="{ name, label } in typeOptions" :name="name" :label="label"></q-tab>
       </q-tabs>
 
-      <q-tab-panels v-model="tab" :keep-alive="true">
+      <q-tab-panels v-model="tab" :keep-alive="true" :class="tab == 'positions' ? 'no-scroll' : ''">
 
         <q-tab-panel name="top-200">
           <q-list bordered separator>
@@ -106,30 +106,29 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
               :rank-type="'adp'"
             />
           </q-list>
-          
+
         </q-tab-panel>
 
-        <q-tab-panel name="positions">
+        <q-tab-panel name="positions" class="scroll">
           <q-tabs
               dense
               v-model="selectedPos"
               align="justify"
               narrow-indicator
             >
-              <q-tab  
-                v-for="{ name, label } in positionOptions" 
+              <q-tab
+                v-for="{ name, label } in positionOptions"
                 :name="name" 
                 :label="label" 
                 :key="name"
               /> 
               </q-tabs>
           
-            <q-tab-panel 
-              
+            <q-tab-panel
               :name="selectedPos" 
               :label="selectedPos" 
             >
-              <q-list bordered separator>
+              <q-list bordered separator >
                 <player-info 
                   class="q-mb-sm"
                   v-for="player in players.playersByPosition[selectedPos]"
@@ -167,5 +166,15 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
 <style>
 .empty-favorites {
   min-height: 200px;
+}
+
+.scroll > .q-tab-panel{
+  max-height: 80vh;
+  overflow: auto;
+}
+
+.no-scroll > div{
+
+  overflow: hidden;
 }
 </style>
