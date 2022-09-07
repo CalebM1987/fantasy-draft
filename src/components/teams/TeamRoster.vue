@@ -75,7 +75,7 @@ const rosterSpots = computed<IRosterSlot[]>(()=> {
 
 <template>
   <q-card bordered class="bg-grey-9 roster-card q-ma-md">
-    <q-card-section style="width: max-content;">
+    <q-card-section style="width: 325px;">
       <div class="text-h6">{{ leagueMember.teamName }}</div>
       <div class="text-subtitle2">{{ leagueMember.name }}</div>
     </q-card-section>
@@ -109,7 +109,7 @@ const rosterSpots = computed<IRosterSlot[]>(()=> {
 
 <style lang="scss">
 .roster-card {
-  width: 325px;
+  width: 325px; // doesn't seem to take here
   height: 100%;
   & .section{
     height: 600px;

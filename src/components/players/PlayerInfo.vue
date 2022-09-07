@@ -17,11 +17,12 @@ const props = defineProps<Props>()
 const percentChanged = computed(()=> Math.abs(props.player.ownership.percentChange) > 0.1 ? parseFloat(props.player.ownership.percentChange.toFixed(1)): 0)
 
 const {
+  status,
   isDrafted,
-    isFavorite,
-    updateFavorites,
-    isLoadingDetails,
-    showPlayerDetails,
+  isFavorite,
+  updateFavorites,
+  isLoadingDetails,
+  showPlayerDetails,
  } = usePlayerInfo(props.player)
 
 </script>
@@ -47,7 +48,15 @@ const {
           :style="isDrafted ? 'color: #505050; font-style: italic;': ''"
         >
           <span class="rank">{{ rankType === 'adp' ? player.rank: player.position_rank }}.</span>
-          <span><strong>{{ player.fullName }}</strong></span>
+          <span>
+            <strong>{{ player.fullName }}</strong>
+            <q-badge
+              rounded
+              v-if="status"
+              class="q-ml-sm"
+              color="negative"
+            >{{ status }}</q-badge>
+          </span>
           <span>
             <span 
               v-if="!isDrafted"
