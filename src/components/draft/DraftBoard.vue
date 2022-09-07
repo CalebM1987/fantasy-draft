@@ -24,6 +24,7 @@ const $q = useQuasar()
 const { autoDraftPlayer } = useAutoDraft()
 
 EventBus.on('draft-clock-expired', ()=> {
+  if (!appState.isLM) return;
   autoDraftPromptOpen.value = true
   $q.dialog({
     component: AutoDraftPlayer,

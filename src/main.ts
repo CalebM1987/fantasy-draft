@@ -53,7 +53,6 @@ fetchJson<IAppConfig>('./config.json').then(async (config)=> {
   const url = new URL(window.location.href.replace(/#\//g,''))
   log('url is: ', url)
   appState.isLM = ['1', 'true'].includes(url.searchParams.get('lm') ?? '')
-  console.log("url check: ", ['1', 'true'].includes(url.searchParams.get('lm') ?? ''))
   log('set league manager status: ', appState.isLM)
   // find league
   const leagueId = url.searchParams.get('leagueId') ?? config.leagues[0].id

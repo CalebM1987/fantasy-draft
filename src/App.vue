@@ -83,9 +83,6 @@ $q.dark.set(true)
 const leftDrawerOpen = ref(false)
 const rightDrawerOpen = ref(false)
 
-// @ts-ignore
-hook.appState = useAppStore()
-
     
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
