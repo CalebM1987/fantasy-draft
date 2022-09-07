@@ -1,7 +1,6 @@
 import { ref, computed, defineAsyncComponent } from 'vue'
 import { usePlayerStore } from '../store'
 import { IPlayer, IPlayerDetails } from '../types'
-// import { fetchPlayerDetails } from '../services/fantasycalculator'
 import { Dialog, Notify } from 'quasar'
 import { log } from '../utils/logger'
 const PlayerDetails = defineAsyncComponent(()=> import('../components/players/PlayerDetails.vue'))
