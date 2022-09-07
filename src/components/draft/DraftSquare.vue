@@ -7,6 +7,7 @@ import { playerDisplayName } from '../../utils/utils';
 import { removeDraftPick } from '../../services/firebase'
 import { usePlayerInfo } from '../../composables/player-info'
 import { log } from '../../utils/logger';
+import { getPlayerStatus } from '../../utils';
 
 const appState = useAppStore()
 const players = usePlayerStore()
@@ -31,6 +32,8 @@ const roundPickNumber = computed<string | undefined>(()=> {
 const props = defineProps<Props>()
 const showRemoveBtn = ref(false)
 const isLoading = ref(false)
+
+const playerStatus = computed(()=> player.value ?  getPlayerStatus(player.value): undefined)
 
 const showDetails = async ()=> {
   log('should show details from draft square')
@@ -77,7 +80,15 @@ const showDetails = async ()=> {
           icon="person_remove" 
           @click.stop.prevent="removeDraftPick(players.pickLookup[player!.id])" 
         />
-        <div class="text-center q-my-sm">{{ playerDisplayName(player) }}</div>
+        <div class="text-center q-my-sm">
+          <span>{{ playerDisplayName(player) }}</span>
+          <q-badge
+              v-if="playerStatus"
+              rounded
+              class="q-ml-sm"
+              color="negative"
+            >{{ playerStatus }}</q-badge>
+        </div>
         <div style="display: flex; justify-content: space-around; font-size: 0.6rem;">
           <span>{{ player.team }}</span>
           <span>{{ player.position }}</span>

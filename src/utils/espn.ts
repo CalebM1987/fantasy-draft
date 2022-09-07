@@ -109,3 +109,29 @@ export function clonePlayer(player: IPlayer): IPlayer {
   clone.ownership = {...player.ownership}
   return clone
 }
+
+export function getPlayerStatus(player: IPlayer){
+  let st: 'O' | 'D'| 'Q' | 'SSPD' | 'IR' | undefined = undefined
+    switch(player.injuryStatus){
+      case 'DOUBTFUL': {
+        st = 'D'
+        break;
+      }
+      case 'OUT': {
+        st = 'O'
+        break;
+      }
+      case 'QUESTIONABLE': {
+        st = 'Q'
+        break;
+      }
+      case 'INJURY_RESERVE': {
+        st = 'IR';
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+    return st
+}

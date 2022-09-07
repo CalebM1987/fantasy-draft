@@ -2,6 +2,7 @@ import { ref, computed, defineAsyncComponent } from 'vue'
 import { usePlayerStore } from '../store'
 import { IPlayer, IPlayerDetails } from '../types'
 import { Dialog, Notify } from 'quasar'
+import { getPlayerStatus } from '../utils'
 import { log } from '../utils/logger'
 const PlayerDetails = defineAsyncComponent(()=> import('../components/players/PlayerDetails.vue'))
 
@@ -18,31 +19,7 @@ export function usePlayerInfo(player: IPlayer){
 
   const isDrafted = computed(()=> players.pickLookup[player.id])
 
-  const status = computed(()=> {
-    let st: 'O' | 'D'| 'Q' | 'SSPD' | 'IR' | undefined = undefined
-    switch(player.injuryStatus){
-      case 'DOUBTFUL': {
-        st = 'D'
-        break;
-      }
-      case 'OUT': {
-        st = 'O'
-        break;
-      }
-      case 'QUESTIONABLE': {
-        st = 'Q'
-        break;
-      }
-      case 'INJURY_RESERVE': {
-        st = 'IR';
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-    return st
-  })
+  const status = computed(()=> getPlayerStatus(player))
   
   const isLoadingDetails = ref(false)
   

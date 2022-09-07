@@ -2,7 +2,8 @@
 import { ILeagueMember } from '../../types/app';
 import { IPlayer, RosterSpot } from '../../types';
 import { usePlayerStore, useAppStore } from '../../store'
-import { ref, computed, watchEffect } from 'vue'
+import { getPlayerStatus } from '../../utils'
+import { computed } from 'vue'
 
 const appState = useAppStore()
 const playerState = usePlayerStore()
@@ -90,7 +91,15 @@ const rosterSpots = computed<IRosterSlot[]>(()=> {
           </q-item-section>
 
           <q-item-section>
-            <q-item-label :class="spot.player ? 'sec player': 'empty-slot'">{{ spot.player?.fullName ?? 'EMPTY' }}</q-item-label>
+            <q-item-label :class="spot.player ? 'sec player': 'empty-slot'">
+              <span>{{ spot.player?.fullName ?? 'EMPTY' }}</span>
+              <q-badge
+                v-if="spot.player && spot.player?.injuryStatus !== 'ACTIVE'"
+                rounded
+                class="q-ml-sm"
+                color="negative"
+              >{{ getPlayerStatus(spot.player) }}</q-badge>
+            </q-item-label>
             <q-item-label caption lines="1">
               <div class="sec info" :class="spot.player ? 'plate' : ''" style="display: flex; justify-content: space-between;">
                 <span class="team">{{ spot.player?.team }} <span class="pos" :class="spot.player?.position">{{ spot.player?.position}} </span></span>
