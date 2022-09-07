@@ -70,7 +70,7 @@ const templateFunction = (rosters: IEspnRoster[])=> `async function updateRoster
     roster.type = type
     roster.items.forEach(i => {
       i.type = type
-      delete i['name'] // for debugging only
+      delete i['fullName'] // for debugging only
     })
 
     const resp = await fetch(url, {
