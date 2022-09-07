@@ -5,7 +5,8 @@ import {
   IEspnPlayerCard, 
   NFLTeamID, 
   INFLTeamInfo, 
-  INFLTeamsResponse 
+  INFLTeamsResponse, 
+  IPlayerDetails
 } from "../../types/espn";
 import { 
   defaultFilters, 
@@ -90,7 +91,9 @@ export async function getNFLTeamByeWeeks(): Promise<Record<NFLTeamID, number>> {
 
 }
 
-// export function getPlayerNews(player: IPlayer): Promise<any>{
-  
-//   https://site.api.espn.com/apis/fantasy/v2/games/ffl/news/players?days=30&playerId=14881
-// }
+export function fetchPlayerDetails(player: IPlayer | number): Promise<IPlayerDetails>{
+  const pid = typeof player === 'number' ? player: player.id
+  const url = 'https://site.api.espn.com/apis/fantasy/v2/games/ffl/news/players?days=30&playerId=' + pid
+  return fetchJson<IPlayerDetails>(url)
+
+}

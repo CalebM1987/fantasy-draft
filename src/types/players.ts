@@ -19,25 +19,6 @@ export interface ADPPlayersResponseMeta {
   end_date: string;
 }
 
-export interface IPlayerDetails {
-  player_id: number;
-  first_name: string;
-  last_name: string;
-  full_name: string;
-  team: string;
-  position: string;
-  bye: number;
-  rookie: boolean;
-  image_url?: string;
-  age?: number;
-  height?: string;
-  weight?: string;
-  college?: string;
-  jersey_number?: string;
-  news: PlayerNews[];
-  adp: Adp;
-}
-
 export interface PlayerNews {
   id: number
   title: string

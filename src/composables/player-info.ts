@@ -3,6 +3,7 @@ import { usePlayerStore } from '../store'
 import { IPlayer, IPlayerDetails } from '../types'
 import { Dialog, Notify } from 'quasar'
 import { getPlayerStatus } from '../utils'
+import { fetchPlayerDetails } from '../services/espn'
 import { log } from '../utils/logger'
 const PlayerDetails = defineAsyncComponent(()=> import('../components/players/PlayerDetails.vue'))
 
@@ -39,8 +40,7 @@ export function usePlayerInfo(player: IPlayer){
       isLoadingDetails.value = true
       let details: IPlayerDetails | undefined = players.playerDetailsCache[player.id]
       if (!details){ 
-        // details = await fetchPlayerDetails(player)
-        details = {} as any
+        details = await fetchPlayerDetails(player)
         if (!details){
           console.warn('no player details could be extracted for player: ', player)
           return
@@ -51,21 +51,20 @@ export function usePlayerInfo(player: IPlayer){
         log('pulled player details from cache:', details)
       }
 
-      if (details?.news?.length){
-        Dialog.create({
-          component: PlayerDetails,
-          componentProps: {
-            details
-          }
-        })
-      } else {
-        Notify.create({
-          type: 'warning',
-          message: `No details found for player: "${player.fullName}"`
-        })
-      }
+      // create dialog
+      Dialog.create({
+        component: PlayerDetails,
+        componentProps: {
+          details,
+          player
+        }
+      })
     } catch (err){
       console.warn(err)
+      Notify.create({
+        type: 'warning',
+        message: `No details found for player: "${player.fullName}"`
+      })
       throw err
     } finally {
       isLoadingDetails.value = false
