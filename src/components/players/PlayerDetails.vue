@@ -22,7 +22,15 @@ const outlook = computed<string | undefined>(()=> {
   return outlook ?? props.player.seasonOutlook 
 })
 
+const media = computed(()=> props.details.feed.filter(f => f.type === 'Media' && f.section === 'Fantasy NFL')[0])
 const feed = computed(()=> props.details.feed.filter(f => f.type === 'Rotowire'))
+
+const openMediaLink = ()=> {
+  const im = media.value
+  if (im){
+    window.open(im.links.web.href, '_blank')
+  }
+}
 
 defineEmits([
   ...useDialogPluginComponent.emits
@@ -38,14 +46,14 @@ const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginC
     <q-card class="q-pa-md">
       <q-item>
         <q-item-section avatar color="grey-5">
-          <q-avatar>
+          <q-avatar style="height: 55px; width: 55px;">
             <img :src="getHeadshot(player)" style="background: white;">
           </q-avatar>
         </q-item-section>
 
         <q-item-section>
-          <q-item-label>{{ player.fullName}}</q-item-label>
-          <q-item-label caption>
+          <q-item-label style="font-size: 25px;">{{ player.fullName}}</q-item-label>
+          <q-item-label caption style="font-size: 18px;">
             {{ player.team }} {{ player.position }}
           </q-item-label>
         </q-item-section>
@@ -59,18 +67,42 @@ const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginC
       <q-card-section>
         <div class="player-outlook" v-if="outlook">
           <div class="text-h6">Outlook</div>
-          <p>{{ outlook }}</p>
+          <div class="outlook-body">
+            <p>{{ outlook }}</p>
+          </div>
         </div>
       </q-card-section>
       <q-separator />
   
+      <q-card-section v-if="media" class="cursor-pointer">
+        <div class="text-h6">Fantasy News</div>
+        <q-separator />
+        <div 
+          v-if="media.images.length"
+          class="fantasy-media-link" 
+          @click="openMediaLink"
+        >
+          <q-img 
+            :src="media.images[0].url"
+            
+          />
+            <div class="text-subtitle2 q-my-sm">
+              <q-icon name="info_outline" class="q-mr-sm"/>  
+              {{ media.images[0].name }}
+            </div>
+            <p class="text-caption link">{{ media.description }}</p>
+              
+        </div>
+        <q-separator />
+      </q-card-section>
+
       <q-card-section v-if="feed.length">
-        <div class="text-h6">Player Feed</div>
+        <div class="text-h6 feed-header">Player Feed</div>
         <q-separator />
         <q-list bordered separator class="player-feed">
           <q-item v-for="news in feed" class="q-my-sm bg-gray-3">
             <q-item-section>
-              <q-item-label caption>
+              <q-item-label class="update" caption>
                 last updated: {{ localeDateTime(news.lastModified) }}
               </q-item-label>
               <q-item-label>{{ news.headline }}</q-item-label>
@@ -86,10 +118,47 @@ const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginC
   </q-dialog>
 </template>
 
-<style>
+<style lang="scss">
+  @import '../../base.scss';
+  .player-outlook > :first-child::after, .feed-header::after{
+    content: "";
+        height: 1px;
+        width: 100%;
+        position: relative;
+        background: rgb(134, 134, 134);
+        display: block;
+        transition: width 0.3s ease-in-out;
+        bottom: 4px;
+        left: -2px;
+  }
+
+  .player-outlook .outlook-body{
+    background: $white;
+    color: black;
+    padding: 2px 5px 0px 5px;
+    border-radius: 2px;
+  }
+
   .player-feed {
     height: 40vh; 
-    max-height: 550px;
+    // max-height: 550px;
     overflow-y: auto;
+    background: $white;
+    color: black !important;
+    border-radius: 2px;
+    & .update{
+      color: black;
+      font-style: italic;
+    }
+    & > *, p, div {
+      color: black;
+    }
   }
+
+  .text-caption.link{
+    background: $white;
+    color: black !important;
+    padding: 2px;
+    border-radius: 2px;
+  } 
 </style>

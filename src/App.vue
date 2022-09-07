@@ -2,9 +2,9 @@
   <q-layout view="hHh lpR fFf">
 
     <q-header elevated class="bg-primary text-white" height-hint="98">
-      <q-toolbar>
-        <q-toolbar-title>
-          <q-avatar icon="sports_football" />
+      <q-toolbar class="tb">
+        <q-toolbar-title :style="appState.screen.md ? '' : 'padding: 0px;'" >
+          <q-avatar id="leage-avatar" icon="sports_football" />
           Draft Party - {{ appState.league?.name ?? 'Fantasy Football' }}
         </q-toolbar-title>
 
