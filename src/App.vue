@@ -3,8 +3,6 @@
 
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-
         <q-toolbar-title>
           <q-avatar icon="sports_football" />
           Draft Party - {{ appState.league?.name ?? 'Fantasy Football' }}
@@ -12,14 +10,19 @@
 
         <draft-clock class="q-mx-auto" />
 
-        <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
+
       </q-toolbar>
 
-      <q-tabs align="center">
+      <div style="display: flex;">
+        <q-btn class="drawer left" dense flat round icon="menu" @click="toggleLeftDrawer" />
+      <q-tabs align="center" style="width: 100%; margin:0 auto;">
         <q-route-tab to="/" label="Draft Room" />
         <q-route-tab to="/teams" label="Teams" />
         <q-route-tab to="/league" label="League Settings" />
       </q-tabs>
+      
+        <q-btn class="drawer right" dense flat round icon="menu" @click="toggleRightDrawer" />
+      </div>
     </q-header>
 
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
@@ -115,8 +118,7 @@ onMounted(()=> {
     
 </script>
 
-<style>
-
+<style lang="scss">
 #app, body{
   overflow: hidden !important; 
 }
@@ -143,5 +145,19 @@ onMounted(()=> {
 
 .pos-TE {
   background-color:gold;
+}
+
+.drawer{
+  margin: 0 5px 10px 0;
+  background: #0a512a;
+  border-radius: 5px;
+  height: 0;
+  width: 0;
+  &.right {
+    margin-left: auto;
+  }
+  &.left{
+    margin-left: 10px;
+  }
 }
 </style>
