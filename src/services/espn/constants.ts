@@ -2,9 +2,11 @@ import {
   StatID,
   StatName,
   NFLTeamID,
-  NFLTeamAbbreviation,
+  NFLTeams,
   FreeAgent,
-  ByeWeek
+  ByeWeek,
+  EspnPosition,
+  EspnPositionID
 } from '../../types/espn'
 
 export const statsMap: Record<StatName, StatID> = {
@@ -63,7 +65,7 @@ export const statsMap: Record<StatName, StatID> = {
 export const statsLookup = Object.entries(statsMap)
   .reduce((o,[k, v]) => ({...o, [v]: k}), {}) as Record<StatID, StatName>
 
-export const slotCategoryIdToPositionMap = {
+export const slotCategoryIdToPositionMap: Record<EspnPositionID, EspnPosition> = {
   0: 'QB',
   1: 'TQB',
   2: 'RB',
@@ -93,7 +95,7 @@ export const slotCategoryIdToPositionMap = {
 };
 
 export const positionToSlotIDMap = Object.entries(slotCategoryIdToPositionMap)
-.reduce((o,[k, v]) => ({...o, [v]: k}), {}) 
+.reduce((o,[k, v]) => ({...o, [v]: k}), {}) as Record<EspnPosition, EspnPositionID>
 
 export const nflTeamIdToNFLTeam = {
   [-1]: 'Bye',
@@ -131,7 +133,7 @@ export const nflTeamIdToNFLTeam = {
   34: 'Houston Texans'
 }
 
-export const nflTeamIdToNFLTeamAbbreviation: Record<NFLTeamID, NFLTeamAbbreviation | FreeAgent | ByeWeek> = {
+export const nflTeamIdToNFLTeams: Record<NFLTeamID, NFLTeams | FreeAgent | ByeWeek> = {
   [-1]: 'Bye',
   0: 'FA',
   1 : 'ATL',
@@ -168,8 +170,8 @@ export const nflTeamIdToNFLTeamAbbreviation: Record<NFLTeamID, NFLTeamAbbreviati
   34: 'HOU'
 }
 
-export const nflTeamAbbreviationToId = Object.entries(nflTeamIdToNFLTeamAbbreviation)
-  .reduce((o,[k, v]) => ({...o, [v]: k}), {}) as Record<NFLTeamAbbreviation | FreeAgent | ByeWeek, NFLTeamID>
+export const nflTeamAbbreviationToId = Object.entries(nflTeamIdToNFLTeams)
+  .reduce((o,[k, v]) => ({...o, [v]: parseInt(k)}), {}) as Record<NFLTeams | FreeAgent | ByeWeek, NFLTeamID>
 
 export const defaultFilters = {
   "players": {
@@ -177,7 +179,7 @@ export const defaultFilters = {
       "value": true
     }
   },
-  "limit": 250,
+  "limit": 300,
   "sortPercOwned": {
     "sortAsc": false,
     "sortPriority": 1

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { IDraftedPlayer } from '../../types/players'
+import { IPlayer } from '../../types'
 import { useAppStore } from '../../store'
 import { usePlayerStore } from '../../store';
 import { playerDisplayName } from '../../utils/utils';
@@ -66,7 +66,7 @@ const showDetails = async ()=> {
         @mouseenter="showRemoveBtn = true"
         @mouseleave="showRemoveBtn = false"
         @click.stop.prevent="showDetails"
-        :class="`drafted-player-name q-pa-md pos-${player.position.toLowerCase()}`"
+        :class="`drafted-player-name q-pa-md pos-${player.position === 'D/ST' ? 'DEF': player.position}`"
       >
         <q-btn 
           round
@@ -75,7 +75,7 @@ const showDetails = async ()=> {
           title="remove pick from board"
           style="font-size: 0.6rem; margin: -1.5rem -.5rem;"
           icon="person_remove" 
-          @click.stop.prevent="removeDraftPick(players.pickLookup[player!.player_id])" 
+          @click.stop.prevent="removeDraftPick(players.pickLookup[player!.id])" 
         />
         <div class="text-center q-my-sm">{{ playerDisplayName(player) }}</div>
         <div style="display: flex; justify-content: space-around; font-size: 0.6rem;">

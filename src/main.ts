@@ -4,11 +4,8 @@ import { fetchJson } from './utils/fetch'
 import { IAppConfig } from './types/config'
 import { useAppStore } from './store'
 import { createPinia } from 'pinia'
+import { createHook } from './utils'
 import { log } from './utils/logger'
-import { fetchPlayers } from './services/espn'
-
-// @ts-ignore
-window.fetchPlayers = fetchPlayers
 
 // Import icon libraries
 import '@quasar/extras/roboto-font/roboto-font.css'
@@ -20,7 +17,7 @@ import 'quasar/src/css/index.sass'
 
 fetchJson<IAppConfig>('./config.json').then(async (config)=> {
   console.log('config', config)
-
+  
   // load app
   const { default: App } = await import('./App.vue')
   const { router } = await import('./router/index')
@@ -46,6 +43,12 @@ fetchJson<IAppConfig>('./config.json').then(async (config)=> {
   const appState = useAppStore()
   appState.setConfig(config)
 
+  createHook({
+    props: {
+      app: appState,
+    }
+  })
+
   // check url for league ID and if is league manager (?lm=true)
   const url = new URL(window.location.href.replace(/#\//g,''))
   log('url is: ', url)
@@ -60,7 +63,4 @@ fetchJson<IAppConfig>('./config.json').then(async (config)=> {
       appState.league = league
     }
   }
-
-  // @ts-ignore
-  hook.appState = appState
 })

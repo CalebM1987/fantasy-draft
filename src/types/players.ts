@@ -2,31 +2,13 @@ import { ILeagueMember } from "./app";
 
 export type ScoringFormat = "standard" | "half-ppr" | "ppr";
 
-export type PlayerPosition = 
-  | "QB"
-  | "RB"
-  | "WR"
-  | "TE"
-  | "PK"
-  | "DEF"
-
-export type FlexPositions =
-  | "RB"
-  | "WR"
-  | "TE"
-
 export type DraftType = "snake" | "auction";
-
-export type RosterSpot = PlayerPosition | "FLEX" | "BENCH";
 
 export type FilterType = "top-200" | "positions" | "favorites";
 
 export type PlayerListType = "all" | "available";
 
 export type RosterFormat = "standard" | "two-qb" | "custom";
-
-export type FreeAgent = "FA";
-export type NFLTeams = "ARI" | "ATL" | "BAL" | "BUF" | "CAR" | "CHI" | "CIN" | "CLE" | "DAL" | "DEN" | "DET" | "GB" | "HOU" | "IND" | "JAX" | "KC" | "LAC" | "LAR" | "LV" | "MIA" | "MIN" | "NE" | "NO" | "NYG" | "NYJ" | "PHI" | "PIT" | "SEA" | "SF" | "TB" | "TEN" | "WAS"
 
 export interface ADPPlayersResponseMeta {
   type: string;
@@ -35,39 +17,6 @@ export interface ADPPlayersResponseMeta {
   total_drafts: number;
   start_date: string;
   end_date: string;
-}
-
-export interface IPlayer {
-  player_id: number;
-  name: string;
-  position: PlayerPosition;
-  team: string;
-  adp: number;
-  adp_formatted?: string;
-  times_drafted?: number;
-  high?: number;
-  low?: number;
-  stdev?: number;
-  bye: number;
-  rank?: number;
-  position_rank?: number;
-  isCustom?: boolean;
-  headshot?: string;
-  /** espn only attributes */
-  espnPlayerId?: number;
-  percentOwned?: number;
-  espnOwnershipRank?: number;
-}
-
-export interface IDraftedPlayer extends IPlayer {
-  pickNumber?: number;
-  owner?: ILeagueMember;
-}
-
-export interface ADPPlayersResponse {
-  status: string;
-  meta: ADPPlayersResponseMeta;
-  players: IPlayer[];
 }
 
 export interface IPlayerDetails {

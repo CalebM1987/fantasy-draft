@@ -54,7 +54,7 @@ const nflTeamIdToNFLTeam = {
  * Maps `proTeam` numerical enum to readable team name abbreviations.
  * @type {object}
  */
-const nflTeamIdToNFLTeamAbbreviation = {
+const nflTeamIdToNFLTeams = {
   [-1]: 'Bye',
   0: 'FA',
   1 : 'ATL',
@@ -168,8 +168,8 @@ const positionIDs = {
   2: 'RB',  
   3: 'WR',
   4: 'TE',
-  5: 'PK',
-  16: 'DEF'
+  5: 'K',
+  16: 'D/ST'
 }
 
 // https://fantasy.espn.com/apis/v3/games/ffl/seasons/2022/players?scoringPeriodId=0&view=players_wl
@@ -185,13 +185,13 @@ async function loadPlayers(client) {
     .filter(p => p.defaultPositionId in positionIDs && p.ownership)
     .map(p => {
       const position = positionIDs[p.defaultPositionId]
-      const espnPlayerId = p.id
-      const percentOwned = p.ownership ? p.ownership.percentOwned : 0
+      const id = p.id
+      const percentOwned = p.ownership ? p.ownership.ownership.percentOwned : 0
       return {
         position,
         percentOwned,
-        espnPlayerId,
-        team: nflTeamIdToNFLTeamAbbreviation[p.proTeamId],
+        id,
+        team: nflTeamIdToNFLTeams[p.proTeamId],
         ...Object.keys(p)
           .filter(k => !skip.includes(k))
           .reduce((acc, k)=> ({...acc, [k]: p[k] }), {})

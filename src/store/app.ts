@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { nextTick } from 'process';
 import { IAppConfig, ILeagueInfo } from '../types'
 import { Screen } from 'quasar'
+import { EventBus } from '../events/event-bus';
 
 interface IAppState {
   config?: IAppConfig;
@@ -15,6 +16,8 @@ interface IAppState {
   isLM: boolean;
   /** boolean for whether or not the draft started */
   hasStartedDraft: boolean;
+  /** has loaded league */
+  hasLoadedLeague: boolean;
 }
 
 export const useAppStore = defineStore('app', {
@@ -24,7 +27,8 @@ export const useAppStore = defineStore('app', {
     league: undefined,
     hasStartedDraft: false,
     timer: 120 * 1000,
-    isLM: false
+    isLM: false,
+    hasLoadedLeague: false
   } as IAppState),
   
   getters: {
@@ -54,7 +58,12 @@ export const useAppStore = defineStore('app', {
   actions: {
     setConfig(config: IAppConfig){
       this.config = config
-      nextTick(()=> this.timer = (this.league?.draft?.timeLimit ?? 120) * 1000)
+      nextTick(()=> {
+        if (this.league){
+          EventBus.emit('has-loaded-league', this.league)
+        }
+        this.timer = (this.league?.draft?.timeLimit ?? 120) * 1000
+      })
     }
   }
 })

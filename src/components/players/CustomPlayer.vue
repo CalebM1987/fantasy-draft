@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { ref} from 'vue'
-import { PlayerPosition, NFLTeams, FreeAgent, IPlayer } from '../../types/players'
+import { PlayerPosition, NFLTeams, FreeAgent, IPlayer, NFLTeamID } from '../../types'
 import { usePlayerStore } from '../../store';
 import { useDialogPluginComponent, QForm, useQuasar } from 'quasar'
 import { log, validatePlayerName } from '../../utils';
+import { nflTeamAbbreviationToId, positionToSlotIDMap } from '../../services/espn';
 
 const playerState = usePlayerStore()
 
@@ -38,28 +39,49 @@ const createPlayer = (): IPlayer => {
     })
     throw Error(errMessage.value)
   }
-  
-  const teammate = playerState.players.find(p => p.team === team.value)
+
+  const proTeamId = parseInt(nflTeamAbbreviationToId[team.value]) as unknown as NFLTeamID
+  const positionId = positionToSlotIDMap[position.value]
+  const parts = name.value.split(' ')
+
   const player: IPlayer = {
-    player_id: new Date().getTime(),
-    name: name.value,
+    active: true,
+    injured: false,
+    injuryStatus: 'ACTIVE',
+    invalid: false,
+    id: new Date().getTime(),
+    defaultPositionId: positionId,
+    eligibleSlots: [positionId],
+    fullName: name.value,
+    firstName: parts[0],
+    lastName: parts.slice(1).join(' '),
     position: position.value!,
-    team: team.value!,
+    team: team.value,
+    proTeamId,
     rank: playerState.players.length + 1,
-    adp: playerState.players.length,
-    times_drafted: 1,
-    bye: teammate!.bye,
-    isCustom: true
+    adp: 0,
+    bye: playerState.byeWeeks[proTeamId],
+    isCustom: true,
+    ownership: {
+      averageDraftPosition: 300,
+      auctionValueAverage: 0,
+      auctionValueAverageChange: 0,
+      averageDraftPositionPercentChange: 0,
+      percentOwned: 0.1,
+      percentChange: 0, 
+      percentStarted: 0.01
+    }
   }
   playerState.players.push(player)
+  log('Created custom player: ', player)
   return player
 }
 
 const validateCustomPlayer = (player: IPlayer)=> {
-  if (!validatePlayerName(player.name)){
+  if (!validatePlayerName(player.fullName)){
     errMessage.value = 'Invalid Player Name Format'
   }
-  const isDrafted = playerState.draftPicks.find(p => p.name.toLowerCase() === name.value.toLowerCase() && p.team === player.team && p.position === player.position)
+  const isDrafted = playerState.draftPicks.find(p => p.fullName.toLowerCase() === name.value.toLowerCase() && p.team === player.team && p.position === player.position)
   if (isDrafted) {
     errMessage.value = 'Cannot draft a player who has already been drafted'
     resetPlayer()
@@ -67,7 +89,7 @@ const validateCustomPlayer = (player: IPlayer)=> {
     return false
   }
   const isAlreadyInList = playerState.players.find(p => 
-    p.name.toLowerCase() === name.value.toLowerCase() 
+    p.fullName.toLowerCase() === name.value.toLowerCase() 
     && p.team === player.team 
     && p.position === player.position
   )
@@ -77,7 +99,7 @@ const validateCustomPlayer = (player: IPlayer)=> {
     log('Tried to create a custom player who was already in top 200: ', existingPlayer.value)
     $q.notify({
       type: 'warning',
-      message: `Attempted to create a custom player who is already in the Available Players list: "${existingPlayer.value.name}"`
+      message: `Attempted to create a custom player who is already in the Available Players list: "${existingPlayer.value.fullName}"`
     })
   }
   return true
@@ -144,7 +166,7 @@ const submitNewPlayer = async ()=> {
               lazy-rules
               :error="!position"
               :rules="[ val => val && val.length ]"
-              :options="playerState.positions.filter(p => p !== 'DEF')"
+              :options="playerState.positions.filter(p => p !== 'D/ST')"
             />
       
           </q-form>

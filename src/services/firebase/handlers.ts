@@ -10,7 +10,7 @@ import {
 
 import { useDraftClock } from '../../composables/draft-clock';
 import { localeDateTime } from '../../utils';
-import { IDraftedPlayer, IDraftClockStatus } from '../../types';
+import { IPlayer, IDraftClockStatus } from '../../types';
 import { log } from "../../utils/logger";
 
 
@@ -23,14 +23,14 @@ export function setRealtimeHandlers(){
   const players = usePlayerStore()
 
   const addPickSub = onChildAdded(leagueRef, (snapshot)=> {
-    const pick = snapshot.val() as IDraftedPlayer
+    const pick = snapshot.val() as IPlayer
     log('new pick detected', pick)
     players.addPickToBoard(pick, snapshot.key!)
     
   })
 
   const remPickSub = onChildRemoved(leagueRef, (snapshot)=> {
-    const pick = snapshot.val() as IDraftedPlayer
+    const pick = snapshot.val() as IPlayer
     log('pick removed from board', pick)
     players.removePickFromBoard(pick)
   })

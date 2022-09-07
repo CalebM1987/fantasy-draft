@@ -1,6 +1,6 @@
 import { copyToClipboard } from "quasar"
 import { useAppStore, usePlayerStore } from "../store"
-import { EspnPositionID, IEspnPlayer } from '../types/espn'
+import { EspnPositionID, IPlayer } from '../types'
 
 export type DraftAction = 'DRAFT' | 'UNDRAFT';
 
@@ -11,7 +11,7 @@ export interface IRosterItem {
   name?: string;
 }
 
-export interface IESPNRoster {
+export interface IEspnRoster {
   isLeagueManager: boolean;
   teamId: number;
   type: DraftAction;
@@ -20,7 +20,7 @@ export interface IESPNRoster {
   items: IRosterItem[];
 }
 
-export function getRosters(): IESPNRoster[] {
+export function getRosters(): IEspnRoster[] {
   const appState = useAppStore()
 
   if (appState.league?.platform === 'espn'){
@@ -28,14 +28,14 @@ export function getRosters(): IESPNRoster[] {
 
     const members = appState.sortedMembers.reduce((o, m)=> ({...o, [m.name]: []}), {}) as Record<string, IRosterItem[]>;
     console.log('members yo: ', members)
-    const rosters: IESPNRoster[] = []
+    const rosters: IEspnRoster[] = []
     playerState.draftPicks.forEach(p => {
       if (p.owner){
         members[p.owner.name].push({
           type: 'DRAFT',
           overallPickNumber: p.pickNumber!,
-          playerId: p.espnPlayerId!,
-          name: p.name
+          playerId: p.id!,
+          name: p.fullName
         })
       }
     })
@@ -47,7 +47,7 @@ export function getRosters(): IESPNRoster[] {
         scoringPeriodId: 1,
         executionType: 'EXECUTE',
         items: members[k]
-      } as IESPNRoster)
+      } as IEspnRoster)
     })
 
     return rosters
@@ -55,7 +55,7 @@ export function getRosters(): IESPNRoster[] {
   throw Error('Cannot copy picks to clipboard: This is not an ESPN league')
 }
 
-const templateFunction = (rosters: IESPNRoster[])=> `async function updateRosters(type='DRAFT'){
+const templateFunction = (rosters: IEspnRoster[])=> `async function updateRosters(type='DRAFT'){
   
   const rosters = ${JSON.stringify(rosters, null, 2)}
   const headers = new Headers()
@@ -93,7 +93,19 @@ export function copyESPNUpdateRostersFunction() {
   return copyToClipboard(templateFunction(rosters))
 }
 
-export function getHeadshot(playerOrId: IEspnPlayer | number): string {
+export function getHeadshot(playerOrId: IPlayer | number): string {
   const pid = typeof playerOrId === 'number' ? playerOrId: playerOrId.id
   return `https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/${pid}.png&w=96&h=70&cb=1`
+}
+
+export function clonePlayer(player: IPlayer): IPlayer {
+  const skip = ['eligibleSlots', 'ownership']
+  const clone = Object.entries(player)
+    .filter(([k,v]) => !skip.includes(k))
+    .reduce((o,[k, v]) => ({...o, [k]: v}), {}) as any
+  console.log('clone: ', clone)
+
+  clone.eligibleSlots = player.eligibleSlots.map(s => s)
+  clone.ownership = {...player.ownership}
+  return clone
 }

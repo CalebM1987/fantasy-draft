@@ -17,15 +17,15 @@ players.forEach(p => {
     // replace this with WSH
     p.team = 'WSH'
   }
-  if (p.position === 'DEF'){
-    espnPlayer = espnPlayers.find(_p => _p.position === 'DEF' && _p.team === p.team)
+  if (p.position === 'D/ST'){
+    espnPlayer = espnPlayers.find(_p => _p.position === 'D/ST' && _p.team === p.team)
   } else {
     // try to match by name
-    espnPlayer = espnPlayers.find(_p => _p.fullName === p.name && _p.team === p.team && _p.position === p.position)
+    espnPlayer = espnPlayers.find(_p => _p.fullName === p.fullName && _p.team === p.team && _p.position === p.position)
   }
   if (espnPlayer){
-    p.espnPlayerId = espnPlayer.espnPlayerId
-    p.percentOwned = espnPlayer.percentOwned
+    p.id = espnPlayer.id
+    p.ownership.percentOwned = espnPlayer.ownership.percentOwned
     p.espnOwnershipRank = espnPlayer.espnOwnershipRank
   }
 })

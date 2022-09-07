@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ILeagueMember } from '../../types/app';
-import { IDraftedPlayer, RosterSpot } from '../../types/players';
+import { IPlayer, RosterSpot } from '../../types';
 import { usePlayerStore, useAppStore } from '../../store'
 import { ref, computed, watchEffect } from 'vue'
 
@@ -12,7 +12,7 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const roster = computed<IDraftedPlayer[]>(()=> 
+const roster = computed<IPlayer[]>(()=> 
   playerState.draftPicks
     .filter(p => p.owner?.name === props.leagueMember.name)
 )
@@ -34,7 +34,7 @@ const abbreviateSpot = (spot: RosterSpot): string => {
 }
 
 interface IRosterSlot {
-  player?: IDraftedPlayer;
+  player?: IPlayer;
   type: RosterSpot;
 }
 
@@ -89,7 +89,7 @@ const rosterSpots = computed<IRosterSlot[]>(()=> {
             <q-avatar color="primary">{{ abbreviateSpot(spot.type) }}</q-avatar>
           </q-item-section>
           <q-item-section>
-            <q-item-label :class="spot.player ? '': 'empty-slot'">{{ spot.player?.name ?? 'EMPTY' }}</q-item-label>
+            <q-item-label :class="spot.player ? '': 'empty-slot'">{{ spot.player?.fullName ?? 'EMPTY' }}</q-item-label>
             <q-item-label caption lines="1">
               <div style="display: flex; justify-content: space-between;">
                 <span>{{ spot.player?.team }} {{ spot.player?.position}}</span>

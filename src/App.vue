@@ -65,10 +65,10 @@
 <script lang="ts" setup>
 import { ref, onMounted, defineAsyncComponent, watchEffect } from 'vue'
 import { useQuasar } from 'quasar'
-import { useAppStore } from './store'
+import { useAppStore, usePlayerStore } from './store'
 import { setRealtimeHandlers, clearDraftBoard, removeRealtimeHandlers } from './services/firebase';
+import { EventBus } from './events/event-bus';
 import { log } from './utils/logger';
-// import AvailablePlayers from './components/players/AvailablePlayers.vue';
 const DraftClock = defineAsyncComponent(()=> import('./components/draft/DraftClock.vue'))
 const AvailablePlayers = defineAsyncComponent(()=> import('./components/players/AvailablePlayers.vue'))
 const AppSettings = defineAsyncComponent(()=> import('./components/settings/AppSettings.vue'))
@@ -97,9 +97,10 @@ const toggleRightDrawer = () => {
 }
 
 onMounted(()=> {
-  watchEffect(()=> {
-    if (appState.league){
-      log('league is ready: ', appState.league)
+  
+  EventBus.on('has-loaded-league', (league)=> {
+    if (league){
+      log('league is ready: ', league)
       // clearDraftBoard()?.then(()=> log('cleared draft board'))
       setRealtimeHandlers()
     } else {
@@ -116,27 +117,27 @@ onMounted(()=> {
 </script>
 
 <style>
-.pos-rb {
+.pos-RB {
   background-color: rgb(255, 38, 0);
 }
 
-.pos-wr {
+.pos-WR {
   background-color: rgb(49, 193, 9);
 }
 
-.pos-def {
+.pos-DEF {
   background-color: rgba(252, 118, 15, 0.995);
 }
 
-.pos-qb {
+.pos-QB {
   background-color: rgb(70, 133, 243);
 }
 
-.pos-pk {
+.pos-K {
   background-color: rgba(201, 59, 185, 0.872);
 }
 
-.pos-te {
+.pos-TE {
   background-color:gold;
 }
 </style>

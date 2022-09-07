@@ -1,4 +1,5 @@
-import { PlayerPosition, ScoringFormat, RosterFormat, DraftType } from "./players";
+import { ScoringFormat, RosterFormat, DraftType } from "./players";
+import { PlayerPosition } from "./espn";
 import { ILeagueMember } from "./app";
 
 export interface IRosterSettings {

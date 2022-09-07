@@ -1,16 +1,15 @@
 import { defineStore } from 'pinia'
-import { PlayerListType, FreeAgent, NFLTeams, IDraftedPlayer, IPlayer, IPlayerDetails, PlayerPosition } from '../types/players'
-import { fetchADP } from '../services/fantasycalculator'
+import { PlayerListType, FreeAgent, NFLTeams, IPlayer, IPlayerDetails, PlayerPosition, NFLTeamID } from '../types'
+import { fetchEspnPlayers } from '../services/espn'
 import { saveDraftPick, clearDraftBoard, updateLeagueClock } from '../services/firebase'
-import { sortByPropertyInPlace } from '../utils/utils'
-import { useAppStore } from './app'
-import { loadFromStorage, saveToStorage } from '../utils/storage'
+import { loadFromStorage, saveToStorage, clonePlayer, sortByPropertyInPlace } from '../utils'
 import { useDraftClock } from '../composables/draft-clock';
+import { useAppStore } from './app'
 import { log } from '../utils/logger'
 
 interface IPlayersState {
   players: IPlayer[];
-  draftPicks: IDraftedPlayer[];
+  draftPicks: IPlayer[];
   availablePlayers: IPlayer[];
   positions: PlayerPosition[];
   showAvailableOnly: boolean;
@@ -21,9 +20,10 @@ interface IPlayersState {
   /** the current global search string filter */
   search: string;
   nflTeams: (NFLTeams | FreeAgent)[];
+  byeWeeks: Partial<Record<NFLTeamID, number>>;
 }
 
-const nflTeams = ['ARI', 'ATL', 'BAL', 'BUF', 'CAR', 'CHI', 'CIN', 'CLE', 'DAL', 'DEN', 'DET', 'FA', 'GB', 'HOU', 'IND', 'JAX', 'KC', 'LAC', 'LAR', 'LV', 'MIA', 'MIN', 'NE', 'NO', 'NYG', 'NYJ', 'PHI', 'PIT', 'SEA', 'SF', 'TB', 'TEN', 'WAS']
+const nflTeams: NFLTeams[] = ['ATL', 'BUF', 'CHI', 'CIN', 'CLE', 'DAL', 'DEN', 'DET', 'GB', 'TEN', 'IND', 'KC', 'LV', 'LAR', 'MIA', 'MIN', 'NE', 'NO', 'NYG', 'NYJ', 'PHI', 'ARI', 'PIT', 'LAC', 'SF', 'SEA', 'TB', 'WSH', 'CAR', 'JAX', 'BAL', 'HOU']
 
 // You can name the return value of `defineStore()` anything you want, but it's best to use the name of the store and surround it with `use` and `Store` (e.g. `useUserStore`, `useCartStore`, `useProductStore`)
 // the first argument is a unique id of the store across your application
@@ -33,13 +33,14 @@ export const usePlayerStore = defineStore('players', {
     draftPicks: [], //localStorage ? JSON.parse(localStorage.getItem('__fantasyDraftBoard') ?? '[]'): [],
     availablePlayers: [],
     showAvailableOnly: true,
-    positions: ["RB", "WR", "TE", "QB", "DEF", "PK"],
+    positions: ["RB", "WR", "TE", "QB", "D/ST", "K"],
     playerDetailsCache: {},
     pickLookup: {},
     favorites: loadFromStorage<number[]>('_draft_favorites', []),
     listType: 'available',
     search: '',
-    nflTeams
+    nflTeams,
+    byeWeeks: {}
   } as IPlayersState),
 
   getters: {
@@ -56,7 +57,7 @@ export const usePlayerStore = defineStore('players', {
       return playersByPos
     },
 
-    draftedPlayerIds: (state)=> state.draftPicks.map(p => p.player_id),
+    draftedPlayerIds: (state)=> state.draftPicks.map(p => p.id),
 
     totalPickCount: (_)=> {
       const appState = useAppStore()
@@ -73,7 +74,7 @@ export const usePlayerStore = defineStore('players', {
       
       const regEx = RegExp(state.search, 'i')
       return state.search.length >= 2
-        ? viewList.filter(p => regEx.test(p.name)) 
+        ? viewList.filter(p => regEx.test(p.fullName)) 
         : viewList
     },
 
@@ -88,11 +89,12 @@ export const usePlayerStore = defineStore('players', {
   actions: {
 
     async draftPlayer(player: IPlayer){
-      if (this.draftedPlayerIds.includes(player.player_id)){
-        throw Error(`Player has already been drafted: "${player.name}" (${player.player_id})`)
+      if (this.draftedPlayerIds.includes(player.id)){
+        throw Error(`Player has already been drafted: "${player.fullName}" (${player.id})`)
       }
+
       const appState = useAppStore()
-      const drafted = { ...player } as IDraftedPlayer;
+      const drafted = clonePlayer(player)
       drafted.pickNumber = this.draftPicks.length + 1
       drafted.owner = appState.sortedMembers.find(m => m.picks?.includes(drafted.pickNumber!))
       const { pauseTimer } = useDraftClock()
@@ -107,46 +109,46 @@ export const usePlayerStore = defineStore('players', {
     },
 
     addToFavorites(player: IPlayer){
-      if (!this.favorites.includes(player.player_id)){
-        this.favorites.push(player.player_id)
+      if (!this.favorites.includes(player.id)){
+        this.favorites.push(player.id)
         saveToStorage('_draft_favorites', this.favorites)
-        log(`added player to favorites "${player.name}"`)
+        log(`added player to favorites "${player.fullName}"`)
       }
     },
 
-    removeFromFavorites(player: IPlayer | IDraftedPlayer){
-      this.favorites = this.favorites.filter(pid => pid != player.player_id)
+    removeFromFavorites(player: IPlayer | IPlayer){
+      this.favorites = this.favorites.filter(pid => pid != player.id)
       saveToStorage('_draft_favorites', this.favorites)
-      log(`removed player from favorites "${player.name}"`)
+      log(`removed player from favorites "${player.fullName}"`)
     },
 
-    addPickToBoard(pick: IDraftedPlayer, key: string){
-      const player = this.players.find(p => p.player_id === pick.player_id)
-      if (!player || this.draftedPlayerIds.includes(pick.player_id)) return;
+    addPickToBoard(pick: IPlayer, key: string){
+      const player = this.players.find(p => p.id === pick.id)
+      if (!player || this.draftedPlayerIds.includes(pick.id)) return;
       this.draftPicks.push(pick)
-      this.pickLookup[pick.player_id] = key
+      this.pickLookup[pick.id] = key
       this.availablePlayers.splice(this.availablePlayers.indexOf(player), 1)
       this.removeFromFavorites(pick)
     },
 
-    removePickFromBoard(pick: IDraftedPlayer){
-      const existing = this.draftPicks.find(p => p.player_id === pick.player_id)
+    removePickFromBoard(pick: IPlayer){
+      const existing = this.draftPicks.find(p => p.id === pick.id)
       if (existing){
         const index = this.draftPicks.indexOf(existing)
         existing.pickNumber = undefined
         existing.owner = undefined
         this.draftPicks.splice(index, 1)
-        delete this.pickLookup[existing.player_id]
+        delete this.pickLookup[existing.id]
         this.availablePlayers.push(existing)
         sortByPropertyInPlace(this.availablePlayers, 'rank')
       }
     },
 
     async fetchPlayers(){
-      const adp = await fetchADP()
+      const adp = await fetchEspnPlayers()
       log('fetched ADP response: ', adp)
-      const players = adp.players
-        .filter(p => !this.draftedPlayerIds.includes(p.player_id))
+      const players = adp
+        .filter(p => !this.draftedPlayerIds.includes(p.id))
 
       players.forEach((p,i) => p.rank = i+1)
 

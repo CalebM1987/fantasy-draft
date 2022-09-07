@@ -4,10 +4,13 @@ import { useAppStore } from '../../store'
 import { useQuasar } from 'quasar';
 import { log } from '../../utils/logger';
 import { EventBus } from '../../events/event-bus';
+import { updateHook } from '../../utils';
 import { useAutoDraft } from '../../composables/auto-draft';
 import { updateLeagueClock } from '../../services/firebase';
 import DraftSquare from './DraftSquare.vue';
 const AutoDraftPlayer = defineAsyncComponent(()=> import('../draft/AutoDraftPlayer.vue'))
+
+updateHook({ updateLeagueClock })
 
 const appState = useAppStore()
 const colSize = computed(()=> Math.min(Math.max(Math.ceil(12 / appState.sortedMembers.length), 1), 12))

@@ -1,10 +1,10 @@
-import { IDraftedPlayer } from "../types/players"
+import { IPlayer } from "../types"
 
-export const playerDisplayName = (player: IDraftedPlayer) => {
-  const name = player.name
-  if (player.position === 'DEF'){
-    console.log('player name for defense: ', player.name)
-    return player.name.replace('Defense', 'D/ST')
+export const playerDisplayName = (player: IPlayer) => {
+  const name = player.fullName
+  if (player.position === 'D/ST'){
+    console.log('player name for defense: ', player.fullName)
+    return player.fullName.replace('Defense', 'D/ST')
   } else {
     const parts = name.split(' ')
     const first = parts[0]

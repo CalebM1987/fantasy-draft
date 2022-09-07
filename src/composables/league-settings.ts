@@ -18,8 +18,8 @@ export const standardRosterPositions: RosterSpot[] = [
   'WR',
   'TE',
   'FLEX',
-  'DEF',
-  'PK'
+  'D/ST',
+  'K'
 ]
 
 export const twoQBRosterPositions: RosterSpot[] = [ ...standardRosterPositions, 'QB']

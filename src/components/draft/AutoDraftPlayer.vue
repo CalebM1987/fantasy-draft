@@ -40,7 +40,7 @@ const onCancel = ()=> {
   
       <q-card-section>
         <p v-if="appState.timer === 0">Time is up for this pick!</p>
-        <p>The next best available player is <strong>{{ bestAvailable.name }}</strong> ({{ bestAvailable.team }} {{ bestAvailable.position }}). Do you want to auto draft this player for <strong>{{ players.onTheClock?.teamName }}</strong> ({{ players.onTheClock?.name }})?</p>
+        <p>The next best available player is <strong>{{ bestAvailable.fullName }}</strong> ({{ bestAvailable.team }} {{ bestAvailable.position }}). Do you want to auto draft this player for <strong>{{ players.onTheClock?.teamName }}</strong> ({{ players.onTheClock?.name }})?</p>
       </q-card-section>
   
       <q-card-actions>

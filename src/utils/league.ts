@@ -18,11 +18,11 @@ export function createLeagueTemplate(id: string | number, props?: Partial<ILeagu
       format: 'standard',
       positions: []
     }
-  } as ILeagueInfo
+  } as Partial<ILeagueInfo>
 
   if (isObject(props)){
     Object.assign(league, props)
   }
 
-  return reactive(league)
+  return reactive(league) as any
 }

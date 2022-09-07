@@ -1,3 +1,5 @@
+import { ILeagueMember } from "./app";
+
 /** date as ISO string */
 export type DateString = string;
 
@@ -13,36 +15,11 @@ export interface ImageInfo {
   type: string;
 }
 
-export interface News {
-  href: string;
-}
-
-export interface Self {
-  href: string;
-}
-
-export interface Api {
-  news: News;
-  self: Self;
-}
-
-export interface Short {
-  href: string;
-}
-
-export interface Web {
-  href: string;
-  short: Short;
-}
-
-export interface Mobile {
-  href: string;
-}
 
 export interface Links {
-  api: Api;
-  web: Web;
-  mobile: Mobile;
+  api: any;
+  web: any;
+  mobile: any;
 }
 
 export interface Ad {
@@ -68,73 +45,16 @@ export interface DeviceRestrictions {
   devices: string[];
 }
 
-export interface Leagues {
-}
-
-export interface Api2 {
-  leagues: Leagues;
-}
-
-export interface Leagues2 {
-}
-
-export interface Web2 {
-  leagues: Leagues2;
-}
-
-export interface Leagues3 {
-}
-
-export interface Mobile2 {
-  leagues: Leagues3;
-}
-
-export interface Links2 {
-  api: Api2;
-  web: Web2;
-  mobile: Mobile2;
-}
-
 export interface League {
   id: number;
   description: string;
-  links: Links2;
-}
-
-export interface Athletes {
-  href: string;
-}
-
-export interface Api3 {
-  athletes: Athletes;
-}
-
-export interface Athletes2 {
-  href: string;
-}
-
-export interface Web3 {
-  athletes: Athletes2;
-}
-
-export interface Athletes3 {
-  href: string;
-}
-
-export interface Mobile3 {
-  athletes: Athletes3;
-}
-
-export interface Links3 {
-  api: Api3;
-  web: Web3;
-  mobile: Mobile3;
+  links: Links;
 }
 
 export interface Athlete {
   id: number;
   description: string;
-  links: Links3;
+  links: Links;
 }
 
 export interface Category {
@@ -156,23 +76,11 @@ export interface Default {
   height: number;
 }
 
-export interface Full {
-  href: string;
-}
-
-export interface Wide {
-  href: string;
-}
-
-export interface Square {
-  href: string;
-}
-
 export interface PosterImages {
   default: Default;
-  full: Full;
-  wide: Wide;
-  square: Square;
+  full: WebLink;
+  wide: WebLink;
+  square: WebLink;
 }
 
 export interface Image2 {
@@ -185,101 +93,43 @@ export interface Image2 {
   height: number;
 }
 
-export interface Self2 {
+
+export interface Api {
+  self?: WebLink;
+  artwork?: WebLink;
+}
+
+
+export interface WebLink {
   href: string;
 }
 
-export interface Artwork {
-  href: string;
+export interface HLS extends WebLink {
+  HD: WebLink;
 }
 
-export interface Api4 {
-  self: Self2;
-  artwork: Artwork;
+
+export interface Source extends WebLink {
+  mezzanine?: WebLink;
+  flash?: WebLink;
+  hds?: WebLink;
+  HLS?: HLS;
+  HD?: WebLink;
+  full?: WebLink;
 }
 
-export interface Short2 {
-  href: string;
-}
-
-export interface Self3 {
-  href: string;
-}
-
-export interface Web4 {
-  href: string;
-  short: Short2;
-  self: Self3;
-}
-
-export interface Mezzanine {
-  href: string;
-}
-
-export interface Flash {
-  href: string;
-}
-
-export interface Hds {
-  href: string;
-}
-
-export interface HD {
-  href: string;
-}
-
-export interface HLS {
-  href: string;
-  HD: HD;
-}
-
-export interface HD2 {
-  href: string;
-}
-
-export interface Full2 {
-  href: string;
-}
-
-export interface Source {
-  mezzanine: Mezzanine;
-  flash: Flash;
-  hds: Hds;
-  HLS: HLS;
-  HD: HD2;
-  full: Full2;
-  href: string;
-}
-
-export interface Alert {
-  href: string;
-}
-
-export interface Source2 {
-  href: string;
-}
-
-export interface Streaming {
-  href: string;
-}
-
-export interface ProgressiveDownload {
-  href: string;
-}
-
-export interface Mobile4 {
-  alert: Alert;
-  source: Source2;
-  href: string;
-  streaming: Streaming;
-  progressiveDownload: ProgressiveDownload;
+export interface Mobile extends WebLink {
+  alert: WebLink
+  source: WebLink;
+  streaming: WebLink;
+  progressiveDownload: WebLink;
 }
 
 export interface Links4 {
-  api: Api4;
-  web: Web4;
-  source: Source;
-  mobile: Mobile4;
+  api: WebLink;
+  web: WebLink;
+  source: WebLink;
+  mobile: WebLink;
 }
 
 export interface VideoInfo {
@@ -306,49 +156,12 @@ export interface VideoInfo {
   title: string;
 }
 
-export interface Image3 {
-  name: string;
-  width: number;
-  id: number;
-  credit: string;
-  type: string;
-  url: string;
-  height: number;
-}
-
-export interface News2 {
-  href: string;
-}
-
-export interface Self4 {
-  href: string;
-}
-
-export interface Api5 {
-  news: News2;
-  self: Self4;
-}
-
-export interface Web5 {
-  href: string;
-}
-
-export interface Mobile5 {
-  href: string;
-}
-
-export interface Links5 {
-  api: Api5;
-  web: Web5;
-  mobile: Mobile5;
-}
-
 export interface Related {
-  images: Image3[];
+  images: ImageInfo[];
   premium: boolean;
   description: string;
   linkText: string;
-  links: Links5;
+  links: Links;
   id: number;
   title: string;
   type: string;
@@ -507,63 +320,83 @@ export type EspnPosition =
   | "ER"
   | "Rookie"
 
+  export type PlayerPosition = 
+  | "QB"
+  | "RB"
+  | "WR"
+  | "TE"
+  | "K"
+  | "D/ST"
+
+export type RosterSpot = PlayerPosition | "FLEX" | "BENCH";
+
+export type FlexPositions =
+  | "RB"
+  | "WR"
+  | "TE"
+
 export type EspnPositionID = 
-  | "0"
-  | "1"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9"
-  | "10"
-  | "11"
-  | "12"
-  | "13"
-  | "14"
-  | "15"
-  | "16"
-  | "17"
-  | "18"
-  | "19"
-  | "20"
-  | "21"
-  | "22"
-  | "23"
-  | "24"
-  | "25"
+  | 0
+  | 1
+  | 2
+  | 3
+  | 4
+  | 5
+  | 6
+  | 7
+  | 8
+  | 9
+  | 10
+  | 11
+  | 12
+  | 13
+  | 14
+  | 15
+  | 16
+  | 17
+  | 18
+  | 19
+  | 20
+  | 21
+  | 22
+  | 23
+  | 24
+  | 25
 
 export interface IEspnPlayerCard {
   active: boolean
   defaultPositionId: number
-  draftRanksByRankType: DraftRanksByRankType
-  droppable: boolean
+  draftRanksByRankType?: DraftRanksByRankType
+  droppable?: boolean
   eligibleSlots: number[]
   firstName: string
   fullName: string
   id: number
-  injured: boolean
+  injured?: boolean
   injuryStatus: InjuryStatus
   invalid: boolean
-  jersey: string
   lastName: string
-  lastNewsDate: number
-  lastVideoDate: number
-  laterality: string
+  lastNewsDate?: number
+  lastVideoDate?: number
+  laterality?: string
   ownership: Ownership
-  proTeamId: number
-  stance: string
+  proTeamId: NFLTeamID
   stats?: Stat[]
-  universeId: number
+  universeId?: number;
+  stance?: string;
+  jersey?: string;
 }
 
-export interface IEspnPlayer extends IEspnPlayerCard {
-  position: EspnPosition;
-  team: NFLTeamAbbreviation;
+export interface IPlayer extends IEspnPlayerCard {
+  position: PlayerPosition;
+  team: NFLTeams | FreeAgent;
   adp: number;
   rank?: number;
+  pickNumber?: number;
+  owner?: ILeagueMember;
+  position_rank?: number;
+  bye?: number;
+  isCustom?: boolean;
 }
 
 export interface DraftRanksByRankType {
@@ -626,7 +459,7 @@ export interface Variance {
   "115"?: number
 }
 
-export type NFLTeamAbbreviation =
+export type NFLTeams =
   | "ATL"
   | "BUF"
   | "CHI"
@@ -697,6 +530,24 @@ export type NFLTeamID =
   | "-1"
  
 
-  export type FreeAgent = "FA"
+export type FreeAgent = "FA"
 
-  export type ByeWeek = "Bye"
+export type ByeWeek = "Bye"
+
+export interface INFLTeamsResponse {
+  display: boolean;
+  settings: {
+    proTeams: INFLTeamInfo[];
+    [k: string]: any;
+  }
+}
+
+export interface INFLTeamInfo {
+  abbrev: NFLTeams;
+  id: NFLTeamID;
+  location: string;
+  name: string;
+  byeWeek: number;
+  universeId: number;
+  proGamesByScoringPeriod: any;
+}
