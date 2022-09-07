@@ -97,7 +97,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
       <q-tab-panels v-model="tab" :keep-alive="true" :class="tab == 'positions' ? 'no-scroll' : ''">
 
         <q-tab-panel name="top-200">
-          <q-list bordered separator>
+          <q-list bordered separator class="q-mb-md">
             <player-info 
               class="q-mb-sm"
               v-for="player in players.playerList"
@@ -169,7 +169,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
 }
 
 .scroll > .q-tab-panel{
-  max-height: 80vh;
+  max-height: 70vh;
   overflow: auto;
 }
 

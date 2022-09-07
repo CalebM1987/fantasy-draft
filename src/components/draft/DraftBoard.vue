@@ -58,7 +58,7 @@ onMounted(()=> {
       </div>
     </div>
     
-    <div class="picks-container-wrapper" style="overflow: auto; height: 650px;">
+    <div class="picks-container-wrapper" :style="`overflow: auto; height: ${appState.screen.height - 275}px;`">
     <div v-for="(round, ri) in rounds" :key="round" :class="`row${appState.compactView ? '': 'x'} picks-container`">
 
       <div v-for="(team, ti) in appState.sortedMembers" :key="team.name" :class="gridClass">
@@ -75,12 +75,16 @@ onMounted(()=> {
 
   #franchise-container{
     width: 100%;
-  overflow: scroll;   
-  display: grid;
+    overflow: scroll;   
+    display: grid;
   }
 
   .rowx {
     display: flex;
+  }
+
+  .row.picks-container:last-child, .rowx.picks-container:last-child {
+    margin-bottom: .75rem;
   }
 
   .franchise-header {
