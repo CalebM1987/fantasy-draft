@@ -3,7 +3,7 @@
 
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar class="tb">
-        <q-toolbar-title :style="appState.screen.md ? '' : 'padding: 0px;'" >
+        <q-toolbar-title :style="appState.screen.gt.md ? '' : 'padding: 0px;'" >
           <q-avatar id="leage-avatar" icon="sports_football" />
           Draft Party - {{ appState.league?.name ?? 'Fantasy Football' }}
         </q-toolbar-title>

@@ -21,16 +21,16 @@ const $q = useQuasar()
 
 <template>
   <div class="draft-clock q-pa-md"
-  :class="appState.screen.md ? '' : 'r'"
+  :class="appState.screen.gt.md ? '' : 'r'"
   >
     <div class="timer-container" v-if="appState.hasStartedDraft">
       <div class="row items-start">
         <span 
           v-if="players.onTheClock"
           class="on-the-clock glow"
-          :class="appState.screen.md ? '' : 'r'"
+          :class="appState.screen.gt.md ? '' : 'r'"
         >{{ players.onTheClock.name }} is on the clock!</span>
-        <div class="timer" :class="appState.screen.md ? '' : 'r'">{{ displayClock(appState.timer) }}</div>
+        <div class="timer" :class="appState.screen.gt.md ? '' : 'r'">{{ displayClock(appState.timer) }}</div>
         <q-btn
           flat
           rounded
