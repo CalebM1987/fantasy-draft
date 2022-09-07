@@ -69,7 +69,7 @@ const showDetails = async ()=> {
         @mouseenter="showRemoveBtn = true"
         @mouseleave="showRemoveBtn = false"
         @click.stop.prevent="showDetails"
-        :class="`drafted-player-name q-pa-md pos-${player.position === 'D/ST' ? 'DEF': player.position}`"
+        :class="`drafted-player-name q-pa-md pos ${player.position === 'D/ST' ? 'DEF': player.position}`"
       >
         <q-btn 
           round
@@ -107,7 +107,11 @@ const showDetails = async ()=> {
 </template>
 
 <style lang="scss">
+@import '../../base.scss';
+
 .picks-header {
+  background: white;
+  padding: 2px;
   margin-top: 3px;
   color: black;
   font-size: 0.5rem;
@@ -128,5 +132,13 @@ const showDetails = async ()=> {
 .drafted-player-name {
   font-size: 0.7rem;
   min-height: 50px;
+  height: 80%;
+  padding: 5px;
+ & > div{
+  //  background: black;
+   color: white;
+   padding: 2px;
+   border-radius: 2px;
+ }
 }
 </style>

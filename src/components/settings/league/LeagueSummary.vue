@@ -29,7 +29,7 @@ const categories: ICategory[] = [
 
 <template>
   <div class="league-summary q-pa-lg">
-    <q-list bordered class="rounded-borders" v-if="appState.league?.id">
+    <q-list bordered class="rounded-borders list" v-if="appState.league?.id">
       <q-expansion-item
         default-opened
         v-for="category in categories"
@@ -54,3 +54,10 @@ const categories: ICategory[] = [
   </div>
 
 </template>
+
+<style lang="scss">
+  .league-settings .list{
+    height: 850px;
+    overflow: auto;
+  }
+</style>

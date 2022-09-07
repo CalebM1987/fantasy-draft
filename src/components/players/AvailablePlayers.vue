@@ -111,7 +111,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
 
         </q-tab-panel>
 
-        <q-tab-panel name="positions" class="scroll">
+        <q-tab-panel name="positions" class="scroll" :class="tab == 'positions' ? 'no-pad' : ''">
           <q-tabs
               dense
               v-model="selectedPos"
@@ -165,7 +165,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
 
 </template>
 
-<style>
+<style lang="scss">
 .empty-favorites {
   min-height: 200px;
 }
@@ -173,10 +173,12 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
 .scroll > .q-tab-panel{
   max-height: 65vh;
   overflow: auto;
+  &.no-pad{
+    padding: 0;
+  }
 }
 
 .no-scroll > div{
-
   overflow: hidden;
 }
 </style>

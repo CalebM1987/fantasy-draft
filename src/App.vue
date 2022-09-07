@@ -119,37 +119,51 @@ onMounted(()=> {
 </script>
 
 <style lang="scss">
+@import './base.scss';
+
+@mixin RB{
+  background-color: rgb(255, 38, 0);
+}
+
 #app, body{
   overflow: hidden !important; 
 }
 
-.pos-RB {
-  background-color: rgb(255, 38, 0);
-}
+.pos{
+  color: black;
+  background: $white;
+  &.ros{
+    margin: 0 0 0 2px;
+      padding: 0px 3px;
+      color: white;
+      border-radius: 2px;
+  }
+      &.RB{
+        background-color: $RB;
+      }
+      &.WR{
+        background-color: $WR;
+      }
+      &.TE{
+        // background-color: #DAA425;
+        background-color: $TE;
+      }
+      &.QB{
+        background-color: $QB;
+      }
+      &.DEF{
+        background-color: $DEF;
+      }
+      &.K{
+        background-color: $K;
+      }
+    }
 
-.pos-WR {
-  background-color: rgb(49, 193, 9);
-}
 
-.pos-DEF {
-  background-color: rgba(252, 118, 15, 0.995);
-}
-
-.pos-QB {
-  background-color: rgb(70, 133, 243);
-}
-
-.pos-K {
-  background-color: rgba(201, 59, 185, 0.872);
-}
-
-.pos-TE {
-  background-color:gold;
-}
 
 .drawer{
   margin: 0 5px 10px 0;
-  background: #0a512a;
+  background: #0A3923;
   border-radius: 5px;
   height: 0;
   width: 0;
@@ -159,5 +173,10 @@ onMounted(()=> {
   &.left{
     margin-left: 10px;
   }
+}
+
+.bg-primary{
+  // background-color: #0A3923 !important;
+  background-color: #006938 !important;
 }
 </style>

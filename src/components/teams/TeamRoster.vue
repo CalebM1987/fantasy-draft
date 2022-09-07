@@ -90,9 +90,9 @@ const rosterSpots = computed<IRosterSlot[]>(()=> {
             <q-avatar color="primary">{{ abbreviateSpot(spot.type) }}</q-avatar>
           </q-item-section>
 
-          <q-item-section>
-            <q-item-label :class="spot.player ? 'sec player': 'empty-slot'">
-              <span>{{ spot.player?.fullName ?? 'EMPTY' }}</span>
+          <q-item-section :class="spot.player?.fullName ? 'slot plate' : ''">
+            <q-item-label :class="spot.player ? 'player name': 'empty-slot'">
+              <span class="line">{{ spot.player?.fullName ?? 'EMPTY' }}</span>
               <q-badge
                 v-if="spot.player && spot.player?.injuryStatus !== 'ACTIVE'"
                 rounded
@@ -101,8 +101,9 @@ const rosterSpots = computed<IRosterSlot[]>(()=> {
               >{{ getPlayerStatus(spot.player) }}</q-badge>
             </q-item-label>
             <q-item-label caption lines="1">
-              <div class="sec info" :class="spot.player ? 'plate' : ''" style="display: flex; justify-content: space-between;">
-                <span class="team">{{ spot.player?.team }} <span class="pos" :class="spot.player?.position">{{ spot.player?.position}} </span></span>
+              <div class="player info" :class="spot.player ? 'plate' : ''" style="display: flex; justify-content: space-between;">
+                <span class="pos ros" :class="`${spot.player?.position === 'D/ST' ? 'DEF': spot.player?.position}`">{{ spot.player?.position}} </span>
+                <span class="team">{{ spot.player?.team }}</span>
                 <span class="bye" v-if="spot.player">Bye: {{ spot.player?.bye }}</span>
               </div>
             </q-item-label>
@@ -124,6 +125,11 @@ const rosterSpots = computed<IRosterSlot[]>(()=> {
     height: 600px;
     background: #d0d0d0; 
     overflow: auto;
+    & .slot.plate{
+      background: #fafafa;
+      padding: 2px;
+      border-radius: 3px;
+    }
   }
 }
 
@@ -133,50 +139,39 @@ const rosterSpots = computed<IRosterSlot[]>(()=> {
   font-size: 0.8rem;
 }
 
-.sec{
+.player{
   color: #4a4a4a;
-  &.player{
+  &.name{
     font-weight: bold;
+    & .line{
+     &::after{
+        content: "";
+        height: 1px;
+        width: 75%;
+        position: relative;
+        background: rgb(134, 134, 134);
+        display: block;
+        transition: width 0.3s ease-in-out;
+        top: 0;
+        left: -2px;
+      }
+    }
   }
   &.info{
     padding: 1px 4px 0 2px;
     border-radius: 3px;
     &.plate{
-      background: #efefef;
       padding: 2px 5px;
     }
     & .team{
       display: flex;
       color: #4a4a4a;
+      margin: auto;
     }
-    & .pos{
-      margin: 0 0 0 2px;
-      padding: 0px 3px;
-      color: white;
-      border-radius: 2px;
-      &.RB{
-        background-color: red;
-      }
-      &.WR{
-        background-color: green;
-      }
-      &.TE{
-        background-color: yellow;
-      }
-      &.QB{
-        background-color: blue;
-      }
-      &.DEF{
-        background-color: orange;
-      }
-      &.PK{
-        background-color: purple;
-      }
+    & .bye{
+      margin: 0 0 0 1px;
+      font-style: italic;
     }
-      & .bye{
-        margin: 0 0 0 1px;
-        font-style: italic;
-      }
   }
 }
 
