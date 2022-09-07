@@ -6,11 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "combine-players": "node --experimental-json-modules  ./backend/league/combinePlayers.js"
   },
   "dependencies": {
     "@quasar/extras": "^1.15.1",
+    "axios": "^0.27.2",
     "debug": "^4.3.4",
+    "espn-fantasy-football-api": "^0.16.1",
     "firebase": "^9.9.3",
     "mitt": "^3.0.0",
     "pinia": "^2.0.18",
@@ -24,6 +27,7 @@
     "@types/debug": "^4.1.7",
     "@types/node": "^18.7.6",
     "@vitejs/plugin-vue": "^3.0.3",
+    "node-window-polyfill": "^1.0.2",
     "path": "^0.12.7",
     "sass": "^1.32.12",
     "typescript": "^4.6.4",

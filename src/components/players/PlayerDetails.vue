@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { IPlayerDetails } from '../../types/players'
+import { IPlayerDetails } from '../../types'
 import { useDialogPluginComponent } from 'quasar'
 
 interface Props {

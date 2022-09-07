@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { nextTick } from 'process';
 import { IAppConfig, ILeagueInfo } from '../types'
 import { Screen } from 'quasar'
+import { EventBus } from '../events/event-bus';
 
 interface IAppState {
   config?: IAppConfig;
@@ -15,6 +16,8 @@ interface IAppState {
   isLM: boolean;
   /** boolean for whether or not the draft started */
   hasStartedDraft: boolean;
+  /** has loaded league */
+  hasLoadedLeague: boolean;
 }
 
 export const useAppStore = defineStore('app', {
@@ -24,14 +27,15 @@ export const useAppStore = defineStore('app', {
     league: undefined,
     hasStartedDraft: false,
     timer: 120 * 1000,
-    isLM: false
+    isLM: false,
+    hasLoadedLeague: false
   } as IAppState),
   
   getters: {
     screen: ()=> Screen,
     rosterSize: (state)=> state.league?.roster?.size ?? 15,
     // time limit for each pick
-    timeLimit: (state)=> (state.league?.timeLimit ?? 120) * 1000,
+    timeLimit: (state)=> (state.league?.draft?.timeLimit ?? 120) * 1000,
     sortedMembers: (state) => {
       const members = state.league 
         ? state.league.members.every(t => !!t.draftOrder) ? state.league.members.sort((a,b) => (a.draftOrder > b.draftOrder) ? 1: -1): [...state.league.members]
@@ -40,7 +44,7 @@ export const useAppStore = defineStore('app', {
       members.forEach(m => m.picks = [])
 
       const roster = state.league?.roster?.size ?? 14
-      const draftType = state.league?.draftType ?? 'snake'
+      const draftType = state.league?.draft?.type ?? 'snake'
       for (let ri = 0; ri < roster; ri++){
         // add pick for each round
         members.forEach((m, ti)=> {
@@ -54,7 +58,12 @@ export const useAppStore = defineStore('app', {
   actions: {
     setConfig(config: IAppConfig){
       this.config = config
-      nextTick(()=> this.timer = (this.league?.timeLimit ?? 120) * 1000)
+      nextTick(()=> {
+        if (this.league){
+          EventBus.emit('has-loaded-league', this.league)
+        }
+        this.timer = (this.league?.draft?.timeLimit ?? 120) * 1000
+      })
     }
   }
 })

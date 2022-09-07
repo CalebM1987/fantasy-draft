@@ -14,7 +14,8 @@ import {
   Unsubscribe
 } from 'firebase/database'
 
-import { IDraftedPlayer } from "../../types";
+import { IPlayer } from "../../types";
+import { updateLeagueClock } from "./clock";
 import { log } from "../../utils";
 
 const picksKey = 'draft-picks'
@@ -22,6 +23,7 @@ const picksKey = 'draft-picks'
 export function clearDraftBoard(){
   const leagueRef = getReference()
   if (!leagueRef) return;
+  updateLeagueClock('reset')
   return remove(leagueRef)
 }
 
@@ -35,7 +37,7 @@ export function removeDraftPick(key: string){
   remove(pickRef)
 }
 
-export function saveDraftPick(pick: IDraftedPlayer){
+export function saveDraftPick(pick: IPlayer){
   const leagueRef = getReference()
   const newPickRef = push(leagueRef);
   set(newPickRef, pick);

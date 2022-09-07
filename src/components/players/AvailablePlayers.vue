@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { ref, defineAsyncComponent } from 'vue';
 import { usePlayerStore, useAppStore } from '../../store';
-import { FilterType } from '../../types/players'
+import { FilterType } from '../../types'
 import { useQuasar } from 'quasar';
 import PlayerInfo from './PlayerInfo.vue';
+import { updateHook } from '../../utils';
+import { fetchEspnPlayers } from '../../services/espn';
 import { log } from '../../utils/logger';
 const CustomPlayer = defineAsyncComponent(()=> import('./CustomPlayer.vue'))
 
@@ -13,7 +15,7 @@ const appState = useAppStore()
 await players.fetchPlayers()
 
 // @ts-ignore
-hook.players = players
+updateHook({ players, fetch })
 
 interface FilterTypeOptions { 
   name: FilterType;
@@ -101,7 +103,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
             <player-info 
               class="q-mb-sm"
               v-for="player in players.playerList"
-              :key="player.player_id"
+              :key="player.id"
               :player="player"
               :rank-type="'adp'"
             />
@@ -132,7 +134,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
                 <player-info 
                   class="q-mb-sm"
                   v-for="player in players.playersByPosition[selectedPos]"
-                  :key="player.player_id"
+                  :key="player.id"
                   :player="player"
                   :rank-type="'position_rank'"
                 />
@@ -147,7 +149,7 @@ const positionOptions = players.positions.map(p => { return { name: p, label: p.
               class="q-mb-sm"
               v-for="pid in players.favorites"
               :key="pid"
-              :player="players.playerList.find(p => p.player_id === pid)!"
+              :player="players.playerList.find(p => p.id === pid)!"
               :rank-type="'adp'"
             />
           </q-list>

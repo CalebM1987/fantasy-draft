@@ -1,8 +1,11 @@
 <script lang="ts" setup>
-import { IPlayer } from '../../types/players'
+import { computed } from 'vue'
+import { IPlayer } from '../../types'
 import { usePlayerStore, useAppStore } from '../../store'
 import { usePlayerInfo } from '../../composables/player-info'
 import { log } from '../../utils/logger'
+
+// https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/4242335.png&w=96&h=70&cb=1
 
 const players = usePlayerStore()
 const appState = useAppStore()
@@ -11,6 +14,7 @@ interface Props {
   rankType: "adp" | "position_rank"
 }
 const props = defineProps<Props>()
+const percentChanged = computed(()=> Math.abs(props.player.ownership.percentChange) > 0.1 ? parseFloat(props.player.ownership.percentChange.toFixed(1)): 0)
 
 const {
   isDrafted,
@@ -27,17 +31,23 @@ const {
     clickable 
     v-ripple 
     @click.stop.prevent="showPlayerDetails"
-    :class="`player-container pos-${player.position.toLowerCase()}`"
+    :class="`player-container pos-${player.position === 'D/ST' ? 'DEF': player.position}`"
     title="click for player news"
   >
     <q-item-section>
+      <!-- <q-item-section avatar>
+          <q-avatar color="grey-5">
+            <q-img :src="player.headshot" style="background: white;"/>
+          </q-avatar>
+        <q-avatar /> 
+      </q-item-section> -->
       <q-item-section>
         <q-item-label 
           class="q-py-sm player-content player-label"
           :style="isDrafted ? 'color: #505050; font-style: italic;': ''"
         >
           <span class="rank">{{ rankType === 'adp' ? player.rank: player.position_rank }}.</span>
-          <span><strong>{{ player.name }}</strong></span>
+          <span><strong>{{ player.fullName }}</strong></span>
           <span>
             <span 
               v-if="!isDrafted"
@@ -65,6 +75,21 @@ const {
               </span>
             </span>
           </span>
+        </q-item-label>
+      </q-item-section>
+
+      <q-item-section v-if="player.ownership.percentOwned">
+        <q-item-label caption class="row justify-between">
+          <span>{{ player.ownership.percentOwned.toFixed(1).replace(/(.[0]+)$/,"") }}% owned </span>
+          <span>{{ player.ownership.percentStarted.toFixed(1).replace(/(.[0]+)$/,"") }}% started</span>
+          <span></span>
+          <q-badge 
+            rounded
+            floating
+            :title="`trending ${percentChanged < 0 ? 'down': 'up'}`"
+            :color="percentChanged < 0 ? 'negative': 'success'"
+            v-if="percentChanged"
+          >{{ `${percentChanged > 0 ? '+':''}${percentChanged}` }}</q-badge>
         </q-item-label>
       </q-item-section>
       

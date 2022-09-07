@@ -1,7 +1,8 @@
 import { defineAsyncComponent, computed, defineEmits } from "vue";
-import { useDraftClock } from '../composables/draft-clock';
 import { QuasarDialogEmits, IPlayer } from "../types";
+import { useDraftClock } from '../composables/draft-clock';
 import { usePlayerStore } from "../store";
+import { clonePlayer } from "../utils";
 
 export interface AutoDraftEmits extends QuasarDialogEmits {
   (e: 'did-auto-draft-player', player: IPlayer): void; 
@@ -20,11 +21,11 @@ export function useAutoDraft(){
   const emit = defineEmits<AutoDraftEmits>()
   
   const autoDraftPlayer = async (): Promise<IPlayer> => {
-    const player = Object.freeze(bestAvailable.value)
+    // const player = clonePlayer(bestAvailable.value)
     try {
       await players.draftPlayer(bestAvailable.value)
       resetTimer({ start: true })
-      return player
+      return clonePlayer(bestAvailable.value)
     } catch(err){
       throw err
     }

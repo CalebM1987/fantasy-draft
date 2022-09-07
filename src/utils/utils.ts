@@ -1,10 +1,10 @@
-import { IDraftedPlayer } from "../types/players"
+import { IPlayer } from "../types"
 
-export const playerDisplayName = (player: IDraftedPlayer) => {
-  const name = player.name
-  if (player.position === 'DEF'){
-    console.log('player name for defense: ', player.name)
-    return player.name.replace('Defense', 'D/ST')
+export const playerDisplayName = (player: IPlayer) => {
+  const name = player.fullName
+  if (player.position === 'D/ST'){
+    console.log('player name for defense: ', player.fullName)
+    return player.fullName.replace('Defense', 'D/ST')
   } else {
     const parts = name.split(' ')
     const first = parts[0]
@@ -41,4 +41,27 @@ export function localeDateTime(d?: Date | number): string {
     d = new Date(d)
   }
   return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`
+}
+
+function isExtendable(val: any): boolean {
+  return (
+    (typeof val === "object" && [null, undefined].indexOf(val) < 0) ||
+    typeof val === "function" ||
+    Array.isArray(val)
+  );
+}
+
+/**
+ * Returns true if `val` is an object or function.
+ *
+ * @param  {any} val
+ * @return {Boolean}
+ */
+export function isObject(val: any): boolean {
+  return isExtendable(val) && !Array.isArray(val);
+}
+
+export const validatePlayerName = (val: string)=> {
+  const parts = val.split(' ').filter(p => p.length >= 2)
+  return parts.length >= 2
 }

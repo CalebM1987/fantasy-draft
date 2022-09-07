@@ -1,25 +1,30 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onMounted } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useAppStore } from '../../store'
 import { useQuasar } from 'quasar';
 import { log } from '../../utils/logger';
 import { EventBus } from '../../events/event-bus';
+import { updateHook } from '../../utils';
 import { useAutoDraft } from '../../composables/auto-draft';
 import { updateLeagueClock } from '../../services/firebase';
 import DraftSquare from './DraftSquare.vue';
 const AutoDraftPlayer = defineAsyncComponent(()=> import('../draft/AutoDraftPlayer.vue'))
 
+updateHook({ updateLeagueClock })
+
 const appState = useAppStore()
 const colSize = computed(()=> Math.min(Math.max(Math.ceil(12 / appState.sortedMembers.length), 1), 12))
 const rounds = computed(()=> appState.league?.roster?.size ?? 14)
 const gridClass = computed(()=> `grid-cell${appState.compactView ? ' col-md-' + colSize.value: '--fixed-width'}`)
-const draftType = appState.league?.draftType ?? 'snake'
+const draftType = appState.league?.draft?.type ?? 'snake'
+const autoDraftPromptOpen = ref(false)
 log('teams: ', appState.sortedMembers)
 
 const $q = useQuasar()
 const { autoDraftPlayer } = useAutoDraft()
 
 EventBus.on('draft-clock-expired', ()=> {
+  autoDraftPromptOpen.value = true
   $q.dialog({
     component: AutoDraftPlayer,
   }).onOk(async ()=> {
@@ -29,15 +34,22 @@ EventBus.on('draft-clock-expired', ()=> {
       log('Failed to auto draft player', err)
       throw err
     }
-  }).onDismiss(()=> log('dismissed auto draft prompt'))
+  }).onDismiss(()=> {
+    autoDraftPromptOpen.value = false
+    // do not reset clock, wait for pick to be made
+    // updateLeagueClock('reset', appState.timeLimit).then(()=> log('dismissed auto draft prompt'))
+  
+  })
 })
 
 onMounted(()=> {
   EventBus.on('draft-clock-expired', async ()=> {
     if (appState.isLM){
       // reset the timer
-      await updateLeagueClock('reset', appState.timeLimit)
-      log('reset the clock in db after expiration')
+      if (!autoDraftPromptOpen.value){
+        await updateLeagueClock('reset', appState.timeLimit)
+        log('reset the clock in db after expiration')
+      }
     }
   })
 })

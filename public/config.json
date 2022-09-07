@@ -3,8 +3,11 @@
   "leagues": [{
     "id": 890793,
     "name": "BMI Premier League",
+    "platform": "espn",
+    "numberOfTeams": 12,
     "roster": { 
       "size": 15,
+      "format": "custom",
       "positions": [
         "QB",
         "FLEX",
@@ -12,62 +15,87 @@
         "FLEX",
         "FLEX",
         "FLEX",
-        "DEF",
+        "D/ST",
         "PK"
       ]
     },
     "format": "half-ppr",
-    "draftType": "snake",
-    "timeLimit": 180,
+    "draft": {
+      "type": "snake",
+      "timeLimit": 150
+    },
     "members": [
       {
-        "name": "Kyle Mullen",
-        "teamName": "Bismo Funyuns",
-        "draftOrder": 8
-      }, {
-        "name": "Scott Janni",
-        "teamName": "Michaels n MacElroy",
-        "draftOrder": 9
-      }, {
-        "name": "Dave Malm",
-        "teamName": "Emporer Malm",
-        "draftOrder": 3
-      }, {
-        "name": "Grant Gall",
-        "teamName": "Team Gall",
-        "draftOrder": 7
-      }, {
-        "name": "Kendell Hillis",
-        "teamName": "The Cutler Did It",
-        "draftOrder": 10
-      }, {
-        "name": "Kasey Burns",
-        "teamName": "Discount Belichick",
-        "draftOrder": 11
-      }, {
-        "name": "Nate Christ",
-        "teamName": "Kissin Cousins",
-        "draftOrder": 12
-      }, {
+        "espnTeamId": 1,
         "name": "Caleb Mackey",
         "teamName": "Antonio Robinson II",
         "draftOrder": 6
-      }, {
-        "name": "David Sandberg",
-        "teamName": "Team Sandberg",
-        "draftOrder": 2
-      }, {
-        "name": "John Shain",
-        "teamName": "Team Shain",
-        "draftOrder": 4
-      }, {
-        "name": "Chad Fowlds",
-        "teamName": "Team Fowlds",
-        "draftOrder": 1
-      }, {
+      },
+      {
+        "espnTeamId": 2,
         "name": "Brandon Bohks",
         "teamName": "Brady's Bitches",
         "draftOrder": 5
+      },
+      {
+        "espnTeamId": 3,
+        "name": "Chad Fowlds",
+        "teamName": "Team Fowlds",
+        "draftOrder": 1
+      },
+      {
+        "espnTeamId": 8,
+        "name": "Scott Janni",
+        "teamName": "Michaels n MacElroy",
+        "draftOrder": 9
+      },
+      {
+        "espnTeamId": 9,
+        "name": "Kasey Burns",
+        "teamName": "Discount Belichick",
+        "draftOrder": 11
+      },
+      {
+        "espnTeamId": 11,
+        "name": "Kyle Mullen",
+        "teamName": "Bismo Funyuns",
+        "draftOrder": 8
+      },
+      {
+        "espnTeamId": 12,
+        "name": "Nate Christ",
+        "teamName": "Kissin Cousins",
+        "draftOrder": 12
+      },
+      {
+        "espnTeamId": 13,
+        "name": "David Sandberg",
+        "teamName": "The Waller Store",
+        "draftOrder": 2
+      },
+      {
+        "espnTeamId": 15,
+        "name": "David Malm",
+        "teamName": "Emperor Malm",
+        "draftOrder": 3
+      },
+      {
+        "espnTeamId": 16,
+        "name": "Kendell Hillis",
+        "teamName": "The Cutler Did It",
+        "draftOrder": 10
+      },
+      {
+        "espnTeamId": 17,
+        "name": "John Shain",
+        "teamName": "Team Shain",
+        "draftOrder": 4
+      },
+      {
+        "espnTeamId": 18,
+        "name": "Grant Gall",
+        "teamName": "Team Gall",
+        "draftOrder": 7
       }
     ]
   }]

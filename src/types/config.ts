@@ -1,26 +1,40 @@
-import { PlayerPosition, ScoringFormat } from "./players";
+import { ScoringFormat, RosterFormat, DraftType } from "./players";
+import { PlayerPosition } from "./espn";
 import { ILeagueMember } from "./app";
 
 export interface IRosterSettings {
+  /** the roster format  */
+  format?: RosterFormat;
   /** size of roster (will corelate to number of rounds) */
   size: number;
   /** positions required for roster */
   positions: PlayerPosition[];
 }
 
+export interface IDraftSettings {
+  /** the draft type format */
+  type?: DraftType;
+  /** time limit for each pick (in seconds) */
+  timeLimit?: number;
+}
+
+export type LeaguePlatform = 'espn' | 'yahoo' | 'sleeper';
+
 export interface ILeagueInfo {
   /** the league ID */
   id: number | string;
   /** the league name */
   name: string;
+  /** league platform */
+  platform: LeaguePlatform;
+  /** the number of teams */
+  numberOfTeams: number;
   /** the scoring format */
   format: ScoringFormat;
-  /** draft type */
-  draftType: "snake" | "auction";
+  /** the draft settings */
+  draft: IDraftSettings;
   /** roster settings */
   roster?: IRosterSettings;
-  /** time limit for each pick (in seconds) */
-  timeLimit?: number;
   /** the league members */
   members: ILeagueMember[];
 }

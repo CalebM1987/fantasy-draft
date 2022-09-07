@@ -33,7 +33,7 @@ export function useDraftClock() {
       interval.value = setInterval(()=> {
         appState.timer -= 1000
         if (appState.timer === 0){
-          pauseTimer()
+          onPauseClicked()
           EventBus.emit('draft-clock-expired')
           log('draft clock has expired')
         } 
