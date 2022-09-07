@@ -19,6 +19,3 @@ export async function updateLeagueClock(operation: DraftClockOperation, time?: n
     message
   })
 }
-
-// @ts-ignore
-hook.updateClock = updateLeagueClock
