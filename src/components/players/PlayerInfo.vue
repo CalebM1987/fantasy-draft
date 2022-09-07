@@ -36,11 +36,10 @@ const {
     :class="`${player.position === 'D/ST' ? 'DEF': player.position}`"
     title="click for player news"
   >
-    <q-item-section class="player-info-container">
+    <q-item-section class="player-info-container" :class="isDrafted ? 'unavailable' : ''">
       <q-item-section>
         <q-item-label 
           class="q-py-sm player-content player-label"
-          :style="isDrafted ? 'color: #505050; font-style: italic;': ''"
         >
           <span class="rank">{{ rankType === 'adp' ? player.rank: player.position_rank }}.</span>
           <span>
@@ -132,6 +131,12 @@ const {
   border: 1px solid #ffffffa3;
   width: 50%;
   border-radius: 3px;
+  &.unavailable{
+    background: gray;
+    & > div{
+      color: red;
+    }
+  }
 }
 
 .player-container{
