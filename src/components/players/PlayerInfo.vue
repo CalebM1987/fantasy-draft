@@ -36,7 +36,7 @@ const {
     :class="`${player.position === 'D/ST' ? 'DEF': player.position}`"
     title="click for player news"
   >
-    <q-item-section>
+    <q-item-section class="player-info-container">
       <q-item-section>
         <q-item-label 
           class="q-py-sm player-content player-label"
