@@ -7,6 +7,7 @@ import { useDraftClock } from '../composables/draft-clock';
 import { setRealtimeHandlers } from '../services/firebase'
 import { useAppStore } from './app'
 import { log } from '../utils/logger'
+import { nextTick } from 'process'
 
 interface IPlayersState {
   players: IPlayer[];
@@ -37,7 +38,7 @@ export const usePlayerStore = defineStore('players', {
     positions: ["RB", "WR", "TE", "QB", "D/ST", "K"],
     playerDetailsCache: {},
     pickLookup: {},
-    favorites: loadFromStorage<number[]>('_draft_favorites', []),
+    favorites: [],
     listType: 'available',
     search: '',
     nflTeams,
@@ -156,6 +157,11 @@ export const usePlayerStore = defineStore('players', {
       this.players = players
       this.availablePlayers = [...players]
       setRealtimeHandlers()
+      const pids = this.players.map(p => p.id)
+      nextTick(()=> {
+        this.favorites = (loadFromStorage<number[]>('_draft_favorites', []) ?? [])
+          .filter(pid => pids.includes(pid) && !this.draftedPlayerIds.includes(pid))
+      })
     },
 
     clearDraftBoard
