@@ -25,7 +25,11 @@ const onClearDraftBoard = ()=> {
     message: 'Are you sure you want to clear the draft board? This action cannot be undone.',
     persistent: true,
     cancel: true
-  }).onOk(()=> clearDraftBoard())
+  }).onOk(()=> {
+    clearDraftBoard()
+    appState.hasStartedDraft = false
+    updateLeagueClock('pause', appState.timeLimit ?? 150)
+  })
 }
 
 </script>

@@ -6,9 +6,7 @@ import {
   ref as fbRef
 } from 'firebase/database'
 
-import { useAppStore } from "../../store";
 import { IPlayer } from "../../types";
-import { updateLeagueClock } from "./clock";
 import { log } from "../../utils";
 
 const picksKey = 'draft-picks'

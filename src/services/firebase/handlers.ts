@@ -81,7 +81,7 @@ export function setRealtimeHandlers(){
     } else if (status.operation === 'pause'){
       pauseTimer()
       // display clock for other users
-      if (!appState.hasStartedDraft){
+      if (!appState.hasStartedDraft && appState.timeLimit !== appState.timer){
         appState.hasStartedDraft = true
       }
     } else {
