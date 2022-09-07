@@ -27,7 +27,6 @@ export function getRosters(): IEspnRoster[] {
     const playerState = usePlayerStore()
 
     const members = appState.sortedMembers.reduce((o, m)=> ({...o, [m.name]: []}), {}) as Record<string, IRosterItem[]>;
-    console.log('members yo: ', members)
     const rosters: IEspnRoster[] = []
     playerState.draftPicks.forEach(p => {
       if (p.owner){
@@ -35,7 +34,8 @@ export function getRosters(): IEspnRoster[] {
           type: 'DRAFT',
           overallPickNumber: p.pickNumber!,
           playerId: p.id!,
-          name: p.fullName
+          // @ts-ignore
+          fullName: p.fullName
         })
       }
     })
@@ -50,21 +50,21 @@ export function getRosters(): IEspnRoster[] {
       } as IEspnRoster)
     })
 
-    return rosters
+    return rosters.filter(r => r.items.length)
   }
   throw Error('Cannot copy picks to clipboard: This is not an ESPN league')
 }
 
 const templateFunction = (rosters: IEspnRoster[])=> `async function updateRosters(type='DRAFT'){
-  
   const rosters = ${JSON.stringify(rosters, null, 2)}
   const headers = new Headers()
   headers.append('Accept', 'application/json')
   headers.append('Content-Type', 'application/json')
+  // headers.append('Referer', 'https://fantasy.espn.com')
 
   const url = 'https://lm-api-writes.fantasy.espn.com/apis/v3/games/ffl/seasons/2022/segments/0/leagues/890793/transactions/'
   const promises = []
-  const delay = (ms=1000) => new Promise(res => setTimeout(res, ms));
+  const delay = (ms=500) => new Promise(res => setTimeout(res, ms));
 
   for (const roster of rosters){
     roster.type = type
@@ -73,16 +73,19 @@ const templateFunction = (rosters: IEspnRoster[])=> `async function updateRoster
       delete i['fullName'] // for debugging only
     })
 
-    const resp = await fetch(url, {
-      headers,
-      method: 'POST',
-      credentials: 'include',
-      body: JSON.stringify(roster),
-    })
-    promises.push(resp)
-    
-    console.log('roster response: ', resp)
-    await delay(1000)
+    if (roster.items.length){
+      const resp = await fetch(url, {
+        headers,
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(roster),
+      })
+      promises.push(resp)
+      
+      console.log('roster response: ', resp)
+      await delay(500)
+    }
+
   }
 
   return promises
@@ -134,4 +137,39 @@ export function getPlayerStatus(player: IPlayer){
       }
     }
     return st
+}
+
+async function updateRosters(type='DRAFT'){
+  
+  const rosters = [{"isLeagueManager":false,"teamId":1,"type":"DRAFT","scoringPeriodId":1,"executionType":"EXECUTE","items":[{"overallPickNumber":6,"type":"DRAFT","playerId":4262921}]}]
+  const headers = new Headers()
+  headers.append('Accept', 'application/json')
+  headers.append('Content-Type', 'application/json')
+  // headers.append('Referer', 'https://fantasy.espn.com')
+
+  const url = 'https://lm-api-writes.fantasy.espn.com/apis/v3/games/ffl/seasons/2022/segments/0/leagues/890793/transactions/'
+  const promises = []
+  const delay = (ms=500) => new Promise(res => setTimeout(res, ms));
+
+  for (const roster of rosters){
+    roster.type = type
+    roster.items.forEach(i => {
+      i.type = type
+      // @ts-ignore
+      delete i['fullName'] // for debugging only
+    })
+
+    const resp = await fetch(url, {
+      headers,
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(roster),
+    })
+    promises.push(resp)
+    
+    console.log('roster response: ', resp)
+    await delay(1000)
+  }
+
+  return promises
 }

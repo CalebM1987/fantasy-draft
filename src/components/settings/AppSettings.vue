@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { useAppStore, usePlayerStore } from '../../store';
-import { copyESPNUpdateRostersFunction } from '../../utils/espn';
+import { copyESPNUpdateRostersFunction, getRosters } from '../../utils/espn';
 import { updateLeagueClock } from '../../services/firebase';
+import { updateHook } from '../../utils';
 import { useQuasar } from 'quasar';
+updateHook({ getRosters })
 
 const appState = useAppStore()
 const { clearDraftBoard } = usePlayerStore()
