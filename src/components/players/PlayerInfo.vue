@@ -129,9 +129,9 @@ const {
   @import '../../base.scss';
 .player-info-container{
   background: #f7f7f7bd;
-    border: 1px solid #ffffffa3;
-    width: 50%;
-    border-radius: 3px;
+  border: 1px solid #ffffffa3;
+  width: 50%;
+  border-radius: 3px;
 }
 
 .player-container{

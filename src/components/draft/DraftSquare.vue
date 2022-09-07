@@ -71,6 +71,7 @@ const showDetails = async ()=> {
         @click.stop.prevent="showDetails"
         :class="`drafted-player-name q-pa-md pos ${player.position === 'D/ST' ? 'DEF': player.position}`"
       >
+      <div class="card-plate">
         <q-btn 
           round
           flat
@@ -101,6 +102,7 @@ const showDetails = async ()=> {
           />
           <p>loading details...</p>
         </div>
+      </div>
       </div>
     </slot>
   </div>
@@ -136,9 +138,21 @@ const showDetails = async ()=> {
   padding: 5px;
  & > div{
   //  background: black;
-   color: white;
+  //  color: white;
    padding: 2px;
    border-radius: 2px;
  }
+}
+
+.card-plate{
+  background: #f7f7f7bd;
+  border: 1px solid #ffffffa3;
+  color: black;
+  width: 50%;
+  border-radius: 3px;
+  width: 100%;
+  & > div:first-child{
+    font-weight:bold;
+  }
 }
 </style>
